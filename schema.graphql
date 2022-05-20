@@ -1,0 +1,12 @@
+type ChannelAlchemicaEvent @entity {
+  id: ID!
+  block: BigInt
+  timestamp: BigInt
+
+  gotchi: BigInt
+  parcel: BigInt
+
+  alchemica: [BigInt!]!
+  spilloverRate: BigInt
+  spilloverRadius: BigInt
+}
