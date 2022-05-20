@@ -11,7 +11,7 @@ type ChannelAlchemicaEvent @entity {
   spilloverRadius: BigInt!
 }
 
-type Stats @entity {
+type Stat @entity {
   id: ID!
   countChannelAlchemicaEvents: BigInt!
 }
