@@ -16,7 +16,4 @@ type ChannelAlchemicaEvent @entity {
 type Stat @entity {
   id: ID!
   countChannelAlchemicaEvents: BigInt!
-  channeledAlchemica: [BigInt!]!
-  exittedAlchemica: [BigInt!]!
-  claimedAlchemica: [BigInt!]!
 }
