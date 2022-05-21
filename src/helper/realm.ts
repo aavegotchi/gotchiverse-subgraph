@@ -8,12 +8,14 @@ export const createChannelAlchemicaEvent = (event: ChannelAlchemica): ChannelAlc
     let eventEntity = new ChannelAlchemicaEvent(id);
     eventEntity.gotchi = event.params._gotchiId;
     eventEntity.parcel = event.params._realmId;
+
+    eventEntity.transaction = event.transaction.hash
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;
+
     eventEntity.spilloverRadius = event.params._spilloverRadius;
     eventEntity.spilloverRate = event.params._spilloverRate;
     eventEntity.alchemica = event.params._alchemica;
-    eventEntity.save();
     return eventEntity;
 }
 

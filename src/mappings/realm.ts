@@ -5,6 +5,7 @@ import { createChannelAlchemicaEvent, getStat } from "../helper/realm";
 export function handleChannelAlchemica(event: ChannelAlchemica): void  {
     // create and persist event
     let eventEntity = createChannelAlchemicaEvent(event); 
+    eventEntity.save();
     
     // update stats
     let gotchiStats = getStat(StatCategory.GOTCHI, eventEntity.gotchi)

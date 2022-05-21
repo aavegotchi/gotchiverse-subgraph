@@ -9,9 +9,14 @@ type ChannelAlchemicaEvent @entity {
   alchemica: [BigInt!]!
   spilloverRate: BigInt!
   spilloverRadius: BigInt!
+
+  transaction: Bytes
 }
 
 type Stat @entity {
   id: ID!
   countChannelAlchemicaEvents: BigInt!
+  channeledAlchemica: [BigInt!]!
+  exittedAlchemica: [BigInt!]!
+  claimedAlchemica: [BigInt!]!
 }
