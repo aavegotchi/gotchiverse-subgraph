@@ -6,8 +6,8 @@ import { BIGINT_ZERO, StatCategory, STAT_CATEGORIES } from "./constants";
 export const createChannelAlchemicaEvent = (event: ChannelAlchemica): ChannelAlchemicaEvent => {
     let id = event.params._gotchiId.toString() + "-" + event.params._realmId.toString() + "-" + event.block.number.toString();
     let eventEntity = new ChannelAlchemicaEvent(id);
-    eventEntity.parcel = event.params._gotchiId;
-    eventEntity.gotchi = event.params._realmId;
+    eventEntity.gotchi = event.params._gotchiId;
+    eventEntity.parcel = event.params._realmId;
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;
     eventEntity.spilloverRadius = event.params._spilloverRadius;
