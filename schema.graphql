@@ -1,3 +1,4 @@
+# Events
 type ChannelAlchemicaEvent @entity {
   id: ID!
   block: BigInt!
@@ -13,7 +14,47 @@ type ChannelAlchemicaEvent @entity {
   transaction: Bytes
 }
 
+type EquipInstallationEvent @entity {
+  id: ID!
+
+  realmId: BigInt!
+  installationId: BigInt!
+
+  x: BigInt!
+  y: BigInt!
+}
+
+type UnequipInstallationEvent @entity {
+  id: ID!
+
+  realmId: BigInt!
+  installationId: BigInt!
+
+  x: BigInt!
+  y: BigInt!
+}
+
+type InstallationUpgradedEvent @entity {
+  id: ID!
+
+  realmId: BigInt!
+  prevInstallationId: BigInt!
+  nextInstallationId: BigInt!
+
+  x: BigInt!
+  y: BigInt!
+}
+
+# Custom Entities
+type ParcelInstallation @entity {
+  id: ID!
+
+  installationId: BigInt!
+  realmId: BigInt!
+}
+
 type Stat @entity {
   id: ID!
   countChannelAlchemicaEvents: BigInt!
+  countParcelInstallations: BigInt!
 }
