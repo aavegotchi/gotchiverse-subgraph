@@ -36,10 +36,8 @@ export function handleEquipInstallation(event: EquipInstallation): void {
 
     // create if not exist
     let parcel = getOrCreateParcel(event.params._realmId);
+    parcel = createParcelInstallation(parcel, event.params._installationId);
     parcel.save();
-
-    let installation = createParcelInstallation(event.params._realmId, event.params._installationId);
-    installation.save();
 
     // update stats
     let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel)
@@ -55,7 +53,9 @@ export function handleUnequipInstallation(event: UnequipInstallation): void {
     let eventEntity = createUnequipInstallationEvent(event);
     eventEntity.save();
 
-    removeParcelInstallation(event.params._realmId, event.params._installationId);
+    let parcel = getOrCreateParcel(event.params._realmId);
+    parcel = removeParcelInstallation(parcel, event.params._installationId);
+    parcel.save();
 
     // update stats
     let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel)
@@ -71,7 +71,8 @@ export function handleInstallationUpgraded(event: InstallationUpgraded): void {
     let eventEntity = createInstallationUpgradedEvent(event);
     eventEntity.save();
 
-    removeParcelInstallation(event.params._realmId, event.params._prevInstallationId);
-    let installation = createParcelInstallation(event.params._realmId, event.params._nextInstallationId);
-    installation.save();
+    let parcel = getOrCreateParcel(event.params._realmId);
+    parcel = removeParcelInstallation(parcel, event.params._prevInstallationId);
+    parcel = createParcelInstallation(parcel, event.params._nextInstallationId);
+    parcel.save();
 }

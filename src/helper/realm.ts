@@ -1,6 +1,6 @@
-import { BigInt, store } from "@graphprotocol/graph-ts";
+import { BigInt } from "@graphprotocol/graph-ts";
 import { ChannelAlchemica, EquipInstallation, InstallationUpgraded, UnequipInstallation } from "../../generated/RealmDiamond/RealmDiamond";
-import { ChannelAlchemicaEvent, EquipInstallationEvent, Gotchi, InstallationUpgradedEvent, Parcel, ParcelInstallation, Stat, UnequipInstallationEvent } from "../../generated/schema"
+import { ChannelAlchemicaEvent, EquipInstallationEvent, Gotchi, InstallationUpgradedEvent, Parcel, Stat, UnequipInstallationEvent } from "../../generated/schema"
 import { BIGINT_ZERO, StatCategory, STAT_CATEGORIES } from "./constants";
 
 export const getOrCreateParcel = (realmId: BigInt): Parcel => {
@@ -8,6 +8,7 @@ export const getOrCreateParcel = (realmId: BigInt): Parcel => {
     let parcel = Parcel.load(id);
     if(!parcel) {
         parcel = new Parcel(id);
+        parcel.equippedInstallations = new Array<BigInt>();
     }
     return parcel;
 }
@@ -77,20 +78,24 @@ export const createInstallationUpgradedEvent = (event: InstallationUpgraded): In
     return eventEntity;
 }
 
-export const createParcelInstallation = (realmId: BigInt, installationId: BigInt): ParcelInstallation  => {
-    let id = realmId.toString() + "-" + installationId.toString();
-    let installation = ParcelInstallation.load(id);
-    if(!installation) {
-        installation = new ParcelInstallation(id);
-        installation.parcel = realmId.toString();
-        installation.installationId = installationId;
-    }
-    return installation;
+export const createParcelInstallation = (parcel: Parcel, installationId: BigInt): Parcel  => {
+    let installations = parcel.equippedInstallations;
+    installations.push(installationId);
+    parcel.equippedInstallations = installations;
+    return parcel;
 }
 
-export const removeParcelInstallation = (realmId: BigInt, installationId: BigInt): void => {
-    let id = realmId.toString() + "-" + installationId.toString();
-    store.remove("ParcelInstallation", id);
+export const removeParcelInstallation = (parcel: Parcel, installationId: BigInt): Parcel => {
+    let installations = parcel.equippedInstallations;
+    let newInstallations = new Array<BigInt>();
+    for(let i=0; i<installations.length;i++) {
+        let item = installations[i];
+        if(item.notEqual(installationId)) {
+            newInstallations.push(item);
+        }
+    }
+    parcel.equippedInstallations = newInstallations;
+    return parcel;
 }
 
 export const getStat = (category: StatCategory, entityId: string = "0"): Stat => {

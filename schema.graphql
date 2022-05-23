@@ -54,16 +54,9 @@ type InstallationUpgradedEvent @entity {
   y: BigInt!
 }
 
-# Custom Entities
-type ParcelInstallation @entity {
-  id: ID!
-  installationId: BigInt!
-  parcel: Parcel!
-}
-
 type Parcel @entity {
   id: ID!
-  equippedInstallations: [ParcelInstallation!]! @derivedFrom(field: "parcel")
+  equippedInstallations: [BigInt!]!
   lastChanneledAlchemica: BigInt
 }
 
