@@ -22,6 +22,9 @@ export const createChannelAlchemicaEvent = (event: ChannelAlchemica): ChannelAlc
 export const createEquipInstallationEvent = (event: EquipInstallation): EquipInstallationEvent => {
     let id = event.params._realmId.toString() + "-" + event.params._installationId.toString();
     let eventEntity = new EquipInstallationEvent(id);
+    eventEntity.transaction = event.transaction.hash
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
     eventEntity.installationId = event.params._installationId;
     eventEntity.realmId = event.params._realmId;
     eventEntity.x = event.params._x;
@@ -32,6 +35,9 @@ export const createEquipInstallationEvent = (event: EquipInstallation): EquipIns
 export const createUnequipInstallationEvent = (event: UnequipInstallation): UnequipInstallationEvent => {
     let id = event.params._realmId.toString() + "-" + event.params._installationId.toString();
     let eventEntity = new UnequipInstallationEvent(id);
+    eventEntity.transaction = event.transaction.hash
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
     eventEntity.installationId = event.params._installationId;
     eventEntity.realmId = event.params._realmId;
     eventEntity.x = event.params._x;
@@ -42,6 +48,9 @@ export const createUnequipInstallationEvent = (event: UnequipInstallation): Uneq
 export const createInstallationUpgradedEvent = (event: InstallationUpgraded): InstallationUpgradedEvent => {
     let id = event.params._realmId.toString() + "-" + event.params._prevInstallationId.toString() + "-" + event.params._nextInstallationId.toString();
     let eventEntity = new InstallationUpgradedEvent(id);
+    eventEntity.transaction = event.transaction.hash
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
     eventEntity.prevInstallationId = event.params._prevInstallationId;
     eventEntity.nextInstallationId = event.params._nextInstallationId;
     eventEntity.realmId = event.params._realmId;
