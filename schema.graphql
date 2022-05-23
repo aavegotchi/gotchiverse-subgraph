@@ -4,8 +4,8 @@ type ChannelAlchemicaEvent @entity {
   block: BigInt!
   timestamp: BigInt!
 
-  gotchi: BigInt!
-  parcel: BigInt!
+  gotchi: Gotchi!
+  parcel: Parcel!
 
   alchemica: [BigInt!]!
   spilloverRate: BigInt!
@@ -20,7 +20,7 @@ type EquipInstallationEvent @entity {
   timestamp: BigInt!
   transaction: Bytes
 
-  realmId: BigInt!
+  parcel: Parcel!
   installationId: BigInt!
 
   x: BigInt!
@@ -33,7 +33,7 @@ type UnequipInstallationEvent @entity {
   timestamp: BigInt!
   transaction: Bytes
 
-  realmId: BigInt!
+  parcel: Parcel!
   installationId: BigInt!
 
   x: BigInt!
@@ -46,7 +46,7 @@ type InstallationUpgradedEvent @entity {
   timestamp: BigInt!
   transaction: Bytes
 
-  realmId: BigInt!
+  parcel: Parcel!
   prevInstallationId: BigInt!
   nextInstallationId: BigInt!
 
@@ -57,9 +57,19 @@ type InstallationUpgradedEvent @entity {
 # Custom Entities
 type ParcelInstallation @entity {
   id: ID!
-
   installationId: BigInt!
-  realmId: BigInt!
+  parcel: Parcel!
+}
+
+type Parcel @entity {
+  id: ID!
+  equippedInstallations: [ParcelInstallation!]! @derivedFrom(field: "parcel")
+  lastChanneledAlchemica: BigInt
+}
+
+type Gotchi @entity {
+  id: ID!
+  lastChanneledAlchemica: BigInt
 }
 
 type Stat @entity {
