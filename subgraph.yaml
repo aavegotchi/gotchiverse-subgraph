@@ -40,10 +40,16 @@ dataSources:
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - ChannelAlchemica
+        - MintInstallationEvent
+        - MintTileEvent
+        - UpgradeInitiatedEvent
+        - AddInstallationTypeEvent
+        - EditInstallationTypeEvent
+        - DeprecateInstallationEvent
       abis:
         - name: InstallationDiamond
           file: ./abis/InstallationDiamond.json
+      file: ./src/mappings/installation.ts
       eventHandlers:
         - event: MintTile(indexed address,indexed uint256,uint256)
           handler: handleMintTile
@@ -51,4 +57,9 @@ dataSources:
           handler: handleMintInstallation
         - event: UpgradeInitiated(indexed uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleUpgradeInitiated
-      file: ./src/mappings/installation.ts
+        - event: AddInstallationType(uint256)
+          handler: handleAddInstallationType
+        - event: EditInstallationType(uint256)
+          handler: handleEditInstallationType
+        - event: DeprecateInstallation(uint256)
+          handler: handleDeprecateInstallation
