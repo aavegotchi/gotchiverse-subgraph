@@ -1,6 +1,7 @@
 import { ChannelAlchemica, EquipInstallation, InstallationUpgraded, UnequipInstallation } from "../../generated/RealmDiamond/RealmDiamond";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
-import { createChannelAlchemicaEvent, createEquipInstallationEvent, createInstallationUpgradedEvent, createParcelInstallation, createUnequipInstallationEvent, getOrCreateGotchi, getOrCreateParcel, getStat, removeParcelInstallation } from "../helper/realm";
+import { createChannelAlchemicaEvent, createEquipInstallationEvent, createInstallationUpgradedEvent, createParcelInstallation, createUnequipInstallationEvent, getOrCreateGotchi, getOrCreateParcel, removeParcelInstallation } from "../helper/realm";
+import { getStat } from "../helper/stats";
 
 export function handleChannelAlchemica(event: ChannelAlchemica): void  {
     // create and persist event

@@ -44,7 +44,7 @@ export const createEquipInstallationEvent = (event: EquipInstallation): EquipIns
     eventEntity.transaction = event.transaction.hash
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;
-    eventEntity.installationId = event.params._installationId;
+    eventEntity.installation = event.params._installationId.toString();
     eventEntity.parcel = event.params._realmId.toString();
     eventEntity.x = event.params._x;
     eventEntity.y = event.params._y;
@@ -57,7 +57,7 @@ export const createUnequipInstallationEvent = (event: UnequipInstallation): Uneq
     eventEntity.transaction = event.transaction.hash
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;
-    eventEntity.installationId = event.params._installationId;
+    eventEntity.installation = event.params._installationId.toString();
     eventEntity.parcel = event.params._realmId.toString();
     eventEntity.x = event.params._x;
     eventEntity.y = event.params._y;
@@ -70,8 +70,8 @@ export const createInstallationUpgradedEvent = (event: InstallationUpgraded): In
     eventEntity.transaction = event.transaction.hash
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;
-    eventEntity.prevInstallationId = event.params._prevInstallationId;
-    eventEntity.nextInstallationId = event.params._nextInstallationId;
+    eventEntity.prevInstallation = event.params._prevInstallationId.toString();
+    eventEntity.nextInstallation = event.params._nextInstallationId.toString();
     eventEntity.parcel = event.params._realmId.toString();
     eventEntity.x = event.params._coordinateX;
     eventEntity.y = event.params._coordinateY;
@@ -96,20 +96,4 @@ export const removeParcelInstallation = (parcel: Parcel, installationId: BigInt)
     }
     parcel.equippedInstallations = newInstallations;
     return parcel;
-}
-
-export const getStat = (category: StatCategory, entityId: string = "0"): Stat => {
-    let id = STAT_CATEGORIES[category];
-    if(id != "overall") {
-        id = id  + "-" + entityId.toString();
-    }
-    
-    let stats = Stat.load(id);
-    if(!stats) {
-        stats = new Stat(id);
-        stats.countChannelAlchemicaEvents = BIGINT_ZERO;
-        stats.countParcelInstallations = BIGINT_ZERO;
-    }
-
-    return stats;
 }
