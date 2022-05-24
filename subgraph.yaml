@@ -28,3 +28,27 @@ dataSources:
         - event: UnequipInstallation(uint256,uint256,uint256,uint256)
           handler: handleUnequipInstallation
       file: ./src/mappings/realm.ts
+  - kind: ethereum/contract
+    name: InstallationDiamond
+    network: matic
+    source:
+      address: "0x19f870bD94A34b3adAa9CaA439d333DA18d6812A"
+      abi: "InstallationDiamond"
+      startBlock: 26540483
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - ChannelAlchemica
+      abis:
+        - name: InstallationDiamond
+          file: ./abis/InstallationDiamond.json
+      eventHandlers:
+        - event: MintTile(indexed address,indexed uint256,uint256)
+          handler: handleMintTile
+        - event: MintInstallation(indexed address,indexed uint256,uint256)
+          handler: handleMintInstallation
+        - event: UpgradeInitiated(indexed uint256,uint256,uint256,uint256,uint256,uint256)
+          handler: handleUpgradeInitiated
+      file: ./src/mappings/installation.ts
