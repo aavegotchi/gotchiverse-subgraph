@@ -14,6 +14,31 @@ type ChannelAlchemicaEvent @entity {
   transaction: Bytes
 }
 
+type AlchemicaClaimedEvent @entity {
+  id: ID!
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes
+  gotchi: Gotchi
+  parcel: Parcel
+
+  alchemicaType: BigInt
+  amount: BigInt
+
+  spilloverRadius: BigInt
+  spilloverRate: BigInt
+}
+
+type ExitAlchemicaEvent @entity {
+  id: ID!
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes
+
+  gotchi: Gotchi
+  alchemica: [BigInt!]!
+}
+
 type EquipInstallationEvent @entity {
   id: ID!
   block: BigInt!
@@ -111,6 +136,28 @@ type DeprecateInstallationEvent @entity {
   installationType: InstallationType
 }
 
+type EquipTileEvent @entity {
+  id: ID!
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes
+  parcel: Parcel
+  tile: Tile
+  x: BigInt
+  y: BigInt
+}
+
+type UnequipTileEvent @entity {
+  id: ID!
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes
+  parcel: Parcel
+  tile: Tile
+  x: BigInt
+  y: BigInt
+}
+
 type Parcel @entity {
   id: ID!
   equippedInstallations: [InstallationType!]!
@@ -124,8 +171,6 @@ type Gotchi @entity {
 
 type Tile @entity {
   id: ID!
-  parcel: Parcel!
-  tileType: InstallationType
 }
 
 type Installation @entity {
@@ -165,4 +210,15 @@ type Stat @entity {
   alchemicaSpendOnUpgrades: [BigInt!]!
   alchemicaSpendTotal: [BigInt!]!
   alchemicaChanneledTotal: [BigInt!]!
+  alchemicaClaimedTotal: [BigInt!]!
+  alchemicaExitedTotal: [BigInt!]!
+
+  tilesEquippedTotal: BigInt!
+  tilesUnequippedTotal: BigInt!
+  tilesEquippedCurrent: BigInt!
+
+  installationsUpgradedTotal: BigInt!
+  installationsEquippedTotal: BigInt!
+  installationsUnequippedTotal: BigInt!
+  installationsEquippedCurrent: BigInt!
 }

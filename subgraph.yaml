@@ -19,14 +19,23 @@ dataSources:
         - name: RealmDiamond
           file: ./abis/RealmDiamond.json
       eventHandlers:
+        - event: AlchemicaClaimed(indexed uint256,indexed uint256,indexed uint256,uint256,uint256,uint256)
+          handler: handleAlchemicaClaimed
         - event: ChannelAlchemica(indexed uint256,indexed uint256,uint256[4],uint256,uint256)
           handler: handleChannelAlchemica
+        - event: ExitAlchemica(indexed uint256,uint256[])
+          handler: handleExitAlchemica(indexed uint256,uint256[])
         - event: EquipInstallation(uint256,uint256,uint256,uint256)
           handler: handleEquipInstallation
         - event: InstallationUpgraded(uint256,uint256,uint256,uint256,uint256)
           handler: handleInstallationUpgraded
         - event: UnequipInstallation(uint256,uint256,uint256,uint256)
           handler: handleUnequipInstallation
+        - event: EquipTile(uint256,uint256,uint256,uint256)
+          handler: handleEquipTile
+        - event: UnequipTile(uint256,uint256,uint256,uint256)
+          handler: handleUnequipTile
+
       file: ./src/mappings/realm.ts
   - kind: ethereum/contract
     name: InstallationDiamond
