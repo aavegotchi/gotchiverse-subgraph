@@ -50,7 +50,6 @@ export function createMintInstallationEvent(event: MintInstallation): MintInstal
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;
     eventEntity.installationType = event.params._installationType.toString();
-    eventEntity.installation = event.params._installationId.toString();
     eventEntity.owner = event.params._owner;
     
     return eventEntity;

@@ -42,7 +42,7 @@ export function handleUpgradeInitiated(event: UpgradeInitiated): void {
 export function handleAddInstallationType(event: AddInstallationType): void {
     let eventEntity = createAddInstallationType(event);
     eventEntity.save();
-    
+
     let installationTypeId = event.params._installationId;
     let installationType = getOrCreateInstallationType(installationTypeId);
     installationType = updateInstallationType(event, installationType);

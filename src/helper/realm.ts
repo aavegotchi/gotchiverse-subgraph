@@ -8,7 +8,6 @@ export const getOrCreateParcel = (realmId: BigInt): Parcel => {
     let parcel = Parcel.load(id);
     if(!parcel) {
         parcel = new Parcel(id);
-        parcel.equippedInstallations = new Array<BigInt>();
     }
     return parcel;
 }
@@ -80,17 +79,19 @@ export const createInstallationUpgradedEvent = (event: InstallationUpgraded): In
 
 export const createParcelInstallation = (parcel: Parcel, installationId: BigInt): Parcel  => {
     let installations = parcel.equippedInstallations;
-    installations.push(installationId);
+    let id = installationId.toString();
+    installations.push(id);
     parcel.equippedInstallations = installations;
     return parcel;
 }
 
 export const removeParcelInstallation = (parcel: Parcel, installationId: BigInt): Parcel => {
     let installations = parcel.equippedInstallations;
-    let newInstallations = new Array<BigInt>();
+    let newInstallations = new Array<string>();
+    let id = installationId.toString();
     for(let i=0; i<installations.length;i++) {
         let item = installations[i];
-        if(item.notEqual(installationId)) {
+        if(item != id) {
             newInstallations.push(item);
         }
     }

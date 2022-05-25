@@ -70,7 +70,6 @@ type MintInstallationEvent @entity {
   timestamp: BigInt!
   transaction: Bytes
   owner: Bytes
-  installation: Installation
   installationType: InstallationType
 }
 
