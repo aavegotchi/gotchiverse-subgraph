@@ -160,4 +160,7 @@ type Stat @entity {
   countParcelInstallations: BigInt!
   countInstallationTypes: BigInt!
   countUpgradesInitiated: BigInt!
+
+  spendAlchemicaTotal: [BigInt!]!
+  spendAlchemicaOnUpgrades: [BigInt!]!
 }
