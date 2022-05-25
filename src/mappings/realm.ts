@@ -1,7 +1,8 @@
 import { ChannelAlchemica, EquipInstallation, InstallationUpgraded, UnequipInstallation } from "../../generated/RealmDiamond/RealmDiamond";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
+import { getOrCreateInstallationType } from "../helper/installation";
 import { createChannelAlchemicaEvent, createEquipInstallationEvent, createInstallationUpgradedEvent, createParcelInstallation, createUnequipInstallationEvent, getOrCreateGotchi, getOrCreateParcel, removeParcelInstallation } from "../helper/realm";
-import { getStat, updateChannelAlchemicaStats } from "../helper/stats";
+import { getStat, updateChannelAlchemicaStats, updateSpendAlchemicaStats } from "../helper/stats";
 
 export function handleChannelAlchemica(event: ChannelAlchemica): void  {
     // create and persist event
@@ -44,8 +45,10 @@ export function handleEquipInstallation(event: EquipInstallation): void {
     parcel.save();
 
     // update stats
-    let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel)
+    let installationType = getOrCreateInstallationType(event.params._installationId);
+    let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel);
     parcelStats.countParcelInstallations = parcelStats.countParcelInstallations.plus(BIGINT_ONE);
+    parcelStats = updateSpendAlchemicaStats(parcelStats, installationType);
     parcelStats.save();
 
     let overallStats = getStat(StatCategory.OVERALL)
@@ -79,4 +82,10 @@ export function handleInstallationUpgraded(event: InstallationUpgraded): void {
     parcel = removeParcelInstallation(parcel, event.params._prevInstallationId);
     parcel = createParcelInstallation(parcel, event.params._nextInstallationId);
     parcel.save();
+
+    // stats
+    let installationType = getOrCreateInstallationType(event.params._event.params._nextInstallationId);
+    let parcelStats = getStat(StatCategory.PARCEL, event.params._realmId.toString());
+    parcelStats = updateSpendAlchemicaStats(parcelStats, installationType);
+    parcelStats.save();
 }
