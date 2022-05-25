@@ -13,6 +13,10 @@ export const getStat = (category: StatCategory, entityId: string = "0"): Stat =>
         stats.countChannelAlchemicaEvents = BIGINT_ZERO;
         stats.countParcelInstallations = BIGINT_ZERO;
         stats.countInstallationTypes = BIGINT_ZERO;
+
+        let emptyAlchemicaWallet = [BIGINT_ZERO, BIGINT_ZERO, BIGINT_ZERO, BIGINT_ZERO];
+        stats.spendAlchemicaOnUpgrades = emptyAlchemicaWallet;
+        stats.spendAlchemicaTotal = emptyAlchemicaWallet;
     }
 
     return stats;
