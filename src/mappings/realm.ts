@@ -1,7 +1,7 @@
 import { ChannelAlchemica, EquipInstallation, InstallationUpgraded, UnequipInstallation } from "../../generated/RealmDiamond/RealmDiamond";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import { createChannelAlchemicaEvent, createEquipInstallationEvent, createInstallationUpgradedEvent, createParcelInstallation, createUnequipInstallationEvent, getOrCreateGotchi, getOrCreateParcel, removeParcelInstallation } from "../helper/realm";
-import { getStat } from "../helper/stats";
+import { getStat, updateChannelAlchemicaStats } from "../helper/stats";
 
 export function handleChannelAlchemica(event: ChannelAlchemica): void  {
     // create and persist event
@@ -20,14 +20,17 @@ export function handleChannelAlchemica(event: ChannelAlchemica): void  {
     // update stats
     let gotchiStats = getStat(StatCategory.GOTCHI, eventEntity.gotchi)
     gotchiStats.countChannelAlchemicaEvents = gotchiStats.countChannelAlchemicaEvents.plus(BIGINT_ONE);
+    gotchiStats = updateChannelAlchemicaStats(gotchiStats, event.params._alchemica);
     gotchiStats.save();
 
     let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel)
     parcelStats.countChannelAlchemicaEvents = parcelStats.countChannelAlchemicaEvents.plus(BIGINT_ONE);
+    parcelStats = updateChannelAlchemicaStats(parcelStats, event.params._alchemica);
     parcelStats.save();
 
     let overallStats = getStat(StatCategory.OVERALL)
     overallStats.countChannelAlchemicaEvents = overallStats.countChannelAlchemicaEvents.plus(BIGINT_ONE);
+    overallStats = updateChannelAlchemicaStats(overallStats, event.params._alchemica);
     overallStats.save();
 }
 

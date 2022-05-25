@@ -161,6 +161,8 @@ type Stat @entity {
   countInstallationTypes: BigInt!
   countUpgradesInitiated: BigInt!
 
-  spendAlchemicaTotal: [BigInt!]!
-  spendAlchemicaOnUpgrades: [BigInt!]!
+  alchemicaSpendOnInstallations: [BigInt!]!
+  alchemicaSpendOnUpgrades: [BigInt!]!
+  alchemicaSpendTotal: [BigInt!]!
+  alchemicaChanneledTotal: [BigInt!]!
 }

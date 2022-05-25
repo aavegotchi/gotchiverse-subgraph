@@ -1,4 +1,5 @@
-import { Stat } from "../../generated/schema";
+import { BigInt } from "@graphprotocol/graph-ts";
+import { InstallationType, Stat } from "../../generated/schema";
 import { BIGINT_ZERO, StatCategory, STAT_CATEGORIES } from "./constants";
 
 export const getStat = (category: StatCategory, entityId: string = "0"): Stat => {
@@ -15,9 +16,44 @@ export const getStat = (category: StatCategory, entityId: string = "0"): Stat =>
         stats.countInstallationTypes = BIGINT_ZERO;
 
         let emptyAlchemicaWallet = [BIGINT_ZERO, BIGINT_ZERO, BIGINT_ZERO, BIGINT_ZERO];
-        stats.spendAlchemicaOnUpgrades = emptyAlchemicaWallet;
-        stats.spendAlchemicaTotal = emptyAlchemicaWallet;
+        stats.alchemicaChanneledTotal = emptyAlchemicaWallet;
+        stats.alchemicaSpendOnInstallations = emptyAlchemicaWallet;
+        stats.alchemicaSpendOnUpgrades = emptyAlchemicaWallet;
+        stats.alchemicaSpendTotal = emptyAlchemicaWallet;
     }
 
+    return stats;
+}
+
+export function updateSpendAlchemicaStats(stats: Stat, installation: InstallationType): Stat {
+    let costs = installation.alchemicaCost;
+    let isUpgrade = installation.prerequisites.length > 0;
+    let spendTotal = stats.alchemicaSpendTotal;
+    let spendDetail = stats.alchemicaSpendOnInstallations; 
+    if(isUpgrade) {
+        spendDetail = stats.alchemicaSpendOnUpgrades;
+    }
+
+    for(let i=0;i<costs.length; i++) {
+        spendDetail[i] = spendDetail[i].plus(costs[i]);
+        spendTotal[i] = spendTotal[i].plus(costs[i]);
+    }
+    
+    if(isUpgrade) {
+        stats.alchemicaSpendOnUpgrades = spendDetail;
+    } else {
+        stats.alchemicaSpendOnInstallations = spendDetail;
+    }
+    stats.alchemicaSpendTotal = spendTotal;
+    return stats;
+}
+
+export function updateChannelAlchemicaStats(stats: Stat, alchemica: Array<BigInt>):Stat {
+    let alchemicaChanneledTotal = stats.alchemicaChanneledTotal;
+    for(let i=0;i<alchemica.length; i++) {
+        alchemicaChanneledTotal[i] = alchemicaChanneledTotal[i].plus(alchemica[i]);
+        alchemicaChanneledTotal[i] = alchemicaChanneledTotal[i].plus(alchemica[i]);
+    }
+    stats.alchemicaChanneledTotal = alchemicaChanneledTotal;
     return stats;
 }

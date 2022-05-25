@@ -1,5 +1,7 @@
 import { AddInstallationType, DeprecateInstallation, EditInstallationType, MintInstallation, MintTile, UpgradeInitiated } from "../../generated/InstallationDiamond/InstallationDiamond";
+import { StatCategory } from "../helper/constants";
 import { createAddInstallationType, createDeprecateInstallationEvent, createEditInstallationType, createMintInstallationEvent, createMintTileEvent, createUpgradeInitiatedEvent, getOrCreateInstallation, getOrCreateInstallationType, getOrCreateTile, updateInstallationType } from "../helper/installation";
+import { getStat, updateSpendAlchemicaStats } from "../helper/stats";
 
 
 export function handleMintTile (event: MintTile): void {
@@ -28,10 +30,17 @@ export function handleMintInstallation(event: MintInstallation): void  {
         installationType = updateInstallationType(event, installationType);
     }
 
+    // stats
+    let overallStats = getStat(StatCategory.OVERALL);
+    let userStats = getStat(StatCategory.USER, event.params._owner.toHexString());
+    overallStats = updateSpendAlchemicaStats(overallStats, installationType);
+    userStats = updateSpendAlchemicaStats(overallStats, installationType);
+
+    // persist
+    userStats.save();
+    overallStats.save();
     installation.save();
     installationType.save();
-
-    // @todo: Installation entity
 }
 
 export function handleUpgradeInitiated(event: UpgradeInitiated): void {
