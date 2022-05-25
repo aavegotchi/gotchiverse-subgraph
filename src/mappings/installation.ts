@@ -34,7 +34,7 @@ export function handleMintInstallation(event: MintInstallation): void  {
     let overallStats = getStat(StatCategory.OVERALL);
     let userStats = getStat(StatCategory.USER, event.params._owner.toHexString());
     overallStats = updateSpendAlchemicaStats(overallStats, installationType);
-    userStats = updateSpendAlchemicaStats(overallStats, installationType);
+    userStats = updateSpendAlchemicaStats(userStats, installationType);
 
     // persist
     userStats.save();
