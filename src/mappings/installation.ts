@@ -1,19 +1,8 @@
-import { AddInstallationType, DeprecateInstallation, EditInstallationType, MintInstallation, MintTile, UpgradeInitiated } from "../../generated/InstallationDiamond/InstallationDiamond";
+import { AddInstallationType, DeprecateInstallation, EditInstallationType, MintInstallation, UpgradeInitiated } from "../../generated/InstallationDiamond/InstallationDiamond";
 import { StatCategory } from "../helper/constants";
-import { createAddInstallationType, createDeprecateInstallationEvent, createEditInstallationType, createMintInstallationEvent, createMintTileEvent, createUpgradeInitiatedEvent, getOrCreateInstallation, getOrCreateInstallationType, getOrCreateTile, updateInstallationType } from "../helper/installation";
+import { createAddInstallationType, createDeprecateInstallationEvent, createEditInstallationType, createMintInstallationEvent, createUpgradeInitiatedEvent, getOrCreateInstallation, getOrCreateInstallationType, updateInstallationType } from "../helper/installation";
 import { getStat, updateSpendAlchemicaStats } from "../helper/stats";
 
-
-export function handleMintTile (event: MintTile): void {
-    let eventEntity = createMintTileEvent(event);
-    eventEntity.save();
-
-    let tileType = getOrCreateInstallationType(event.params._tileType);
-    if(tileType.name == null) {
-        tileType = updateInstallationType(event, tileType);
-        tileType.save();
-    }
-}
 
 export function handleMintInstallation(event: MintInstallation): void  {
     // Event entity
