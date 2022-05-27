@@ -126,10 +126,10 @@ export function handleEquipTile(event: EquipTile): void {
     eventEntity.save();
 
     let tile = getOrCreateTile(event.params._tileId);
-    if(!store.get("Tile", tile.id)) {
-        tile.save();
-    }
-
+    tile.equipEvent = eventEntity.id;
+    tile.unequipEvent = null;
+    tile.save();
+    
     // stats
     let overallStats = getStat(StatCategory.OVERALL);
     overallStats = updateTileEquippedStats(overallStats);
@@ -143,6 +143,11 @@ export function handleUnequipTile(event: UnequipTile): void {
     // event
     let eventEntity = createUnequipTileEvent(event);
     eventEntity.save();
+
+    let tile = getOrCreateTile(event.params._tileId);
+    tile.unequipEvent = eventEntity.id;
+    tile.equipEvent = null;
+    tile.save();
 
     // stats
     let overallStats = getStat(StatCategory.OVERALL);
