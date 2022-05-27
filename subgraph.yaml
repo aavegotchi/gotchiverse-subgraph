@@ -15,6 +15,8 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - ChannelAlchemica
+        - EquipTileEvent
+        - UnequipTileEvent
       abis:
         - name: RealmDiamond
           file: ./abis/RealmDiamond.json
@@ -35,8 +37,28 @@ dataSources:
           handler: handleEquipTile
         - event: UnequipTile(uint256,uint256,uint256,uint256)
           handler: handleUnequipTile
-
       file: ./src/mappings/realm.ts
+  - kind: ethereum/contract
+    name: TileDiamond
+    network: matic
+    source:
+      address: "0x9216c31d8146bCB3eA5a9162Dc1702e8AEDCa355"
+      abi: TileDiamond
+      startBlock: 27231106
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - MintTileEvent
+        - TileType
+      abis:
+        - name: TileDiamond
+          file: ./abis/TileDiamond.json
+      eventHandlers:
+        - event: MintTile(indexed address,indexed uint256,uint256)
+          handler: handleMintTile
+      file: ./src/mappings/tile.ts
   - kind: ethereum/contract
     name: InstallationDiamond
     network: matic
@@ -50,7 +72,6 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - MintInstallationEvent
-        - MintTileEvent
         - UpgradeInitiatedEvent
         - AddInstallationTypeEvent
         - EditInstallationTypeEvent
@@ -60,8 +81,6 @@ dataSources:
           file: ./abis/InstallationDiamond.json
       file: ./src/mappings/installation.ts
       eventHandlers:
-        - event: MintTile(indexed address,indexed uint256,uint256)
-          handler: handleMintTile
         - event: MintInstallation(indexed address,indexed uint256,uint256)
           handler: handleMintInstallation
         - event: UpgradeInitiated(indexed uint256,uint256,uint256,uint256,uint256,uint256)
