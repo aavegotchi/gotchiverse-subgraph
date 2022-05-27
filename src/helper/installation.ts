@@ -1,6 +1,8 @@
 import { BigInt, ethereum } from "@graphprotocol/graph-ts";
 import { AddInstallationType, DeprecateInstallation, EditInstallationType, InstallationDiamond, MintInstallation, MintTile, UpgradeInitiated } from "../../generated/InstallationDiamond/InstallationDiamond";
-import { AddInstallationTypeEvent, DeprecateInstallationEvent, EditInstallationTypeEvent, Installation, InstallationType, MintInstallationEvent, MintTileEvent, Tile, UpgradeInitiatedEvent } from "../../generated/schema"
+import { AddInstallationTypeEvent, DeprecateInstallationEvent, EditInstallationTypeEvent, Installation, InstallationType, MintInstallationEvent, MintTileEvent, Tile, TileType, UpgradeInitiatedEvent } from "../../generated/schema"
+import { TileDiamond } from "../../generated/TileDiamond/TileDiamond";
+import { BIGINT_ZERO } from "./constants";
 
 export function getOrCreateInstallationType(typeId: BigInt): InstallationType {
     let id = typeId.toString();
@@ -21,12 +23,36 @@ export function getOrCreateInstallation(installationId: BigInt): Installation {
 }
 
 export function getOrCreateTile(tileId: BigInt): Tile {
-    let id = tileId.toString();
+    let id = "tile-"+ tileId.toString();
     let tile = Tile.load(id);
     if(!tile) {
         tile = new Tile(id);
     }
     return tile;
+}
+
+export function getOrCreateTiletype(tileTypeId: BigInt, event: ethereum.Event): TileType {
+    let id = "tiletype-"+tileTypeId.toString();
+    let type = TileType.load(id);
+    if(!type) {
+        type = new TileType(id);
+        let contract = TileDiamond.bind(event.address);
+        let result = contract.try_getTileType(tileTypeId);
+        if(result.reverted) {
+            return type;
+        }
+
+        let data = result.value;
+        type.alchemicaCost = data.alchemicaCost;
+        type.craftTime = data.craftTime;
+        type.deprecated = data.deprecated;
+        type.height =  data.height;
+        type.width = data.width;
+        type.tileType = data.tileType;
+        type.name = data.name;
+    }
+
+    return type;
 }
 
 export function createMintTileEvent(event: MintTile): MintTileEvent {
@@ -38,8 +64,11 @@ export function createMintTileEvent(event: MintTile): MintTileEvent {
     eventEntity.owner = event.params._owner;
     eventEntity.tileType = event.params._tileType.toString();
     eventEntity.tile = event.params._tileId.toString();
-    let tile = getOrCreateInstallationType(event.params._tileType);
-    eventEntity.tileType = tile.id;
+    let tileType = getOrCreateTiletype(event.params._tileType, event);
+    eventEntity.tileType = tileType.id;
+    let tile = getOrCreateTile(event.params._tileId);
+    eventEntity.tile = tile.id;
+
     return eventEntity;
 }
 
@@ -51,7 +80,6 @@ export function createMintInstallationEvent(event: MintInstallation): MintInstal
     eventEntity.timestamp = event.block.timestamp;
     eventEntity.installationType = event.params._installationType.toString();
     eventEntity.owner = event.params._owner;
-    
     return eventEntity;
 }
 
