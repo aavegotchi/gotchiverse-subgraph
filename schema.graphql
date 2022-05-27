@@ -171,12 +171,20 @@ type Gotchi @entity {
 
 type Tile @entity {
   id: ID!
+  type: TileType
+  x: BigInt
+  y: BigInt
+  equipped: Boolean
+  parcel: Parcel
 }
 
 type Installation @entity {
   id: ID!
+  type: InstallationType
+  x: BigInt
+  y: BigInt
+  equipped: Boolean
   parcel: Parcel
-  installationType: InstallationType
 }
 
 type InstallationType @entity {
@@ -199,6 +207,17 @@ type InstallationType @entity {
   name: String
 }
 
+type TileType @entity {
+  id: ID!
+  width: Int!
+  height: Int!
+  deprecated: Boolean!
+  tileType: Int!
+  craftTime: BigInt!
+  alchemicaCost: [BigInt!]!
+  name: String!
+}
+
 type Stat @entity {
   id: ID!
   countChannelAlchemicaEvents: BigInt!
@@ -216,6 +235,7 @@ type Stat @entity {
   tilesEquippedTotal: BigInt!
   tilesUnequippedTotal: BigInt!
   tilesEquippedCurrent: BigInt!
+  tilesMinted: BigInt!
 
   installationsUpgradedTotal: BigInt!
   installationsEquippedTotal: BigInt!
