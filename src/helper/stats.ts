@@ -1,5 +1,5 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import { InstallationType, Stat } from "../../generated/schema";
+import { InstallationType, Stat, Tile, TileType } from "../../generated/schema";
 import { BIGINT_ONE, BIGINT_ZERO, StatCategory, STAT_CATEGORIES } from "./constants";
 
 export const getStat = (category: StatCategory, entityId: string = "0"): Stat => {
@@ -19,12 +19,14 @@ export const getStat = (category: StatCategory, entityId: string = "0"): Stat =>
         stats.alchemicaChanneledTotal = emptyAlchemicaWallet;
         stats.alchemicaSpendOnInstallations = emptyAlchemicaWallet;
         stats.alchemicaSpendOnUpgrades = emptyAlchemicaWallet;
+        stats.alchemicaSpendOnTiles = emptyAlchemicaWallet;
         stats.alchemicaSpendTotal = emptyAlchemicaWallet;
         stats.alchemicaClaimedTotal = emptyAlchemicaWallet;
         stats.alchemicaExitedTotal = emptyAlchemicaWallet;
         stats.tilesEquippedTotal = BIGINT_ZERO;
         stats.tilesUnequippedTotal = BIGINT_ZERO;
         stats.tilesEquippedCurrent = BIGINT_ZERO;
+        stats.installationsMintedTotal = BIGINT_ZERO;
         stats.installationsUpgradedTotal = BIGINT_ZERO;
         stats.installationsEquippedTotal = BIGINT_ZERO;
         stats.installationsUnequippedTotal = BIGINT_ZERO;
@@ -34,7 +36,20 @@ export const getStat = (category: StatCategory, entityId: string = "0"): Stat =>
     return stats;
 }
 
-export function updateSpendAlchemicaStats(stats: Stat, installation: InstallationType): Stat {
+export function updateAlchemicaSpendOnTiles(stats: Stat, tile: TileType): Stat {
+    let costsTiles = stats.alchemicaSpendOnTiles;
+    let costsTotal = stats.alchemicaSpendTotal;
+    let newCosts = tile.alchemicaCost;
+    for(let i=0;i<newCosts.length; i++) {
+        costsTiles[i] = costsTiles[i].plus(newCosts[i]);
+        costsTotal[i] = costsTotal[i].plus(newCosts[i]);
+    }
+    stats.alchemicaSpendOnTiles = costsTiles;
+    stats.alchemicaSpendTotal = costsTotal;
+    return stats;
+}
+
+export function updateAlchemicaSpendOnInstallationsAndUpgrades(stats: Stat, installation: InstallationType): Stat {
     let costs = installation.alchemicaCost;
     let isUpgrade = installation.prerequisites.length > 0;
     let spendTotal = stats.alchemicaSpendTotal;

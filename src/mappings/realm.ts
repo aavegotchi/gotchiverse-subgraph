@@ -4,7 +4,7 @@ import { Stat } from "../../generated/schema";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import { getOrCreateInstallationType, getOrCreateTile } from "../helper/installation";
 import { createAlchemicaClaimedEvent, createChannelAlchemicaEvent, createEquipInstallationEvent, createEquipTileEvent, createExitAlchemicaEvent, createInstallationUpgradedEvent, createParcelInstallation, createUnequipInstallationEvent, createUnequipTileEvent, getOrCreateGotchi, getOrCreateParcel, removeParcelInstallation } from "../helper/realm";
-import { getStat, updateAlchemicaClaimedStats, updateChannelAlchemicaStats, updateExitedAlchemicaStats, updateInstallationUpgradedStats, updateSpendAlchemicaStats, updateTileEquippedStats, updateTileUnequippedStats } from "../helper/stats";
+import { getStat, updateAlchemicaClaimedStats, updateChannelAlchemicaStats, updateExitedAlchemicaStats, updateInstallationEquippedStats, updateInstallationUnequippedStats, updateInstallationUpgradedStats, updateTileEquippedStats, updateTileUnequippedStats } from "../helper/stats";
 
 export function handleChannelAlchemica(event: ChannelAlchemica): void  {
     // create and persist event
@@ -76,14 +76,21 @@ export function handleEquipInstallation(event: EquipInstallation): void {
 
     // update stats
     let installationType = getOrCreateInstallationType(event.params._installationId);
+
     let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel);
     parcelStats.countParcelInstallations = parcelStats.countParcelInstallations.plus(BIGINT_ONE);
-    parcelStats = updateSpendAlchemicaStats(parcelStats, installationType);
+    parcelStats = updateInstallationEquippedStats(parcelStats);
     parcelStats.save();
 
     let overallStats = getStat(StatCategory.OVERALL)
     overallStats.countParcelInstallations = overallStats.countParcelInstallations.plus(BIGINT_ONE);
+    overallStats = updateInstallationEquippedStats(overallStats);
     overallStats.save();
+
+    let userStats = getStat(StatCategory.USER, event.transaction.from.toHexString());
+    userStats.countParcelInstallations = userStats.countParcelInstallations.plus(BIGINT_ONE);
+    userStats = updateInstallationEquippedStats(userStats);
+    userStats.save();
 }
 
 export function handleUnequipInstallation(event: UnequipInstallation): void {
@@ -95,12 +102,19 @@ export function handleUnequipInstallation(event: UnequipInstallation): void {
     parcel.save();
 
     // update stats
+    let userStats = getStat(StatCategory.USER, event.transaction.from.toHexString());
+    userStats.countParcelInstallations = userStats.countParcelInstallations.minus(BIGINT_ONE);
+    userStats = updateInstallationUnequippedStats(userStats);
+    userStats.save();
+
     let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel)
     parcelStats.countParcelInstallations = parcelStats.countParcelInstallations.minus(BIGINT_ONE);
+    parcelStats = updateInstallationUnequippedStats(parcelStats);
     parcelStats.save();
 
     let overallStats = getStat(StatCategory.OVERALL)
     overallStats.countParcelInstallations = overallStats.countParcelInstallations.minus(BIGINT_ONE);
+    overallStats = updateInstallationUnequippedStats(overallStats);
     overallStats.save();
 }
 
@@ -114,9 +128,11 @@ export function handleInstallationUpgraded(event: InstallationUpgraded): void {
     parcel.save();
 
     // stats
-    let installationType = getOrCreateInstallationType(event.params._event.params._nextInstallationId);
+    let overallStats = getStat(StatCategory.OVERALL);
+    overallStats = updateInstallationUpgradedStats(overallStats);
+    overallStats.save();
+
     let parcelStats = getStat(StatCategory.PARCEL, event.params._realmId.toString());
-    parcelStats = updateSpendAlchemicaStats(parcelStats, installationType);
     parcelStats = updateInstallationUpgradedStats(parcelStats);
     parcelStats.save();
 }
@@ -126,16 +142,19 @@ export function handleEquipTile(event: EquipTile): void {
     eventEntity.save();
 
     let tile = getOrCreateTile(event.params._tileId);
-    tile.equipEvent = eventEntity.id;
-    tile.unequipEvent = null;
     tile.save();
     
     // stats
+    let userStats = getStat(StatCategory.USER, event.transaction.from.toHexString());
+    userStats = updateTileEquippedStats(userStats);
+    userStats.save();
+
     let overallStats = getStat(StatCategory.OVERALL);
     overallStats = updateTileEquippedStats(overallStats);
+    overallStats.save();
+
     let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel!);
     parcelStats = updateTileEquippedStats(parcelStats);
-    overallStats.save();
     parcelStats.save();
 }
 
@@ -145,11 +164,13 @@ export function handleUnequipTile(event: UnequipTile): void {
     eventEntity.save();
 
     let tile = getOrCreateTile(event.params._tileId);
-    tile.unequipEvent = eventEntity.id;
-    tile.equipEvent = null;
     tile.save();
 
     // stats
+    let userStats = getStat(StatCategory.USER, event.transaction.from.toHexString());
+    userStats = updateTileUnequippedStats(userStats);
+    userStats.save();
+
     let overallStats = getStat(StatCategory.OVERALL);
     overallStats = updateTileUnequippedStats(overallStats);
     overallStats.save();

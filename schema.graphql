@@ -227,6 +227,7 @@ type Stat @entity {
 
   alchemicaSpendOnInstallations: [BigInt!]!
   alchemicaSpendOnUpgrades: [BigInt!]!
+  alchemicaSpendOnTiles: [BigInt!]!
   alchemicaSpendTotal: [BigInt!]!
   alchemicaChanneledTotal: [BigInt!]!
   alchemicaClaimedTotal: [BigInt!]!
@@ -237,6 +238,7 @@ type Stat @entity {
   tilesEquippedCurrent: BigInt!
   tilesMinted: BigInt!
 
+  installationsMintedTotal: BigInt!
   installationsUpgradedTotal: BigInt!
   installationsEquippedTotal: BigInt!
   installationsUnequippedTotal: BigInt!

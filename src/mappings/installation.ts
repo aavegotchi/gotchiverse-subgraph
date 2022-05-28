@@ -1,7 +1,7 @@
 import { AddInstallationType, DeprecateInstallation, EditInstallationType, MintInstallation, UpgradeInitiated } from "../../generated/InstallationDiamond/InstallationDiamond";
-import { StatCategory } from "../helper/constants";
+import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import { createAddInstallationType, createDeprecateInstallationEvent, createEditInstallationType, createMintInstallationEvent, createUpgradeInitiatedEvent, getOrCreateInstallation, getOrCreateInstallationType, updateInstallationType } from "../helper/installation";
-import { getStat, updateSpendAlchemicaStats } from "../helper/stats";
+import { getStat, updateAlchemicaSpendOnInstallationsAndUpgrades } from "../helper/stats";
 
 
 export function handleMintInstallation(event: MintInstallation): void  {
@@ -12,8 +12,8 @@ export function handleMintInstallation(event: MintInstallation): void  {
     let installation = getOrCreateInstallation(event.params._installationId);
     // InstallationType entity
     let installationType = getOrCreateInstallationType(event.params._installationType);
-    if(installation.installationType == null || installation.installationType != installationType.id) {
-        installation.installationType = installationType.id;
+    if(installation.type == null || installation.type != installationType.id) {
+        installation.type = installationType.id;
     }
     if(installationType.name == null) {
         installationType = updateInstallationType(event, installationType);
@@ -22,8 +22,10 @@ export function handleMintInstallation(event: MintInstallation): void  {
     // stats
     let overallStats = getStat(StatCategory.OVERALL);
     let userStats = getStat(StatCategory.USER, event.params._owner.toHexString());
-    overallStats = updateSpendAlchemicaStats(overallStats, installationType);
-    userStats = updateSpendAlchemicaStats(userStats, installationType);
+    overallStats = updateAlchemicaSpendOnInstallationsAndUpgrades(overallStats, installationType);
+    overallStats.installationsMintedTotal = overallStats.installationsMintedTotal.plus(BIGINT_ONE);
+    userStats = updateAlchemicaSpendOnInstallationsAndUpgrades(userStats, installationType);
+    userStats.installationsMintedTotal = userStats.installationsMintedTotal.plus(BIGINT_ONE);
 
     // persist
     userStats.save();
@@ -35,6 +37,23 @@ export function handleMintInstallation(event: MintInstallation): void  {
 export function handleUpgradeInitiated(event: UpgradeInitiated): void {
     let eventEntity = createUpgradeInitiatedEvent(event);
     eventEntity.save()
+
+    let type = getOrCreateInstallationType(event.params.installationId);
+    if(type.name == null) {
+        type = updateInstallationType(event, type);
+        type.save();
+    }
+
+    // stats
+    let overallStats = getStat(StatCategory.OVERALL);
+    overallStats = updateAlchemicaSpendOnInstallationsAndUpgrades(overallStats, type);
+    overallStats.installationsMintedTotal = overallStats.installationsMintedTotal.plus(BIGINT_ONE);
+    overallStats.save();
+
+    let userStats = getStat(StatCategory.USER, event.transaction.from.toHexString());
+    userStats = updateAlchemicaSpendOnInstallationsAndUpgrades(userStats, type);
+    userStats.installationsMintedTotal = userStats.installationsMintedTotal.plus(BIGINT_ONE);
+    userStats.save();
 }
 
 export function handleAddInstallationType(event: AddInstallationType): void {
