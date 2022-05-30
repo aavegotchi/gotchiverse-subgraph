@@ -33,10 +33,7 @@ export function handleUpgradeInitiated(event: UpgradeInitiated): void {
     eventEntity.save()
 
     let type = getOrCreateInstallationType(event.params.installationId, event);
-    if(type.name == null) {
-        type = updateInstallationType(event, type);
-        type.save();
-    }
+    type.save();
 
     // stats
     let overallStats = getStat(StatCategory.OVERALL);
@@ -56,7 +53,6 @@ export function handleAddInstallationType(event: AddInstallationType): void {
 
     let installationTypeId = event.params._installationId;
     let installationType = getOrCreateInstallationType(installationTypeId, event);
-    installationType = updateInstallationType(event, installationType);
     installationType.save();
 }
 
@@ -66,7 +62,6 @@ export function handleEditInstallationType(event: EditInstallationType): void {
 
     let installationTypeId = event.params._installationId;
     let installationType = getOrCreateInstallationType(installationTypeId, event);
-    installationType = updateInstallationType(event, installationType);
     installationType.save();
 }
 
@@ -76,6 +71,5 @@ export function handleDeprecateInstallation(event: DeprecateInstallation): void 
 
     let installationTypeId = event.params._installationId;
     let installationType = getOrCreateInstallationType(installationTypeId, event);
-    installationType = updateInstallationType(event, installationType);
     installationType.save();
 }
