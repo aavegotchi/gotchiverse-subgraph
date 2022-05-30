@@ -11,21 +11,15 @@ export function handleMintInstallation(event: MintInstallation): void  {
 
     let installation = getOrCreateInstallation(event.params._installationId);
     // InstallationType entity
-    let installationType = getOrCreateInstallationType(event.params._installationType);
-    if(installation.type == null || installation.type != installationType.id) {
-        installation.type = installationType.id;
-    }
-    if(installationType.name == null) {
-        installationType = updateInstallationType(event, installationType);
-    }
+    let installationType = getOrCreateInstallationType(event.params._installationType, event);
+    installation.type = installation.id;
 
     // stats
     let overallStats = getStat(StatCategory.OVERALL);
-    let userStats = getStat(StatCategory.USER, event.params._owner.toHexString());
     overallStats = updateAlchemicaSpendOnInstallationsAndUpgrades(overallStats, installationType);
-    overallStats.installationsMintedTotal = overallStats.installationsMintedTotal.plus(BIGINT_ONE);
+
+    let userStats = getStat(StatCategory.USER, event.params._owner.toHexString());
     userStats = updateAlchemicaSpendOnInstallationsAndUpgrades(userStats, installationType);
-    userStats.installationsMintedTotal = userStats.installationsMintedTotal.plus(BIGINT_ONE);
 
     // persist
     userStats.save();
@@ -38,7 +32,7 @@ export function handleUpgradeInitiated(event: UpgradeInitiated): void {
     let eventEntity = createUpgradeInitiatedEvent(event);
     eventEntity.save()
 
-    let type = getOrCreateInstallationType(event.params.installationId);
+    let type = getOrCreateInstallationType(event.params.installationId, event);
     if(type.name == null) {
         type = updateInstallationType(event, type);
         type.save();
@@ -61,7 +55,7 @@ export function handleAddInstallationType(event: AddInstallationType): void {
     eventEntity.save();
 
     let installationTypeId = event.params._installationId;
-    let installationType = getOrCreateInstallationType(installationTypeId);
+    let installationType = getOrCreateInstallationType(installationTypeId, event);
     installationType = updateInstallationType(event, installationType);
     installationType.save();
 }
@@ -71,7 +65,7 @@ export function handleEditInstallationType(event: EditInstallationType): void {
     eventEntity.save();
 
     let installationTypeId = event.params._installationId;
-    let installationType = getOrCreateInstallationType(installationTypeId);
+    let installationType = getOrCreateInstallationType(installationTypeId, event);
     installationType = updateInstallationType(event, installationType);
     installationType.save();
 }
@@ -81,7 +75,7 @@ export function handleDeprecateInstallation(event: DeprecateInstallation): void 
     eventEntity.save();
 
     let installationTypeId = event.params._installationId;
-    let installationType = getOrCreateInstallationType(installationTypeId);
+    let installationType = getOrCreateInstallationType(installationTypeId, event);
     installationType = updateInstallationType(event, installationType);
     installationType.save();
 }

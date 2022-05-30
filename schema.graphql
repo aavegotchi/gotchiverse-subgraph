@@ -204,6 +204,7 @@ type InstallationType @entity {
   harvestRate: BigInt
   capacity: BigInt
   prerequisites: [InstallationType!]!
+  amountPrerequisites: Int
   name: String
 }
 

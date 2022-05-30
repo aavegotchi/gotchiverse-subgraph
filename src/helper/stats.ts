@@ -51,7 +51,7 @@ export function updateAlchemicaSpendOnTiles(stats: Stat, tile: TileType): Stat {
 
 export function updateAlchemicaSpendOnInstallationsAndUpgrades(stats: Stat, installation: InstallationType): Stat {
     let costs = installation.alchemicaCost;
-    let isUpgrade = installation.prerequisites.length > 0;
+    let isUpgrade = installation.amountPrerequisites > 0;
     let spendTotal = stats.alchemicaSpendTotal;
     let spendDetail = stats.alchemicaSpendOnInstallations; 
     if(isUpgrade) {
@@ -65,8 +65,10 @@ export function updateAlchemicaSpendOnInstallationsAndUpgrades(stats: Stat, inst
     
     if(isUpgrade) {
         stats.alchemicaSpendOnUpgrades = spendDetail;
+        stats.installationsUpgradedTotal = stats.installationsUpgradedTotal.plus(BIGINT_ONE);
     } else {
         stats.alchemicaSpendOnInstallations = spendDetail;
+        stats.installationsMintedTotal = stats.installationsMintedTotal.plus(BIGINT_ONE);
     }
     stats.alchemicaSpendTotal = spendTotal;
     return stats;

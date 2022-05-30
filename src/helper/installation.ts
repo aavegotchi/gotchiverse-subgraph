@@ -4,11 +4,12 @@ import { AddInstallationTypeEvent, DeprecateInstallationEvent, EditInstallationT
 import { TileDiamond } from "../../generated/TileDiamond/TileDiamond";
 import { BIGINT_ZERO } from "./constants";
 
-export function getOrCreateInstallationType(typeId: BigInt): InstallationType {
+export function getOrCreateInstallationType(typeId: BigInt, event: ethereum.Event): InstallationType {
     let id = typeId.toString();
     let installationType = InstallationType.load(id);
     if(!installationType) {
         installationType = new InstallationType(id);
+        installationType = updateInstallationType(event, installationType);
     }
     return installationType;
 }
@@ -162,6 +163,7 @@ export function updateInstallationType(event: ethereum.Event, installationType: 
     installationType.harvestRate = newType.harvestRate;
     installationType.capacity = newType.capacity;
     installationType.prerequisites = newType.prerequisites.map<string>(e => e.toString());
+    installationType.amountPrerequisites = newType.prerequisites.length;
     installationType.name = newType.name;
     return installationType;
 }

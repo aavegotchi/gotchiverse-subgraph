@@ -31,6 +31,11 @@ export function handleChannelAlchemica(event: ChannelAlchemica): void  {
     parcelStats = updateChannelAlchemicaStats(parcelStats, event.params._alchemica);
     parcelStats.save();
 
+    let userStats = getStat(StatCategory.USER, event.transaction.from.toHexString())
+    userStats.countChannelAlchemicaEvents = userStats.countChannelAlchemicaEvents.plus(BIGINT_ONE);
+    userStats = updateChannelAlchemicaStats(userStats, event.params._alchemica);
+    userStats.save();
+
     let overallStats = getStat(StatCategory.OVERALL)
     overallStats.countChannelAlchemicaEvents = overallStats.countChannelAlchemicaEvents.plus(BIGINT_ONE);
     overallStats = updateChannelAlchemicaStats(overallStats, event.params._alchemica);
@@ -75,7 +80,7 @@ export function handleEquipInstallation(event: EquipInstallation): void {
     parcel.save();
 
     // update stats
-    let installationType = getOrCreateInstallationType(event.params._installationId);
+    let installationType = getOrCreateInstallationType(event.params._installationId, event);
 
     let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel);
     parcelStats.countParcelInstallations = parcelStats.countParcelInstallations.plus(BIGINT_ONE);
