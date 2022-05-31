@@ -1,6 +1,6 @@
 import { BigInt, ethereum } from "@graphprotocol/graph-ts";
-import { AddInstallationType, DeprecateInstallation, EditInstallationType, InstallationDiamond, MintInstallation, MintTile, UpgradeInitiated } from "../../generated/InstallationDiamond/InstallationDiamond";
-import { AddInstallationTypeEvent, DeprecateInstallationEvent, EditInstallationTypeEvent, Installation, InstallationType, MintInstallationEvent, MintTileEvent, Tile, TileType, UpgradeInitiatedEvent } from "../../generated/schema"
+import { AddInstallationType, CraftTimeReduced, DeprecateInstallation, EditInstallationType, InstallationDiamond, MintInstallation, MintTile, UpgradeInitiated, UpgradeTimeReduced } from "../../generated/InstallationDiamond/InstallationDiamond";
+import { AddInstallationTypeEvent, CraftTimeReducedEvent, DeprecateInstallationEvent, EditInstallationTypeEvent, Installation, InstallationType, MintInstallationEvent, MintTileEvent, Tile, TileType, UpgradeInitiatedEvent, UpgradeTimeReducedEvent } from "../../generated/schema"
 import { TileDiamond } from "../../generated/TileDiamond/TileDiamond";
 import { BIGINT_ZERO } from "./constants";
 
@@ -168,4 +168,31 @@ export function updateInstallationType(event: ethereum.Event, installationType: 
     return installationType;
 }
 
+export function createUpgradeTimeReducedEvent(event: UpgradeTimeReduced): UpgradeTimeReducedEvent {
+    let id = event.transaction.hash.toHexString();
+    let eventEntity = UpgradeTimeReducedEvent.load(id);
+    if(!eventEntity) {
+        eventEntity = new UpgradeTimeReducedEvent(id);
+        eventEntity.transaction = event.transaction.hash
+        eventEntity.block = event.block.number;
+        eventEntity.timestamp = event.block.timestamp;
+        eventEntity.parcel = event.params._realmId.toString();
+        eventEntity.x = event.params._coordinateX;
+        eventEntity.y = event.params._coordinateY;
+        eventEntity.blocksReduced = event.params._blocksReduced;
+    }
+    return eventEntity;
+}
 
+export function createCraftTimeReducedEvent(event: CraftTimeReduced): CraftTimeReducedEvent {
+    let id = event.transaction.hash.toHexString();
+    let eventEntity = CraftTimeReducedEvent.load(id);
+    if(!eventEntity) {
+        eventEntity = new CraftTimeReducedEvent(id);
+        eventEntity.transaction = event.transaction.hash
+        eventEntity.block = event.block.number;
+        eventEntity.timestamp = event.block.timestamp;
+        eventEntity.blocksReduced = event.params._blocksReduced;
+    }
+    return eventEntity;
+}

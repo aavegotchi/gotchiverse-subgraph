@@ -1,6 +1,6 @@
-import { AddInstallationType, DeprecateInstallation, EditInstallationType, MintInstallation, UpgradeInitiated } from "../../generated/InstallationDiamond/InstallationDiamond";
+import { AddInstallationType, CraftTimeReduced, DeprecateInstallation, EditInstallationType, MintInstallation, UpgradeInitiated, UpgradeTimeReduced } from "../../generated/InstallationDiamond/InstallationDiamond";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
-import { createAddInstallationType, createDeprecateInstallationEvent, createEditInstallationType, createMintInstallationEvent, createUpgradeInitiatedEvent, getOrCreateInstallation, getOrCreateInstallationType, updateInstallationType } from "../helper/installation";
+import { createAddInstallationType, createCraftTimeReducedEvent, createDeprecateInstallationEvent, createEditInstallationType, createMintInstallationEvent, createUpgradeInitiatedEvent, createUpgradeTimeReducedEvent, getOrCreateInstallation, getOrCreateInstallationType, updateInstallationType } from "../helper/installation";
 import { getStat, updateAlchemicaSpendOnInstallations, updateAlchemicaSpendOnUpgrades } from "../helper/stats";
 
 
@@ -70,4 +70,40 @@ export function handleDeprecateInstallation(event: DeprecateInstallation): void 
     let installationTypeId = event.params._installationId;
     let installationType = getOrCreateInstallationType(installationTypeId, event);
     installationType.save();
+}
+
+export function handleCraftTimeReduced(event: CraftTimeReduced): void {
+    let eventEntity = createCraftTimeReducedEvent(event);
+    eventEntity.save();
+
+    // stats
+    let overallStats = getStat(StatCategory.OVERALL);
+    overallStats.craftTimeReduced = overallStats.craftTimeReduced.plus(event.params._blocksReduced);
+    overallStats.save();
+
+    let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel)
+    parcelStats.craftTimeReduced = parcelStats.craftTimeReduced.plus(event.params._blocksReduced);
+    parcelStats.save();
+
+    let userStats = getStat(StatCategory.USER, event.transaction.from.toHexString());
+    userStats.craftTimeReduced = userStats.craftTimeReduced.plus(event.params._blocksReduced);
+    userStats.save();
+}
+
+export function handleUpgradeTimeReduced(event: UpgradeTimeReduced): void {
+    let eventEntity = createUpgradeTimeReducedEvent(event);
+    eventEntity.save();
+
+    // stats
+    let overallStats = getStat(StatCategory.OVERALL);
+    overallStats.upgradeTimeReduced = overallStats.upgradeTimeReduced.plus(event.params._blocksReduced);
+    overallStats.save();
+
+    let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel)
+    parcelStats.upgradeTimeReduced = parcelStats.upgradeTimeReduced.plus(event.params._blocksReduced);
+    parcelStats.save();
+
+    let userStats = getStat(StatCategory.USER, event.transaction.from.toHexString());
+    userStats.upgradeTimeReduced = userStats.upgradeTimeReduced.plus(event.params._blocksReduced);
+    userStats.save();
 }
