@@ -3,13 +3,15 @@ import { BigInt } from "@graphprotocol/graph-ts";
 export enum StatCategory {
     GOTCHI,
     PARCEL,
-    OVERALL
+    OVERALL,
+    USER
 }
 
 export const STAT_CATEGORIES = [
     "gotchi",
     "parcel",
-    "overall"
+    "overall",
+    "user"
 ]
 
 export const BIGINT_ZERO = BigInt.fromI32(0);

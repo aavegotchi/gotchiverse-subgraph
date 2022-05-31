@@ -1,14 +1,12 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import { ChannelAlchemica, EquipInstallation, InstallationUpgraded, UnequipInstallation } from "../../generated/RealmDiamond/RealmDiamond";
-import { ChannelAlchemicaEvent, EquipInstallationEvent, Gotchi, InstallationUpgradedEvent, Parcel, Stat, UnequipInstallationEvent } from "../../generated/schema"
-import { BIGINT_ZERO, StatCategory, STAT_CATEGORIES } from "./constants";
+import { AlchemicaClaimed, ChannelAlchemica, EquipInstallation, EquipTile, ExitAlchemica, InstallationUpgraded, UnequipInstallation, UnequipTile } from "../../generated/RealmDiamond/RealmDiamond";
+import { AlchemicaClaimedEvent, ChannelAlchemicaEvent, EquipInstallationEvent, EquipTileEvent, ExitAlchemicaEvent, Gotchi, InstallationUpgradedEvent, Parcel, Stat, UnequipInstallationEvent, UnequipTileEvent } from "../../generated/schema"
 
 export const getOrCreateParcel = (realmId: BigInt): Parcel => {
     let id = realmId.toString();
     let parcel = Parcel.load(id);
     if(!parcel) {
         parcel = new Parcel(id);
-        parcel.equippedInstallations = new Array<BigInt>();
     }
     return parcel;
 }
@@ -38,13 +36,39 @@ export const createChannelAlchemicaEvent = (event: ChannelAlchemica): ChannelAlc
     return eventEntity;
 }
 
+export const createAlchemicaClaimedEvent = (event: AlchemicaClaimed): AlchemicaClaimedEvent => {
+    let id = event.transaction.hash.toHexString();
+    let eventEntity = new AlchemicaClaimedEvent(id);
+    eventEntity.transaction = event.transaction.hash
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+    eventEntity.gotchi = event.params._gotchiId.toString();
+    eventEntity.parcel = event.params._realmId.toString();
+    eventEntity.alchemicaType = event.params._alchemicaType
+    eventEntity.amount = event.params._amount
+    eventEntity.spilloverRadius = event.params._spilloverRadius
+    eventEntity.spilloverRate = event.params._spilloverRate
+    return eventEntity;
+}
+
+export const createExitAlchemicaEvent = (event: ExitAlchemica): ExitAlchemicaEvent => {
+    let id = event.transaction.hash.toHexString();
+    let eventEntity = new ExitAlchemicaEvent(id);
+    eventEntity.transaction = event.transaction.hash
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+    eventEntity.gotchi = event.params._gotchiId.toString();
+    eventEntity.alchemica = event.params._alchemica;
+    return eventEntity;
+}
+
 export const createEquipInstallationEvent = (event: EquipInstallation): EquipInstallationEvent => {
     let id = event.params._realmId.toString() + "-" + event.params._installationId.toString();
     let eventEntity = new EquipInstallationEvent(id);
     eventEntity.transaction = event.transaction.hash
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;
-    eventEntity.installationId = event.params._installationId;
+    eventEntity.installation = event.params._installationId.toString();
     eventEntity.parcel = event.params._realmId.toString();
     eventEntity.x = event.params._x;
     eventEntity.y = event.params._y;
@@ -57,7 +81,33 @@ export const createUnequipInstallationEvent = (event: UnequipInstallation): Uneq
     eventEntity.transaction = event.transaction.hash
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;
-    eventEntity.installationId = event.params._installationId;
+    eventEntity.installation = event.params._installationId.toString();
+    eventEntity.parcel = event.params._realmId.toString();
+    eventEntity.x = event.params._x;
+    eventEntity.y = event.params._y;
+    return eventEntity;
+}
+
+export const createEquipTileEvent = (event: EquipTile): EquipTileEvent => {
+    let id = event.transaction.hash.toHexString();
+    let eventEntity = new EquipTileEvent(id);
+    eventEntity.transaction = event.transaction.hash
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+    eventEntity.tile = event.params._tileId.toString();
+    eventEntity.parcel = event.params._realmId.toString();
+    eventEntity.x = event.params._x;
+    eventEntity.y = event.params._y;
+    return eventEntity;
+}
+
+export const createUnequipTileEvent = (event: UnequipTile): UnequipTileEvent => {
+    let id = event.transaction.hash.toHexString();
+    let eventEntity = new UnequipTileEvent(id);
+    eventEntity.transaction = event.transaction.hash
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+    eventEntity.tile = event.params._tileId.toString();
     eventEntity.parcel = event.params._realmId.toString();
     eventEntity.x = event.params._x;
     eventEntity.y = event.params._y;
@@ -70,8 +120,8 @@ export const createInstallationUpgradedEvent = (event: InstallationUpgraded): In
     eventEntity.transaction = event.transaction.hash
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;
-    eventEntity.prevInstallationId = event.params._prevInstallationId;
-    eventEntity.nextInstallationId = event.params._nextInstallationId;
+    eventEntity.prevInstallation = event.params._prevInstallationId.toString();
+    eventEntity.nextInstallation = event.params._nextInstallationId.toString();
     eventEntity.parcel = event.params._realmId.toString();
     eventEntity.x = event.params._coordinateX;
     eventEntity.y = event.params._coordinateY;
@@ -80,36 +130,22 @@ export const createInstallationUpgradedEvent = (event: InstallationUpgraded): In
 
 export const createParcelInstallation = (parcel: Parcel, installationId: BigInt): Parcel  => {
     let installations = parcel.equippedInstallations;
-    installations.push(installationId);
+    let id = installationId.toString();
+    installations.push(id);
     parcel.equippedInstallations = installations;
     return parcel;
 }
 
 export const removeParcelInstallation = (parcel: Parcel, installationId: BigInt): Parcel => {
     let installations = parcel.equippedInstallations;
-    let newInstallations = new Array<BigInt>();
+    let newInstallations = new Array<string>();
+    let id = installationId.toString();
     for(let i=0; i<installations.length;i++) {
         let item = installations[i];
-        if(item.notEqual(installationId)) {
+        if(item != id) {
             newInstallations.push(item);
         }
     }
     parcel.equippedInstallations = newInstallations;
     return parcel;
-}
-
-export const getStat = (category: StatCategory, entityId: string = "0"): Stat => {
-    let id = STAT_CATEGORIES[category];
-    if(id != "overall") {
-        id = id  + "-" + entityId.toString();
-    }
-    
-    let stats = Stat.load(id);
-    if(!stats) {
-        stats = new Stat(id);
-        stats.countChannelAlchemicaEvents = BIGINT_ZERO;
-        stats.countParcelInstallations = BIGINT_ZERO;
-    }
-
-    return stats;
 }
