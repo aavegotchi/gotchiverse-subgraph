@@ -126,6 +126,9 @@ export function handleInstallationUpgraded(event: InstallationUpgraded): void {
     let eventEntity = createInstallationUpgradedEvent(event);
     eventEntity.save();
 
+    let type = getOrCreateInstallationType(event.params._nextInstallationId, event);
+    type.save();
+
     let parcel = getOrCreateParcel(event.params._realmId);
     parcel = removeParcelInstallation(parcel, event.params._prevInstallationId);
     parcel = createParcelInstallation(parcel, event.params._nextInstallationId);
