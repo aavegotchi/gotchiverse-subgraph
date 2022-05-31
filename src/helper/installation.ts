@@ -184,7 +184,7 @@ export function createUpgradeTimeReducedEvent(event: UpgradeTimeReduced): Upgrad
     return eventEntity;
 }
 
-export function createCraftTimeReducedEvent(event: CraftTimeReduced) {
+export function createCraftTimeReducedEvent(event: CraftTimeReduced): CraftTimeReducedEvent {
     let id = event.transaction.hash.toHexString();
     let eventEntity = CraftTimeReducedEvent.load(id);
     if(!eventEntity) {
