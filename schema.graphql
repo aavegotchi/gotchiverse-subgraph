@@ -158,6 +158,30 @@ type UnequipTileEvent @entity {
   y: BigInt
 }
 
+type CraftTimeReducedEvent @entity {
+  id: ID!
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+  parcel: Parcel!
+
+  x: BigInt!
+  y: BigInt!
+  blocksReduced: BigInt!
+}
+
+type UpgradeTimeReducedEvent @entity {
+  id: ID!
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+  parcel: Parcel!
+
+  x: BigInt!
+  y: BigInt!
+  blocksReduced: BigInt!
+}
+
 type Parcel @entity {
   id: ID!
   equippedInstallations: [InstallationType!]!
@@ -244,4 +268,7 @@ type Stat @entity {
   installationsEquippedTotal: BigInt!
   installationsUnequippedTotal: BigInt!
   installationsEquippedCurrent: BigInt!
+
+  craftTimeReduced: BigInt!
+  upgradeTimeReduced: BigInt!
 }

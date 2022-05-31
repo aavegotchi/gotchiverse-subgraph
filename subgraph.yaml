@@ -91,3 +91,7 @@ dataSources:
           handler: handleEditInstallationType
         - event: DeprecateInstallation(uint256)
           handler: handleDeprecateInstallation
+        - event: CraftTimeReduced(indexed uint256,uint256)
+          handler: handleCraftTimeReduced
+        - event: UpgradeTimeReduced(indexed uint256,indexed uint256,uint256,uint256,uint256)
+          handler: handleUpgradeTimeReduced
