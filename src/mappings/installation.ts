@@ -88,13 +88,13 @@ export function handleCraftTimeReduced(event: CraftTimeReduced): void {
     let userStats = getStat(StatCategory.USER, event.transaction.from.toHexString());
     userStats.craftTimeReduced = userStats.craftTimeReduced.plus(event.params._blocksReduced);
     userStats.save();
-
 }
 
 export function handleUpgradeTimeReduced(event: UpgradeTimeReduced): void {
     let eventEntity = createUpgradeTimeReducedEvent(event);
     eventEntity.save();
 
+    // stats
     let overallStats = getStat(StatCategory.OVERALL);
     overallStats.upgradeTimeReduced = overallStats.upgradeTimeReduced.plus(event.params._blocksReduced);
     overallStats.save();
