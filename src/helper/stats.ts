@@ -49,28 +49,37 @@ export function updateAlchemicaSpendOnTiles(stats: Stat, tile: TileType): Stat {
     return stats;
 }
 
-export function updateAlchemicaSpendOnInstallationsAndUpgrades(stats: Stat, installation: InstallationType): Stat {
+export function updateAlchemicaSpendOnUpgrades(stats: Stat, installation: InstallationType): Stat {
     let costs = installation.alchemicaCost;
-    let isUpgrade = installation.amountPrerequisites > 0;
     let spendTotal = stats.alchemicaSpendTotal;
-    let spendDetail = stats.alchemicaSpendOnInstallations; 
-    if(isUpgrade) {
-        spendDetail = stats.alchemicaSpendOnUpgrades;
-    }
+    let spendDetail = stats.alchemicaSpendOnUpgrades; 
 
     for(let i=0;i<costs.length; i++) {
         spendDetail[i] = spendDetail[i].plus(costs[i]);
         spendTotal[i] = spendTotal[i].plus(costs[i]);
     }
     
-    if(isUpgrade) {
-        stats.alchemicaSpendOnUpgrades = spendDetail;
-        stats.installationsUpgradedTotal = stats.installationsUpgradedTotal.plus(BIGINT_ONE);
-    } else {
-        stats.alchemicaSpendOnInstallations = spendDetail;
-        stats.installationsMintedTotal = stats.installationsMintedTotal.plus(BIGINT_ONE);
-    }
+    stats.alchemicaSpendOnUpgrades = spendDetail;
     stats.alchemicaSpendTotal = spendTotal;
+
+    stats.installationsUpgradedTotal = stats.installationsUpgradedTotal.plus(BIGINT_ONE);
+    return stats;
+}
+
+export function updateAlchemicaSpendOnInstallations(stats: Stat, installation: InstallationType): Stat {
+    let costs = installation.alchemicaCost;
+    let spendTotal = stats.alchemicaSpendTotal;
+    let spendDetail = stats.alchemicaSpendOnInstallations; 
+
+    for(let i=0;i<costs.length; i++) {
+        spendDetail[i] = spendDetail[i].plus(costs[i]);
+        spendTotal[i] = spendTotal[i].plus(costs[i]);
+    }
+    
+    stats.alchemicaSpendOnInstallations = spendDetail;
+    stats.alchemicaSpendTotal = spendTotal;
+
+    stats.installationsMintedTotal = stats.installationsMintedTotal.plus(BIGINT_ONE);
     return stats;
 }
 
@@ -108,6 +117,7 @@ export function updateInstallationEquippedStats(stats: Stat): Stat {
 }
 
 export function updateInstallationUnequippedStats(stats: Stat): Stat {
+    stats.countParcelInstallations = stats.countParcelInstallations.minus(BIGINT_ONE);
     stats.installationsEquippedCurrent = stats.installationsEquippedCurrent.minus(BIGINT_ONE);
     stats.installationsUnequippedTotal = stats.installationsUnequippedTotal.plus(BIGINT_ONE);
     return stats;

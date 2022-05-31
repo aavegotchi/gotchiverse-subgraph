@@ -1,7 +1,7 @@
 import { AddInstallationType, DeprecateInstallation, EditInstallationType, MintInstallation, UpgradeInitiated } from "../../generated/InstallationDiamond/InstallationDiamond";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import { createAddInstallationType, createDeprecateInstallationEvent, createEditInstallationType, createMintInstallationEvent, createUpgradeInitiatedEvent, getOrCreateInstallation, getOrCreateInstallationType, updateInstallationType } from "../helper/installation";
-import { getStat, updateAlchemicaSpendOnInstallationsAndUpgrades } from "../helper/stats";
+import { getStat, updateAlchemicaSpendOnInstallations, updateAlchemicaSpendOnUpgrades } from "../helper/stats";
 
 
 export function handleMintInstallation(event: MintInstallation): void  {
@@ -16,10 +16,10 @@ export function handleMintInstallation(event: MintInstallation): void  {
 
     // stats
     let overallStats = getStat(StatCategory.OVERALL);
-    overallStats = updateAlchemicaSpendOnInstallationsAndUpgrades(overallStats, installationType);
+    overallStats = updateAlchemicaSpendOnInstallations(overallStats, installationType);
 
     let userStats = getStat(StatCategory.USER, event.params._owner.toHexString());
-    userStats = updateAlchemicaSpendOnInstallationsAndUpgrades(userStats, installationType);
+    userStats = updateAlchemicaSpendOnInstallations(userStats, installationType);
 
     // persist
     userStats.save();
@@ -37,13 +37,11 @@ export function handleUpgradeInitiated(event: UpgradeInitiated): void {
 
     // stats
     let overallStats = getStat(StatCategory.OVERALL);
-    overallStats = updateAlchemicaSpendOnInstallationsAndUpgrades(overallStats, type);
-    overallStats.installationsMintedTotal = overallStats.installationsMintedTotal.plus(BIGINT_ONE);
+    overallStats = updateAlchemicaSpendOnUpgrades(overallStats, type);
     overallStats.save();
 
     let userStats = getStat(StatCategory.USER, event.transaction.from.toHexString());
-    userStats = updateAlchemicaSpendOnInstallationsAndUpgrades(userStats, type);
-    userStats.installationsMintedTotal = userStats.installationsMintedTotal.plus(BIGINT_ONE);
+    userStats = updateAlchemicaSpendOnUpgrades(userStats, type);
     userStats.save();
 }
 

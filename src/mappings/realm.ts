@@ -65,6 +65,10 @@ export function handleAlchemicaClaimed(event: AlchemicaClaimed): void {
     overallStats = updateAlchemicaClaimedStats(overallStats, event.params._alchemicaType.toI32(), event.params._amount);
     overallStats.save();
 
+    let userStats = getStat(StatCategory.USER, event.transaction.from.toHexString());
+    userStats = updateAlchemicaClaimedStats(userStats, event.params._alchemicaType.toI32(), event.params._amount);
+    userStats.save();
+
     let gotchiStats = getStat(StatCategory.GOTCHI, event.params._gotchiId.toString());
     gotchiStats = updateAlchemicaClaimedStats(gotchiStats, event.params._alchemicaType.toI32(), event.params._amount);
     gotchiStats.save();
@@ -80,8 +84,6 @@ export function handleEquipInstallation(event: EquipInstallation): void {
     parcel.save();
 
     // update stats
-    let installationType = getOrCreateInstallationType(event.params._installationId, event);
-
     let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel);
     parcelStats.countParcelInstallations = parcelStats.countParcelInstallations.plus(BIGINT_ONE);
     parcelStats = updateInstallationEquippedStats(parcelStats);
@@ -108,17 +110,14 @@ export function handleUnequipInstallation(event: UnequipInstallation): void {
 
     // update stats
     let userStats = getStat(StatCategory.USER, event.transaction.from.toHexString());
-    userStats.countParcelInstallations = userStats.countParcelInstallations.minus(BIGINT_ONE);
     userStats = updateInstallationUnequippedStats(userStats);
     userStats.save();
 
     let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel)
-    parcelStats.countParcelInstallations = parcelStats.countParcelInstallations.minus(BIGINT_ONE);
     parcelStats = updateInstallationUnequippedStats(parcelStats);
     parcelStats.save();
 
     let overallStats = getStat(StatCategory.OVERALL)
-    overallStats.countParcelInstallations = overallStats.countParcelInstallations.minus(BIGINT_ONE);
     overallStats = updateInstallationUnequippedStats(overallStats);
     overallStats.save();
 }
