@@ -20,6 +20,10 @@ dataSources:
       abis:
         - name: RealmDiamond
           file: ./abis/RealmDiamond.json
+        - name: InstallationDiamond
+          file: ./abis/InstallationDiamond.json
+        - name: TileDiamond
+          file: ./abis/TileDiamond.json
       eventHandlers:
         - event: AlchemicaClaimed(indexed uint256,indexed uint256,indexed uint256,uint256,uint256,uint256)
           handler: handleAlchemicaClaimed
@@ -55,6 +59,8 @@ dataSources:
       abis:
         - name: TileDiamond
           file: ./abis/TileDiamond.json
+        - name: InstallationDiamond
+          file: ./abis/InstallationDiamond.json
       eventHandlers:
         - event: MintTile(indexed address,indexed uint256,uint256)
           handler: handleMintTile
