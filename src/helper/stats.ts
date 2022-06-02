@@ -1,5 +1,5 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import { InstallationType, Stat, Tile, TileType } from "../../generated/schema";
+import { InstallationType, Stat, TileType } from "../../generated/schema";
 import { BIGINT_ONE, BIGINT_ZERO, StatCategory, STAT_CATEGORIES } from "./constants";
 
 export const getStat = (category: StatCategory, entityId: string = "0"): Stat => {

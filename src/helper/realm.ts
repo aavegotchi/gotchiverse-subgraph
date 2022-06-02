@@ -1,6 +1,6 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 import { AlchemicaClaimed, ChannelAlchemica, EquipInstallation, EquipTile, ExitAlchemica, InstallationUpgraded, MintParcel, Transfer, UnequipInstallation, UnequipTile } from "../../generated/RealmDiamond/RealmDiamond";
-import { AlchemicaClaimedEvent, ChannelAlchemicaEvent, EquipInstallationEvent, EquipTileEvent, ExitAlchemicaEvent, Gotchi, InstallationUpgradedEvent, MintParcelEvent, Parcel, Stat, TransferEvent, UnequipInstallationEvent, UnequipTileEvent } from "../../generated/schema"
+import { AlchemicaClaimedEvent, ChannelAlchemicaEvent, EquipInstallationEvent, EquipTileEvent, ExitAlchemicaEvent, Gotchi, InstallationUpgradedEvent, MintParcelEvent, Parcel, TransferEvent, UnequipInstallationEvent, UnequipTileEvent } from "../../generated/schema"
 
 export const getOrCreateParcel = (realmId: BigInt): Parcel => {
     let id = realmId.toString();

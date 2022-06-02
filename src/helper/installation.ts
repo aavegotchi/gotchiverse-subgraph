@@ -2,14 +2,14 @@ import { BigInt, ethereum } from "@graphprotocol/graph-ts";
 import { AddInstallationType, CraftTimeReduced, DeprecateInstallation, EditInstallationType, InstallationDiamond, MintInstallation, MintTile, UpgradeInitiated, UpgradeTimeReduced } from "../../generated/InstallationDiamond/InstallationDiamond";
 import { AddInstallationTypeEvent, CraftTimeReducedEvent, DeprecateInstallationEvent, EditInstallationTypeEvent, Installation, InstallationType, MintInstallationEvent, MintTileEvent, Tile, TileType, UpgradeInitiatedEvent, UpgradeTimeReducedEvent } from "../../generated/schema"
 import { TileDiamond } from "../../generated/TileDiamond/TileDiamond";
-import { BIGINT_ZERO } from "./constants";
+import { INSTALLATION_DIAMOND, TILE_DIAMOND } from "./constants";
 
 export function getOrCreateInstallationType(typeId: BigInt, event: ethereum.Event): InstallationType {
     let id = typeId.toString();
     let installationType = InstallationType.load(id);
     if(!installationType) {
         installationType = new InstallationType(id);
-        installationType = updateInstallationType(event, installationType);
+        installationType = updateInstallationType(installationType);
     }
     return installationType;
 }
@@ -32,12 +32,12 @@ export function getOrCreateTile(tileId: BigInt): Tile {
     return tile;
 }
 
-export function getOrCreateTiletype(tileTypeId: BigInt, event: ethereum.Event): TileType {
+export function getOrCreateTiletype(tileTypeId: BigInt): TileType {
     let id = "tiletype-"+tileTypeId.toString();
     let type = TileType.load(id);
     if(!type) {
         type = new TileType(id);
-        let contract = TileDiamond.bind(event.address);
+        let contract = TileDiamond.bind(TILE_DIAMOND);
         let result = contract.try_getTileType(tileTypeId);
         if(result.reverted) {
             return type;
@@ -65,7 +65,7 @@ export function createMintTileEvent(event: MintTile): MintTileEvent {
     eventEntity.owner = event.params._owner;
     eventEntity.tileType = event.params._tileType.toString();
     eventEntity.tile = event.params._tileId.toString();
-    let tileType = getOrCreateTiletype(event.params._tileType, event);
+    let tileType = getOrCreateTiletype(event.params._tileType);
     eventEntity.tileType = tileType.id;
     let tile = getOrCreateTile(event.params._tileId);
     eventEntity.tile = tile.id;
@@ -142,8 +142,8 @@ export function createDeprecateInstallationEvent(event: DeprecateInstallation): 
 }
 
 
-export function updateInstallationType(event: ethereum.Event, installationType: InstallationType): InstallationType {
-    let contract = InstallationDiamond.bind(event.address);
+export function updateInstallationType(installationType: InstallationType): InstallationType {
+    let contract = InstallationDiamond.bind(INSTALLATION_DIAMOND);
     let result = contract.try_getInstallationType(BigInt.fromString(installationType.id));
     if(result.reverted) {
         return installationType;
