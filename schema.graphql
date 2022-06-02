@@ -7,6 +7,12 @@ type TransferEvent @entity {
   tokenId: BigInt
 }
 
+type MintParcelEvent @entity {
+  id: ID!
+  owner: Bytes
+  tokenId: BigInt
+}
+
 type ChannelAlchemicaEvent @entity {
   id: ID!
   block: BigInt!

@@ -1,6 +1,6 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import { AlchemicaClaimed, ChannelAlchemica, EquipInstallation, EquipTile, ExitAlchemica, InstallationUpgraded, Transfer, UnequipInstallation, UnequipTile } from "../../generated/RealmDiamond/RealmDiamond";
-import { AlchemicaClaimedEvent, ChannelAlchemicaEvent, EquipInstallationEvent, EquipTileEvent, ExitAlchemicaEvent, Gotchi, InstallationUpgradedEvent, Parcel, Stat, TransferEvent, UnequipInstallationEvent, UnequipTileEvent } from "../../generated/schema"
+import { AlchemicaClaimed, ChannelAlchemica, EquipInstallation, EquipTile, ExitAlchemica, InstallationUpgraded, MintParcel, Transfer, UnequipInstallation, UnequipTile } from "../../generated/RealmDiamond/RealmDiamond";
+import { AlchemicaClaimedEvent, ChannelAlchemicaEvent, EquipInstallationEvent, EquipTileEvent, ExitAlchemicaEvent, Gotchi, InstallationUpgradedEvent, MintParcelEvent, Parcel, Stat, TransferEvent, UnequipInstallationEvent, UnequipTileEvent } from "../../generated/schema"
 
 export const getOrCreateParcel = (realmId: BigInt): Parcel => {
     let id = realmId.toString();
@@ -148,6 +148,13 @@ export const removeParcelInstallation = (parcel: Parcel, installationId: BigInt)
     }
     parcel.equippedInstallations = newInstallations;
     return parcel;
+}
+
+export const createMintParcelEvent = (event: MintParcel): MintParcelEvent => {
+    let entity = new MintParcelEvent(event.transaction.hash.toHexString());
+    entity.owner = event.params._owner;
+    entity.tokenId = event.params._tokenId;
+    return entity;
 }
 
 export const createParcelTransferEvent = (event: Transfer): TransferEvent => {
