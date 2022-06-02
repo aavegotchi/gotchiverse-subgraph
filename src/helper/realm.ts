@@ -7,6 +7,7 @@ export const getOrCreateParcel = (realmId: BigInt): Parcel => {
     let parcel = Parcel.load(id);
     if(!parcel) {
         parcel = new Parcel(id);
+        parcel.equippedInstallations = new Array<string>();
     }
     return parcel;
 }
