@@ -203,6 +203,7 @@ export function handleTransfer(event: Transfer): void {
 
     // maintain parcel owner field
     let parcel = getOrCreateParcel(event.params._tokenId);
+    parcel.equippedInstallations = new Array<string>();
     parcel.owner = event.params._to;
     parcel.save();
 }
