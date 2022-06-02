@@ -41,6 +41,8 @@ dataSources:
           handler: handleEquipTile
         - event: UnequipTile(uint256,uint256,uint256,uint256)
           handler: handleUnequipTile
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
       file: ./src/mappings/realm.ts
   - kind: ethereum/contract
     name: TileDiamond
