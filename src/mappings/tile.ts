@@ -7,7 +7,7 @@ export function handleMintTile (event: MintTile): void {
     let eventEntity = createMintTileEvent(event);
     eventEntity.save();
 
-    let tileType = getOrCreateTiletype(event.params._tileType, event);
+    let tileType = getOrCreateTiletype(event.params._tileType);
     tileType.save();
 
     let tile = getOrCreateTile(event.params._tileId);

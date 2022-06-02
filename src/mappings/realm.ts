@@ -1,9 +1,7 @@
-import { store } from "@graphprotocol/graph-ts";
-import { AlchemicaClaimed, ChannelAlchemica, EquipInstallation, EquipTile, ExitAlchemica, InstallationUpgraded, UnequipInstallation, UnequipTile } from "../../generated/RealmDiamond/RealmDiamond";
-import { Stat } from "../../generated/schema";
+import { AlchemicaClaimed, ChannelAlchemica, EquipInstallation, EquipTile, ExitAlchemica, MintParcel, InstallationUpgraded, Transfer, UnequipInstallation, UnequipTile } from "../../generated/RealmDiamond/RealmDiamond";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import { getOrCreateInstallationType, getOrCreateTile } from "../helper/installation";
-import { createAlchemicaClaimedEvent, createChannelAlchemicaEvent, createEquipInstallationEvent, createEquipTileEvent, createExitAlchemicaEvent, createInstallationUpgradedEvent, createParcelInstallation, createUnequipInstallationEvent, createUnequipTileEvent, getOrCreateGotchi, getOrCreateParcel, removeParcelInstallation } from "../helper/realm";
+import { createAlchemicaClaimedEvent, createChannelAlchemicaEvent, createEquipInstallationEvent, createEquipTileEvent, createExitAlchemicaEvent, createInstallationUpgradedEvent, createMintParcelEvent, createParcelInstallation, createParcelTransferEvent, createUnequipInstallationEvent, createUnequipTileEvent, getOrCreateGotchi, getOrCreateParcel, removeParcelInstallation } from "../helper/realm";
 import { getStat, updateAlchemicaClaimedStats, updateChannelAlchemicaStats, updateExitedAlchemicaStats, updateInstallationEquippedStats, updateInstallationUnequippedStats, updateInstallationUpgradedStats, updateTileEquippedStats, updateTileUnequippedStats } from "../helper/stats";
 
 export function handleChannelAlchemica(event: ChannelAlchemica): void  {
@@ -185,4 +183,26 @@ export function handleUnequipTile(event: UnequipTile): void {
     let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel!);
     parcelStats = updateTileUnequippedStats(parcelStats);
     parcelStats.save();
+}
+
+export function handleMintParcel(event: MintParcel): void {
+    // event
+    let eventEntity = createMintParcelEvent(event);
+    eventEntity.save();
+
+    // maintain owner in parcel entity
+    let parcel = getOrCreateParcel(event.params._tokenId);
+    parcel.owner = event.params._owner;
+    parcel.save();
+}
+
+export function handleTransfer(event: Transfer): void {
+    // event
+    let eventEntity = createParcelTransferEvent(event);
+    eventEntity.save();
+
+    // maintain parcel owner field
+    let parcel = getOrCreateParcel(event.params._tokenId);
+    parcel.owner = event.params._to;
+    parcel.save();
 }

@@ -1,12 +1,13 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import { AlchemicaClaimed, ChannelAlchemica, EquipInstallation, EquipTile, ExitAlchemica, InstallationUpgraded, UnequipInstallation, UnequipTile } from "../../generated/RealmDiamond/RealmDiamond";
-import { AlchemicaClaimedEvent, ChannelAlchemicaEvent, EquipInstallationEvent, EquipTileEvent, ExitAlchemicaEvent, Gotchi, InstallationUpgradedEvent, Parcel, Stat, UnequipInstallationEvent, UnequipTileEvent } from "../../generated/schema"
+import { AlchemicaClaimed, ChannelAlchemica, EquipInstallation, EquipTile, ExitAlchemica, InstallationUpgraded, MintParcel, Transfer, UnequipInstallation, UnequipTile } from "../../generated/RealmDiamond/RealmDiamond";
+import { AlchemicaClaimedEvent, ChannelAlchemicaEvent, EquipInstallationEvent, EquipTileEvent, ExitAlchemicaEvent, Gotchi, InstallationUpgradedEvent, MintParcelEvent, Parcel, TransferEvent, UnequipInstallationEvent, UnequipTileEvent } from "../../generated/schema"
 
 export const getOrCreateParcel = (realmId: BigInt): Parcel => {
     let id = realmId.toString();
     let parcel = Parcel.load(id);
     if(!parcel) {
         parcel = new Parcel(id);
+        parcel.equippedInstallations = new Array<string>();
     }
     return parcel;
 }
@@ -148,4 +149,22 @@ export const removeParcelInstallation = (parcel: Parcel, installationId: BigInt)
     }
     parcel.equippedInstallations = newInstallations;
     return parcel;
+}
+
+export const createMintParcelEvent = (event: MintParcel): MintParcelEvent => {
+    let entity = new MintParcelEvent(event.transaction.hash.toHexString());
+    entity.owner = event.params._owner;
+    entity.tokenId = event.params._tokenId;
+    return entity;
+}
+
+export const createParcelTransferEvent = (event: Transfer): TransferEvent => {
+    let entity = new TransferEvent(event.transaction.hash);
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.contract = event.address;
+    entity.from = event.params._from;
+    entity.to = event.params._to;
+    entity.tokenId = event.params._tokenId;
+    return entity;
 }

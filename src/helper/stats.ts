@@ -1,5 +1,5 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import { InstallationType, Stat, Tile, TileType } from "../../generated/schema";
+import { InstallationType, Stat, TileType } from "../../generated/schema";
 import { BIGINT_ONE, BIGINT_ZERO, StatCategory, STAT_CATEGORIES } from "./constants";
 
 export const getStat = (category: StatCategory, entityId: string = "0"): Stat => {
@@ -14,6 +14,7 @@ export const getStat = (category: StatCategory, entityId: string = "0"): Stat =>
         stats.countChannelAlchemicaEvents = BIGINT_ZERO;
         stats.countParcelInstallations = BIGINT_ZERO;
         stats.countInstallationTypes = BIGINT_ZERO;
+        stats.countUpgradesInitiated = BIGINT_ZERO;
 
         let emptyAlchemicaWallet = [BIGINT_ZERO, BIGINT_ZERO, BIGINT_ZERO, BIGINT_ZERO];
         stats.alchemicaChanneledTotal = emptyAlchemicaWallet;
@@ -23,14 +24,19 @@ export const getStat = (category: StatCategory, entityId: string = "0"): Stat =>
         stats.alchemicaSpendTotal = emptyAlchemicaWallet;
         stats.alchemicaClaimedTotal = emptyAlchemicaWallet;
         stats.alchemicaExitedTotal = emptyAlchemicaWallet;
+        
         stats.tilesEquippedTotal = BIGINT_ZERO;
         stats.tilesUnequippedTotal = BIGINT_ZERO;
         stats.tilesEquippedCurrent = BIGINT_ZERO;
+        stats.tilesMinted = BIGINT_ZERO;
         stats.installationsMintedTotal = BIGINT_ZERO;
         stats.installationsUpgradedTotal = BIGINT_ZERO;
         stats.installationsEquippedTotal = BIGINT_ZERO;
         stats.installationsUnequippedTotal = BIGINT_ZERO;
         stats.installationsEquippedCurrent = BIGINT_ZERO;
+        
+        stats.craftTimeReduced = BIGINT_ZERO;
+        stats.upgradeTimeReduced = BIGINT_ZERO;
     }
 
     return stats;
