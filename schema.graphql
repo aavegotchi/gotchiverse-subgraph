@@ -1,4 +1,12 @@
 # Events
+type TransferEvent @entity {
+  id: ID!
+  contract: Bytes
+  from: Bytes
+  to: Bytes
+  tokenId: BigInt
+}
+
 type ChannelAlchemicaEvent @entity {
   id: ID!
   block: BigInt!
@@ -186,6 +194,7 @@ type Parcel @entity {
   id: ID!
   equippedInstallations: [InstallationType!]!
   lastChanneledAlchemica: BigInt
+  owner: Bytes
 }
 
 type Gotchi @entity {
