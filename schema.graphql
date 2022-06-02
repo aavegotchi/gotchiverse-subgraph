@@ -1,6 +1,8 @@
 # Events
 type TransferEvent @entity {
-  id: ID!
+  id: Bytes!
+  block: BigInt!
+  timestamp: BigInt!
   contract: Bytes
   from: Bytes
   to: Bytes
