@@ -8,7 +8,7 @@ dataSources:
     source:
       address: "0x1d0360bac7299c86ec8e99d0c1c9a95fefaf2a11"
       abi: RealmDiamond
-      startBlock: 28440000
+      startBlock: 20667840
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
