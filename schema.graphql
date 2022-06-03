@@ -101,7 +101,6 @@ type MintTileEvent @entity {
   timestamp: BigInt!
   transaction: Bytes
   owner: Bytes
-  parcel: Parcel
   tile: Tile
 }
 
