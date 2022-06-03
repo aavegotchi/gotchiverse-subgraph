@@ -1,6 +1,6 @@
-import { AddInstallationType, CraftTimeReduced, DeprecateInstallation, EditInstallationType, MintInstallation, UpgradeInitiated, UpgradeTimeReduced } from "../../generated/InstallationDiamond/InstallationDiamond";
+import { AddInstallationType, CraftTimeReduced, DeprecateInstallation, EditInstallationType, MintInstallation, UpgradeFinalized, UpgradeInitiated, UpgradeTimeReduced } from "../../generated/InstallationDiamond/InstallationDiamond";
 import { StatCategory } from "../helper/constants";
-import { createAddInstallationType, createCraftTimeReducedEvent, createDeprecateInstallationEvent, createEditInstallationType, createMintInstallationEvent, createUpgradeInitiatedEvent, createUpgradeTimeReducedEvent, getOrCreateInstallation, getOrCreateInstallationType } from "../helper/installation";
+import { createAddInstallationType, createCraftTimeReducedEvent, createDeprecateInstallationEvent, createEditInstallationType, createMintInstallationEvent, createUpgradeFinalizedEvent, createUpgradeInitiatedEvent, createUpgradeTimeReducedEvent, getOrCreateInstallation, getOrCreateInstallationType } from "../helper/installation";
 import { getStat, updateAlchemicaSpendOnInstallations, updateAlchemicaSpendOnUpgrades } from "../helper/stats";
 
 
@@ -106,4 +106,9 @@ export function handleUpgradeTimeReduced(event: UpgradeTimeReduced): void {
     let userStats = getStat(StatCategory.USER, event.transaction.from.toHexString());
     userStats.upgradeTimeReduced = userStats.upgradeTimeReduced.plus(event.params._blocksReduced);
     userStats.save();
+}
+
+export function handleUpgradeFinalized(event: UpgradeFinalized): void {
+    let eventEntity = createUpgradeFinalizedEvent(event);
+    eventEntity.save();
 }
