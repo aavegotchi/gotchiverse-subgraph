@@ -102,9 +102,7 @@ type MintTileEvent @entity {
   transaction: Bytes
   owner: Bytes
   parcel: Parcel
-  tile: TileType
-  x: BigInt
-  y: BigInt
+  tile: Tile
 }
 
 type MintInstallationEvent @entity {
@@ -198,6 +196,17 @@ type UpgradeTimeReducedEvent @entity {
   x: BigInt!
   y: BigInt!
   blocksReduced: BigInt!
+}
+
+type UpgradeFinalizedEvent @entity {
+  id: Bytes!
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+  parcel: Parcel!
+  x: BigInt!
+  y: BigInt!
+  installation: InstallationType
 }
 
 type Parcel @entity {
