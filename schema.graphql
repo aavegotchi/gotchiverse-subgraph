@@ -101,8 +101,10 @@ type MintTileEvent @entity {
   timestamp: BigInt!
   transaction: Bytes
   owner: Bytes
-  tile: Tile
-  tileType: InstallationType
+  parcel: Parcel
+  tile: TileType
+  x: BigInt
+  y: BigInt
 }
 
 type MintInstallationEvent @entity {
@@ -210,15 +212,6 @@ type Gotchi @entity {
   lastChanneledAlchemica: BigInt
 }
 
-type Tile @entity {
-  id: ID!
-  type: TileType
-  x: BigInt
-  y: BigInt
-  equipped: Boolean
-  parcel: Parcel
-}
-
 type Installation @entity {
   id: ID!
   type: InstallationType
@@ -226,6 +219,7 @@ type Installation @entity {
   y: BigInt
   equipped: Boolean
   parcel: Parcel
+  owner: Bytes
 }
 
 type InstallationType @entity {
@@ -249,7 +243,7 @@ type InstallationType @entity {
   name: String
 }
 
-type TileType @entity {
+type Tile @entity {
   id: ID!
   width: Int!
   height: Int!
