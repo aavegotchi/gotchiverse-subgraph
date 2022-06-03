@@ -148,6 +148,9 @@ export function createCraftTimeReducedEvent(event: CraftTimeReduced): CraftTimeR
 
 export function createUpgradeFinalizedEvent(event: UpgradeFinalized): UpgradeFinalizedEvent {
     let eventEntity = new UpgradeFinalizedEvent(event.transaction.hash);
+    eventEntity.transaction = event.transaction.hash
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
     eventEntity.x = event.params._coordinateX;
     eventEntity.y = event.params._coordinateY;
     eventEntity.installation = event.params._newInstallationId.toString();
