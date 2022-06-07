@@ -162,7 +162,7 @@ export function updateInstallationType(installationType: InstallationType): Inst
     installationType.alchemicaCost = newType.alchemicaCost;
     installationType.harvestRate = newType.harvestRate;
     installationType.capacity = newType.capacity;
-    installationType.prerequisites = newType.prerequisites.map<string>(e => e.toString());
+    installationType.prerequisites = newType.prerequisites;
     installationType.amountPrerequisites = newType.prerequisites.length;
     installationType.name = newType.name;
     return installationType;
