@@ -38,7 +38,9 @@ export const getStat = (category: StatCategory, entityId: string = "0"): Stat =>
         stats.craftTimeReduced = BIGINT_ZERO;
         stats.upgradeTimeReduced = BIGINT_ZERO;
 
-        stats.gltrSpendOnUpgrades = BigInt.fromI32("250630180000000000000000000");
+        stats.gltrSpendOnUpgrades = BigInt.fromString("250630180000000000000000000");
+        stats.gltrSpendOnCrafts = BIGINT_ZERO;
+        stats.gltrSpendTotal = stats.gltrSpendOnUpgrades;
     }
 
     return stats;
