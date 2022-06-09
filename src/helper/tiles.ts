@@ -1,13 +1,13 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import { MintTileEvent, Tile } from "../../generated/schema";
+import { MintTileEvent, Parcel, Tile, TileType } from "../../generated/schema";
 import { MintTile, TileDiamond } from "../../generated/TileDiamond/TileDiamond";
 import { TILE_DIAMOND } from "./constants";
 
-export function getOrCreateTile(tileId: BigInt): Tile {
+export function getOrCreateTileType(tileId: BigInt): TileType {
   let id = tileId.toString();
-  let tile = Tile.load(id);
+  let tile = TileType.load(id);
   if(!tile) {
-      tile = new Tile(id);
+      tile = new TileType(id);
       let contract = TileDiamond.bind(TILE_DIAMOND);
       let result = contract.try_getTileType(tileId);
       if(result.reverted) {
@@ -24,6 +24,17 @@ export function getOrCreateTile(tileId: BigInt): Tile {
       tile.name = data.name;
   }
 
+  return tile;
+}
+
+export function getOrCreateTile(parcel: Parcel, tileType:TileType, x: BigInt, y: BigInt): Tile {
+  let id = parcel.id + "-" + tileType.id + "-" + x.toString() + "-" + y.toString();
+  let tile = Tile.load(id);
+  if(!tile) {
+      tile = new Tile(id);
+      tile.parcel = parcel.id;
+      tile.type = tileType.id;
+  }
   return tile;
 }
 

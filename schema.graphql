@@ -253,6 +253,16 @@ type InstallationType @entity {
 
 type Tile @entity {
   id: ID!
+  type: TileType
+  x: BigInt
+  y: BigInt
+  equipped: Boolean
+  parcel: Parcel
+  owner: Bytes
+}
+
+type TileType @entity {
+  id: ID!
   width: Int!
   height: Int!
   deprecated: Boolean!
