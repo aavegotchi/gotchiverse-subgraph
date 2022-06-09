@@ -73,6 +73,8 @@ dataSources:
       eventHandlers:
         - event: MintTile(indexed address,indexed uint256,uint256)
           handler: handleMintTile
+        - event: CraftTimeReduced(indexed uint256,uint256)
+          handler: handleCraftTimeReduced
       file: ./src/mappings/tile.ts
   - kind: ethereum/contract
     name: InstallationDiamond
