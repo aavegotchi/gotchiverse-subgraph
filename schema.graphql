@@ -215,6 +215,16 @@ type Parcel @entity {
   owner: Bytes
 }
 
+type Tile @entity {
+  id: ID!
+  type: TileType
+  x: BigInt
+  y: BigInt
+  equipped: Boolean
+  parcel: Parcel
+  owner: Bytes
+}
+
 type Gotchi @entity {
   id: ID!
   lastChanneledAlchemica: BigInt
@@ -249,16 +259,6 @@ type InstallationType @entity {
   prerequisites: [InstallationType!]!
   amountPrerequisites: Int
   name: String
-}
-
-type Tile @entity {
-  id: ID!
-  type: TileType
-  x: BigInt
-  y: BigInt
-  equipped: Boolean
-  parcel: Parcel
-  owner: Bytes
 }
 
 type TileType @entity {
