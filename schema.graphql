@@ -289,7 +289,7 @@ type Stat @entity {
   craftTimeReduced: BigInt!
   upgradeTimeReduced: BigInt!
 
-  gltrSpendOnUpgrades: BigInt!
-  gltrSpendOnCrafts: BigInt!
-  gltrSpendTotal: BigInt!
+  gltrSpendOnUpgrades: BigInt
+  gltrSpendOnCrafts: BigInt
+  gltrSpendTotal: BigInt
 }

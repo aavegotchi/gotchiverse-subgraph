@@ -81,20 +81,20 @@ export function handleCraftTimeReduced(event: CraftTimeReduced): void {
     let gltrSpend = event.params._blocksReduced.times(BigInt.fromString("1e18"));
     let overallStats = getStat(StatCategory.OVERALL);
     overallStats.craftTimeReduced = overallStats.craftTimeReduced.plus(event.params._blocksReduced);
-    overallStats.gltrSpendOnCrafts = overallStats.gltrSpendOnCrafts.plus(gltrSpend);
-    overallStats.gltrSpendTotal = overallStats.gltrSpendTotal.plus(gltrSpend);
+    overallStats.gltrSpendOnCrafts = overallStats.gltrSpendOnCrafts!.plus(gltrSpend);
+    overallStats.gltrSpendTotal = overallStats.gltrSpendTotal!.plus(gltrSpend);
     overallStats.save();
 
     let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel)
     parcelStats.craftTimeReduced = parcelStats.craftTimeReduced.plus(event.params._blocksReduced);
-    parcelStats.gltrSpendOnCrafts = parcelStats.gltrSpendOnCrafts.plus(gltrSpend);
-    parcelStats.gltrSpendTotal = parcelStats.gltrSpendTotal.plus(gltrSpend);
+    parcelStats.gltrSpendOnCrafts = parcelStats.gltrSpendOnCrafts!.plus(gltrSpend);
+    parcelStats.gltrSpendTotal = parcelStats.gltrSpendTotal!.plus(gltrSpend);
     parcelStats.save();
 
     let userStats = getStat(StatCategory.USER, event.transaction.from.toHexString());
     userStats.craftTimeReduced = userStats.craftTimeReduced.plus(event.params._blocksReduced);
-    userStats.gltrSpendOnCrafts = userStats.gltrSpendOnCrafts.plus(gltrSpend);
-    userStats.gltrSpendTotal = userStats.gltrSpendTotal.plus(gltrSpend);
+    userStats.gltrSpendOnCrafts = userStats.gltrSpendOnCrafts!.plus(gltrSpend);
+    userStats.gltrSpendTotal = userStats.gltrSpendTotal!.plus(gltrSpend);
     userStats.save();
 }
 
@@ -106,19 +106,19 @@ export function handleUpgradeTimeReduced(event: UpgradeTimeReduced): void {
     let gltrSpend = event.params._blocksReduced.times(BigInt.fromString("1e18"));
     let overallStats = getStat(StatCategory.OVERALL);
     overallStats.upgradeTimeReduced = overallStats.upgradeTimeReduced.plus(event.params._blocksReduced);
-    overallStats.gltrSpendOnUpgrades = overallStats.gltrSpendOnUpgrades.plus(gltrSpend);
-    overallStats.gltrSpendTotal = overallStats.gltrSpendTotal.plus(gltrSpend);
+    overallStats.gltrSpendOnUpgrades = overallStats.gltrSpendOnUpgrades!.plus(gltrSpend);
+    overallStats.gltrSpendTotal = overallStats.gltrSpendTotal!.plus(gltrSpend);
     overallStats.save();
 
     let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel)
     parcelStats.upgradeTimeReduced = parcelStats.upgradeTimeReduced.plus(event.params._blocksReduced);
-    parcelStats.gltrSpendOnUpgrades = parcelStats.gltrSpendOnUpgrades.plus(gltrSpend);
-    parcelStats.gltrSpendTotal = parcelStats.gltrSpendTotal.plus(gltrSpend);
+    parcelStats.gltrSpendOnUpgrades = parcelStats.gltrSpendOnUpgrades!.plus(gltrSpend);
+    parcelStats.gltrSpendTotal = parcelStats.gltrSpendTotal!.plus(gltrSpend);
     parcelStats.save();
 
     let userStats = getStat(StatCategory.USER, event.transaction.from.toHexString());
     userStats.upgradeTimeReduced = userStats.upgradeTimeReduced.plus(event.params._blocksReduced);
-    userStats.gltrSpendOnUpgrades = userStats.gltrSpendOnUpgrades.plus(gltrSpend);
-    userStats.gltrSpendTotal = userStats.gltrSpendTotal.plus(gltrSpend);
+    userStats.gltrSpendOnUpgrades = userStats.gltrSpendOnUpgrades!.plus(gltrSpend);
+    userStats.gltrSpendTotal = userStats.gltrSpendTotal!.plus(gltrSpend);
     userStats.save();
 }
