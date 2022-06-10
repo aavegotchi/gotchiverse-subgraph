@@ -74,7 +74,6 @@ export function updateAlchemicaSpendOnUpgrades(stats: Stat, installation: Instal
     stats.alchemicaSpendOnUpgrades = spendDetail;
     stats.alchemicaSpendTotal = spendTotal;
 
-    stats.installationsUpgradedTotal = stats.installationsUpgradedTotal.plus(BIGINT_ONE);
     return stats;
 }
 
@@ -91,7 +90,6 @@ export function updateAlchemicaSpendOnInstallations(stats: Stat, installation: I
     stats.alchemicaSpendOnInstallations = spendDetail;
     stats.alchemicaSpendTotal = spendTotal;
 
-    stats.installationsMintedTotal = stats.installationsMintedTotal.plus(BIGINT_ONE);
     return stats;
 }
 

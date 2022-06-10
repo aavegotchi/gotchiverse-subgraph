@@ -1,6 +1,6 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 import { AddInstallationType, CraftTimeReduced, DeprecateInstallation, EditInstallationType, MintInstallation, UpgradeInitiated, UpgradeTimeReduced } from "../../generated/InstallationDiamond/InstallationDiamond";
-import { StatCategory } from "../helper/constants";
+import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import { createAddInstallationType, createCraftTimeReducedEvent, createDeprecateInstallationEvent, createEditInstallationType, createMintInstallationEvent, createUpgradeInitiatedEvent, createUpgradeTimeReducedEvent, getOrCreateInstallation, getOrCreateInstallationType } from "../helper/installation";
 import { getStat, updateAlchemicaSpendOnInstallations, updateAlchemicaSpendOnUpgrades } from "../helper/stats";
 
@@ -18,9 +18,11 @@ export function handleMintInstallation(event: MintInstallation): void  {
     // stats
     let overallStats = getStat(StatCategory.OVERALL);
     overallStats = updateAlchemicaSpendOnInstallations(overallStats, installationType);
+    overallStats.installationsMintedTotal = overallStats.installationsMintedTotal.plus(BIGINT_ONE);
 
     let userStats = getStat(StatCategory.USER, event.params._owner.toHexString());
     userStats = updateAlchemicaSpendOnInstallations(userStats, installationType);
+    userStats.installationsMintedTotal = userStats.installationsMintedTotal.plus(BIGINT_ONE);
 
     // persist
     userStats.save();
@@ -39,10 +41,12 @@ export function handleUpgradeInitiated(event: UpgradeInitiated): void {
     // stats
     let overallStats = getStat(StatCategory.OVERALL);
     overallStats = updateAlchemicaSpendOnUpgrades(overallStats, type);
+    overallStats.installationsUpgradedTotal = overallStats.installationsUpgradedTotal.plus(BIGINT_ONE);
     overallStats.save();
 
     let userStats = getStat(StatCategory.USER, event.transaction.from.toHexString());
     userStats = updateAlchemicaSpendOnUpgrades(userStats, type);
+    userStats.installationsUpgradedTotal = userStats.installationsUpgradedTotal.plus(BIGINT_ONE);
     userStats.save();
 }
 
