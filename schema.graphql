@@ -23,8 +23,8 @@ type ChannelAlchemicaEvent @entity {
   gotchi: Gotchi!
   parcel: Parcel!
 
-  realmId: BigInt!
-  gotchiId: BigInt!
+  realmId: BigInt
+  gotchiId: BigInt
 
   alchemica: [BigInt!]!
   spilloverRate: BigInt!
@@ -41,8 +41,8 @@ type AlchemicaClaimedEvent @entity {
   gotchi: Gotchi
   parcel: Parcel
 
-  realmId: BigInt!
-  gotchiId: BigInt!
+  realmId: BigInt
+  gotchiId: BigInt
 
   alchemicaType: BigInt
   amount: BigInt
@@ -60,7 +60,7 @@ type ExitAlchemicaEvent @entity {
   gotchi: Gotchi
   alchemica: [BigInt!]!
 
-  gotchiId: BigInt!
+  gotchiId: BigInt
 }
 
 type EquipInstallationEvent @entity {
@@ -75,8 +75,8 @@ type EquipInstallationEvent @entity {
   x: BigInt!
   y: BigInt!
 
-  realmId: BigInt!
-  installationId: BigInt!
+  realmId: BigInt
+  installationId: BigInt
 }
 
 type UnequipInstallationEvent @entity {
@@ -91,8 +91,8 @@ type UnequipInstallationEvent @entity {
   x: BigInt!
   y: BigInt!
 
-  realmId: BigInt!
-  installationId: BigInt!
+  realmId: BigInt
+  installationId: BigInt
 }
 
 type InstallationUpgradedEvent @entity {
@@ -108,9 +108,9 @@ type InstallationUpgradedEvent @entity {
   x: BigInt!
   y: BigInt!
 
-  realmId: BigInt!
-  prevInstallationId: BigInt!
-  nextInstallationId: BigInt!
+  realmId: BigInt
+  prevInstallationId: BigInt
+  nextInstallationId: BigInt
 }
 
 type MintTileEvent @entity {
@@ -145,8 +145,8 @@ type UpgradeInitiatedEvent @entity {
   x: BigInt!
   y: BigInt!
 
-  realmId: BigInt!
-  installationId: BigInt!
+  realmId: BigInt
+  installationId: BigInt
 }
 
 type AddInstallationTypeEvent @entity {
@@ -183,8 +183,8 @@ type EquipTileEvent @entity {
   x: BigInt
   y: BigInt
 
-  realmId: BigInt!
-  tileId: BigInt!
+  realmId: BigInt
+  tileId: BigInt
 }
 
 type UnequipTileEvent @entity {
@@ -197,8 +197,8 @@ type UnequipTileEvent @entity {
   x: BigInt
   y: BigInt
 
-  realmId: BigInt!
-  tileId: BigInt!
+  realmId: BigInt
+  tileId: BigInt
 }
 
 type CraftTimeReducedEvent @entity {
@@ -223,7 +223,7 @@ type UpgradeTimeReducedEvent @entity {
   y: BigInt!
   blocksReduced: BigInt!
 
-  realmId: BigInt!
+  realmId: BigInt
 }
 
 type Parcel @entity {

@@ -1,6 +1,11 @@
 specVersion: 0.0.4
 schema:
   file: ./schema.graphql
+# features:
+#   - grafting
+# graft:
+#   base: QmUieBrhpJyA7wrN6A6ne9MhXWRkT6LThpGkgFa116k2QY # Subgraph ID of base subgraph
+#   block: 28000000 # Block number
 dataSources:
   - kind: ethereum/contract
     name: RealmDiamond
