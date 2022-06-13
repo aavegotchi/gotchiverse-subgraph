@@ -206,13 +206,10 @@ type CraftTimeReducedEvent @entity {
   block: BigInt!
   timestamp: BigInt!
   transaction: Bytes!
-  parcel: Parcel!
 
   x: BigInt!
   y: BigInt!
   blocksReduced: BigInt!
-
-  realmId: BigInt!
 }
 
 type UpgradeTimeReducedEvent @entity {
