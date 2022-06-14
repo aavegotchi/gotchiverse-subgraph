@@ -272,7 +272,7 @@ type InstallationType @entity {
   alchemicaCost: [BigInt!]!
   harvestRate: BigInt
   capacity: BigInt
-  prerequisites: [InstallationType!]!
+  prerequisites: [BigInt!]
   amountPrerequisites: Int
   name: String
 }
@@ -316,4 +316,8 @@ type Stat @entity {
 
   craftTimeReduced: BigInt!
   upgradeTimeReduced: BigInt!
+
+  gltrSpendOnUpgrades: BigInt
+  gltrSpendOnCrafts: BigInt
+  gltrSpendTotal: BigInt
 }
