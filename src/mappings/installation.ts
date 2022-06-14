@@ -89,12 +89,6 @@ export function handleCraftTimeReduced(event: CraftTimeReduced): void {
     overallStats.gltrSpendTotal = overallStats.gltrSpendTotal!.plus(gltrSpend);
     overallStats.save();
 
-    let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel)
-    parcelStats.craftTimeReduced = parcelStats.craftTimeReduced.plus(event.params._blocksReduced);
-    parcelStats.gltrSpendOnCrafts = parcelStats.gltrSpendOnCrafts!.plus(gltrSpend);
-    parcelStats.gltrSpendTotal = parcelStats.gltrSpendTotal!.plus(gltrSpend);
-    parcelStats.save();
-
     let userStats = getStat(StatCategory.USER, event.transaction.from.toHexString());
     userStats.craftTimeReduced = userStats.craftTimeReduced.plus(event.params._blocksReduced);
     userStats.gltrSpendOnCrafts = userStats.gltrSpendOnCrafts!.plus(gltrSpend);

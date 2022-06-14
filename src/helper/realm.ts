@@ -34,6 +34,9 @@ export const createChannelAlchemicaEvent = (event: ChannelAlchemica): ChannelAlc
     eventEntity.spilloverRadius = event.params._spilloverRadius;
     eventEntity.spilloverRate = event.params._spilloverRate;
     eventEntity.alchemica = event.params._alchemica;
+    eventEntity.realmId = event.params._realmId;
+    eventEntity.gotchiId = event.params._gotchiId;
+
     return eventEntity;
 }
 
@@ -49,6 +52,8 @@ export const createAlchemicaClaimedEvent = (event: AlchemicaClaimed): AlchemicaC
     eventEntity.amount = event.params._amount
     eventEntity.spilloverRadius = event.params._spilloverRadius
     eventEntity.spilloverRate = event.params._spilloverRate
+    eventEntity.realmId = event.params._realmId;
+    eventEntity.gotchiId = event.params._gotchiId;
     return eventEntity;
 }
 
@@ -60,6 +65,7 @@ export const createExitAlchemicaEvent = (event: ExitAlchemica): ExitAlchemicaEve
     eventEntity.timestamp = event.block.timestamp;
     eventEntity.gotchi = event.params._gotchiId.toString();
     eventEntity.alchemica = event.params._alchemica;
+    eventEntity.gotchiId = event.params._gotchiId;
     return eventEntity;
 }
 
@@ -73,6 +79,8 @@ export const createEquipInstallationEvent = (event: EquipInstallation): EquipIns
     eventEntity.parcel = event.params._realmId.toString();
     eventEntity.x = event.params._x;
     eventEntity.y = event.params._y;
+    eventEntity.realmId = event.params._realmId;
+    eventEntity.installationId = event.params._installationId;
     return eventEntity;
 }
 
@@ -86,6 +94,8 @@ export const createUnequipInstallationEvent = (event: UnequipInstallation): Uneq
     eventEntity.parcel = event.params._realmId.toString();
     eventEntity.x = event.params._x;
     eventEntity.y = event.params._y;
+    eventEntity.realmId = event.params._realmId;
+    eventEntity.installationId = event.params._installationId;
     return eventEntity;
 }
 
@@ -99,6 +109,8 @@ export const createEquipTileEvent = (event: EquipTile): EquipTileEvent => {
     eventEntity.parcel = event.params._realmId.toString();
     eventEntity.x = event.params._x;
     eventEntity.y = event.params._y;
+    eventEntity.realmId = event.params._realmId;
+    eventEntity.tileId = event.params._tileId;
     return eventEntity;
 }
 
@@ -112,6 +124,8 @@ export const createUnequipTileEvent = (event: UnequipTile): UnequipTileEvent => 
     eventEntity.parcel = event.params._realmId.toString();
     eventEntity.x = event.params._x;
     eventEntity.y = event.params._y;
+    eventEntity.realmId = event.params._realmId;
+    eventEntity.tileId = event.params._tileId;
     return eventEntity;
 }
 

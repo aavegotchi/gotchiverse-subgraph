@@ -48,6 +48,8 @@ export function createUpgradeInitiatedEvent (event: UpgradeInitiated): UpgradeIn
         eventEntity.y = event.params._coordinateY;
         eventEntity.blockInitiated = event.params.blockInitiated;
         eventEntity.readyBlock = event.params.readyBlock;
+        eventEntity.realmId = event.params._realmId;
+        eventEntity.installationId = event.params.installationId;
     }
     return eventEntity;
 }
@@ -130,6 +132,7 @@ export function createUpgradeTimeReducedEvent(event: UpgradeTimeReduced): Upgrad
         eventEntity.x = event.params._coordinateX;
         eventEntity.y = event.params._coordinateY;
         eventEntity.blocksReduced = event.params._blocksReduced;
+        eventEntity.realmId = event.params._realmId;
     }
     return eventEntity;
 }
