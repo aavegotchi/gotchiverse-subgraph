@@ -1,8 +1,9 @@
 import { AlchemicaClaimed, ChannelAlchemica, EquipInstallation, EquipTile, ExitAlchemica, MintParcel, InstallationUpgraded, Transfer, UnequipInstallation, UnequipTile } from "../../generated/RealmDiamond/RealmDiamond";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
-import { getOrCreateInstallationType, getOrCreateTile } from "../helper/installation";
+import { getOrCreateInstallationType } from "../helper/installation";
 import { createAlchemicaClaimedEvent, createChannelAlchemicaEvent, createEquipInstallationEvent, createEquipTileEvent, createExitAlchemicaEvent, createInstallationUpgradedEvent, createMintParcelEvent, createParcelInstallation, createParcelTransferEvent, createUnequipInstallationEvent, createUnequipTileEvent, getOrCreateGotchi, getOrCreateParcel, removeParcelInstallation } from "../helper/realm";
 import { getStat, updateAlchemicaClaimedStats, updateChannelAlchemicaStats, updateExitedAlchemicaStats, updateInstallationEquippedStats, updateInstallationUnequippedStats, updateInstallationUpgradedStats, updateTileEquippedStats, updateTileUnequippedStats } from "../helper/stats";
+import { getOrCreateTile } from "../helper/tiles";
 
 export function handleChannelAlchemica(event: ChannelAlchemica): void  {
     // create and persist event
