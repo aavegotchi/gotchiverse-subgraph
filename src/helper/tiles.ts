@@ -20,7 +20,6 @@ export function getOrCreateTileType(tileId: BigInt): TileType {
       tile.deprecated = data.deprecated;
       tile.height =  data.height;
       tile.width = data.width;
-      tile.tileType = data.tileType;
       tile.name = data.name;
   }
 

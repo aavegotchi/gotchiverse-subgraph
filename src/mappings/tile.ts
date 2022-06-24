@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, TypedMap } from "@graphprotocol/graph-ts";
 import { CraftTimeReduced } from "../../generated/InstallationDiamond/InstallationDiamond";
 import { MintTile } from "../../generated/TileDiamond/TileDiamond";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
@@ -11,6 +11,7 @@ export function handleMintTile (event: MintTile): void {
     eventEntity.save();
 
     let type = getOrCreateTileType(event.params._tileId);
+    type.tileType = event.params._tileType;
     type.save();
 
     // stats

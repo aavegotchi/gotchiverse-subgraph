@@ -11,6 +11,7 @@ export function handleMintInstallation(event: MintInstallation): void  {
     eventEntity.save();
 
     let installationType = getOrCreateInstallationType(event.params._installationId, event);
+    installationType.installationType = event.params._installationType;
 
     // stats
     let overallStats = getStat(StatCategory.OVERALL);

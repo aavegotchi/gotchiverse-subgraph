@@ -119,7 +119,7 @@ type MintTileEvent @entity {
   timestamp: BigInt!
   transaction: Bytes
   owner: Bytes
-  tile: Tile
+  tile: TileType
 }
 
 type MintInstallationEvent @entity {
@@ -272,7 +272,7 @@ type InstallationType @entity {
   id: ID!
   width: Int
   height: Int
-  installationType: Int
+  installationType: BigInt
   level: Int
   alchemicaType: Int
   spillRadius: BigInt
@@ -294,7 +294,7 @@ type TileType @entity {
   width: Int!
   height: Int!
   deprecated: Boolean!
-  tileType: Int!
+  tileType: BigInt!
   craftTime: BigInt!
   alchemicaCost: [BigInt!]!
   name: String!
