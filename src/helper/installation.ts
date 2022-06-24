@@ -47,6 +47,8 @@ export function createUpgradeInitiatedEvent (event: UpgradeInitiated): UpgradeIn
         eventEntity.y = event.params._coordinateY;
         eventEntity.blockInitiated = event.params.blockInitiated;
         eventEntity.readyBlock = event.params.readyBlock;
+        eventEntity.realmId = event.params._realmId;
+        eventEntity.installationId = event.params.installationId;
     }
     return eventEntity;
 }
@@ -111,7 +113,7 @@ export function updateInstallationType(installationType: InstallationType): Inst
     installationType.alchemicaCost = newType.alchemicaCost;
     installationType.harvestRate = newType.harvestRate;
     installationType.capacity = newType.capacity;
-    installationType.prerequisites = newType.prerequisites.map<string>(e => e.toString());
+    installationType.prerequisites = newType.prerequisites;
     installationType.amountPrerequisites = newType.prerequisites.length;
     installationType.name = newType.name;
     return installationType;
@@ -129,6 +131,7 @@ export function createUpgradeTimeReducedEvent(event: UpgradeTimeReduced): Upgrad
         eventEntity.x = event.params._coordinateX;
         eventEntity.y = event.params._coordinateY;
         eventEntity.blocksReduced = event.params._blocksReduced;
+        eventEntity.realmId = event.params._realmId;
     }
     return eventEntity;
 }

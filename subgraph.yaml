@@ -1,6 +1,16 @@
 specVersion: 0.0.4
+# features:
+#   - grafting
+# graft:
+#   base: QmbEZRXBBkMcupJ2setLFLPZtjj8wsbRqk8yn6pjb5rotf # Subgraph ID of base subgraph
+#   block: 29354838 # Block number
 schema:
   file: ./schema.graphql
+# features:
+#   - grafting
+# graft:
+#   base: QmUieBrhpJyA7wrN6A6ne9MhXWRkT6LThpGkgFa116k2QY # Subgraph ID of base subgraph
+#   block: 28000000 # Block number
 dataSources:
   - kind: ethereum/contract
     name: RealmDiamond
@@ -68,6 +78,8 @@ dataSources:
       eventHandlers:
         - event: MintTile(indexed address,indexed uint256,uint256)
           handler: handleMintTile
+        - event: CraftTimeReduced(indexed uint256,uint256)
+          handler: handleCraftTimeReduced
       file: ./src/mappings/tile.ts
   - kind: ethereum/contract
     name: InstallationDiamond

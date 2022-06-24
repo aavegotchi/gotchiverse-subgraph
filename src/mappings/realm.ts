@@ -1,5 +1,4 @@
 import { AlchemicaClaimed, ChannelAlchemica, EquipInstallation, EquipTile, ExitAlchemica, MintParcel, InstallationUpgraded, Transfer, UnequipInstallation, UnequipTile } from "../../generated/RealmDiamond/RealmDiamond";
-import { Parcel, TileType } from "../../generated/schema";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import { getOrCreateInstallationType } from "../helper/installation";
 import { createAlchemicaClaimedEvent, createChannelAlchemicaEvent, createEquipInstallationEvent, createEquipTileEvent, createExitAlchemicaEvent, createInstallationUpgradedEvent, createMintParcelEvent, createParcelInstallation, createParcelTransferEvent, createUnequipInstallationEvent, createUnequipTileEvent, getOrCreateGotchi, getOrCreateParcel, removeParcelInstallation } from "../helper/realm";

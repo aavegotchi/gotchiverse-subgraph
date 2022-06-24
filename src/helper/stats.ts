@@ -39,6 +39,12 @@ export const getStat = (category: StatCategory, entityId: string = "0"): Stat =>
         stats.upgradeTimeReduced = BIGINT_ZERO;
     }
 
+    if(!stats.gltrSpendTotal) {
+        stats.gltrSpendOnUpgrades = BigInt.fromString("250630180000000000000000000");
+        stats.gltrSpendOnCrafts = BIGINT_ZERO;
+        stats.gltrSpendTotal = stats.gltrSpendOnUpgrades;
+    }
+
     return stats;
 }
 
@@ -68,7 +74,6 @@ export function updateAlchemicaSpendOnUpgrades(stats: Stat, installation: Instal
     stats.alchemicaSpendOnUpgrades = spendDetail;
     stats.alchemicaSpendTotal = spendTotal;
 
-    stats.installationsUpgradedTotal = stats.installationsUpgradedTotal.plus(BIGINT_ONE);
     return stats;
 }
 
@@ -85,7 +90,6 @@ export function updateAlchemicaSpendOnInstallations(stats: Stat, installation: I
     stats.alchemicaSpendOnInstallations = spendDetail;
     stats.alchemicaSpendTotal = spendTotal;
 
-    stats.installationsMintedTotal = stats.installationsMintedTotal.plus(BIGINT_ONE);
     return stats;
 }
 
