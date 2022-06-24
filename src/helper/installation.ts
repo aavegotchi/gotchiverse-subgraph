@@ -1,4 +1,4 @@
-import { BigInt, ethereum } from "@graphprotocol/graph-ts";
+import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
 import { AddInstallationType, CraftTimeReduced, DeprecateInstallation, EditInstallationType, InstallationDiamond, MintInstallation, UpgradeFinalized, UpgradeInitiated, UpgradeTimeReduced } from "../../generated/InstallationDiamond/InstallationDiamond";
 import { AddInstallationTypeEvent, CraftTimeReducedEvent, DeprecateInstallationEvent, EditInstallationTypeEvent, Installation, InstallationType, MintInstallationEvent, UpgradeFinalizedEvent, UpgradeInitiatedEvent, UpgradeTimeReducedEvent } from "../../generated/schema"
 import { INSTALLATION_DIAMOND } from "./constants";
@@ -13,11 +13,17 @@ export function getOrCreateInstallationType(typeId: BigInt, event: ethereum.Even
     return installationType;
 }
 
-export function getOrCreateInstallation(installationId: BigInt): Installation {
-    let id = installationId.toString();
+export function getOrCreateInstallation(installationId: BigInt, realmId: BigInt, x: BigInt, y: BigInt, owner: Address): Installation {
+    let id = installationId.toString() + "-" + realmId.toString() + "-" + x.toString() + "-" + y.toString();
     let installation = Installation.load(id);
     if(!installation)  {
         installation = new Installation(id);
+        installation.x = x;
+        installation.y = y;
+        installation.type = installationId.toString();
+        installation.parcel = realmId.toString();
+        installation.equipped = true;
+        installation.owner = owner;
     }
     return installation;
 }

@@ -1,7 +1,7 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 import { AddInstallationType, CraftTimeReduced, DeprecateInstallation, EditInstallationType, MintInstallation, UpgradeFinalized, UpgradeInitiated, UpgradeTimeReduced } from "../../generated/InstallationDiamond/InstallationDiamond";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
-import { createAddInstallationType, createCraftTimeReducedEvent, createDeprecateInstallationEvent, createEditInstallationType, createMintInstallationEvent, createUpgradeFinalizedEvent, createUpgradeInitiatedEvent, createUpgradeTimeReducedEvent, getOrCreateInstallation, getOrCreateInstallationType } from "../helper/installation";
+import { createAddInstallationType, createCraftTimeReducedEvent, createDeprecateInstallationEvent, createEditInstallationType, createMintInstallationEvent, createUpgradeFinalizedEvent, createUpgradeInitiatedEvent, createUpgradeTimeReducedEvent, getOrCreateInstallationType } from "../helper/installation";
 import { getStat, updateAlchemicaSpendOnInstallations, updateAlchemicaSpendOnUpgrades } from "../helper/stats";
 
 
@@ -10,10 +10,7 @@ export function handleMintInstallation(event: MintInstallation): void  {
     let eventEntity = createMintInstallationEvent(event);
     eventEntity.save();
 
-    let installation = getOrCreateInstallation(event.params._installationId);
-    // InstallationType entity
-    let installationType = getOrCreateInstallationType(event.params._installationType, event);
-    installation.type = installation.id;
+    let installationType = getOrCreateInstallationType(event.params._installationId, event);
 
     // stats
     let overallStats = getStat(StatCategory.OVERALL);
@@ -27,7 +24,6 @@ export function handleMintInstallation(event: MintInstallation): void  {
     // persist
     userStats.save();
     overallStats.save();
-    installation.save();
     installationType.save();
 }
 
