@@ -1,9 +1,9 @@
 import { AlchemicaClaimed, ChannelAlchemica, EquipInstallation, EquipTile, ExitAlchemica, MintParcel, InstallationUpgraded, Transfer, UnequipInstallation, UnequipTile } from "../../generated/RealmDiamond/RealmDiamond";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
-import { getOrCreateInstallationType } from "../helper/installation";
+import { getOrCreateInstallation, getOrCreateInstallationType } from "../helper/installation";
 import { createAlchemicaClaimedEvent, createChannelAlchemicaEvent, createEquipInstallationEvent, createEquipTileEvent, createExitAlchemicaEvent, createInstallationUpgradedEvent, createMintParcelEvent, createParcelInstallation, createParcelTransferEvent, createUnequipInstallationEvent, createUnequipTileEvent, getOrCreateGotchi, getOrCreateParcel, removeParcelInstallation } from "../helper/realm";
 import { getStat, updateAlchemicaClaimedStats, updateChannelAlchemicaStats, updateExitedAlchemicaStats, updateInstallationEquippedStats, updateInstallationUnequippedStats, updateInstallationUpgradedStats, updateTileEquippedStats, updateTileUnequippedStats } from "../helper/stats";
-import { getOrCreateTile } from "../helper/tiles";
+import { getOrCreateTile, getOrCreateTileType } from "../helper/tiles";
 
 export function handleChannelAlchemica(event: ChannelAlchemica): void  {
     // create and persist event
@@ -82,6 +82,10 @@ export function handleEquipInstallation(event: EquipInstallation): void {
     parcel = createParcelInstallation(parcel, event.params._installationId);
     parcel.save();
 
+    let params = event.params
+    let installation = getOrCreateInstallation(params._installationId, params._realmId, params._x, params._y, event.transaction.from);
+    installation.save();
+
     // update stats
     let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel);
     parcelStats.countParcelInstallations = parcelStats.countParcelInstallations.plus(BIGINT_ONE);
@@ -119,6 +123,12 @@ export function handleUnequipInstallation(event: UnequipInstallation): void {
     let overallStats = getStat(StatCategory.OVERALL)
     overallStats = updateInstallationUnequippedStats(overallStats);
     overallStats.save();
+
+    // unequip
+    let params = event.params
+    let installation = getOrCreateInstallation(params._installationId, params._realmId, params._x, params._y, event.transaction.from);
+    installation.equipped = false;
+    installation.save();
 }
 
 export function handleInstallationUpgraded(event: InstallationUpgraded): void {
@@ -141,13 +151,32 @@ export function handleInstallationUpgraded(event: InstallationUpgraded): void {
     let parcelStats = getStat(StatCategory.PARCEL, event.params._realmId.toString());
     parcelStats = updateInstallationUpgradedStats(parcelStats);
     parcelStats.save();
+    // unequip old
+    let params = event.params
+    let installation = getOrCreateInstallation(params._prevInstallationId, params._realmId, params._coordinateX, params._coordinateY, event.transaction.from);
+    installation.equipped = false;
+    installation.save();
+
+    // equip new
+    installation = getOrCreateInstallation(params._nextInstallationId, params._realmId, params._coordinateX, params._coordinateY, event.transaction.from);
+    installation.equipped = true;
+    installation.save();
 }
 
 export function handleEquipTile(event: EquipTile): void {
     let eventEntity = createEquipTileEvent(event);
     eventEntity.save();
 
-    let tile = getOrCreateTile(event.params._tileId);
+    let tileType = getOrCreateTileType(event.params._tileId);
+    tileType.save();
+
+    let parcel = getOrCreateParcel(event.params._realmId);
+    let x = event.params._x;
+    let y = event.params._y;
+    let tile = getOrCreateTile(parcel, tileType, x, y);
+    tile.x = x;
+    tile.y = y;
+    tile.equipped = true;
     tile.save();
     
     // stats
@@ -169,7 +198,16 @@ export function handleUnequipTile(event: UnequipTile): void {
     let eventEntity = createUnequipTileEvent(event);
     eventEntity.save();
 
-    let tile = getOrCreateTile(event.params._tileId);
+    let tileType = getOrCreateTileType(event.params._tileId);
+    tileType.save();
+
+    let parcel = getOrCreateParcel(event.params._realmId);
+    let x = event.params._x;
+    let y = event.params._y;
+    let tile = getOrCreateTile(parcel, tileType, x, y);
+    tile.x = event.params._x;
+    tile.y = event.params._y;
+    tile.equipped = false;
     tile.save();
 
     // stats

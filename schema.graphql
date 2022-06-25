@@ -119,8 +119,7 @@ type MintTileEvent @entity {
   timestamp: BigInt!
   transaction: Bytes
   owner: Bytes
-  tile: Tile
-  tileType: InstallationType
+  tile: TileType
 }
 
 type MintInstallationEvent @entity {
@@ -226,6 +225,17 @@ type UpgradeTimeReducedEvent @entity {
   realmId: BigInt
 }
 
+type UpgradeFinalizedEvent @entity {
+  id: Bytes!
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes!
+  parcel: Parcel!
+  x: BigInt!
+  y: BigInt!
+  installation: InstallationType
+}
+
 type Parcel @entity {
   id: ID!
   equippedInstallations: [InstallationType!]!
@@ -245,6 +255,7 @@ type Tile @entity {
   y: BigInt
   equipped: Boolean
   parcel: Parcel
+  owner: Bytes
 }
 
 type Installation @entity {
@@ -254,13 +265,14 @@ type Installation @entity {
   y: BigInt
   equipped: Boolean
   parcel: Parcel
+  owner: Bytes
 }
 
 type InstallationType @entity {
   id: ID!
   width: Int
   height: Int
-  installationType: Int
+  installationType: BigInt
   level: Int
   alchemicaType: Int
   spillRadius: BigInt
@@ -282,7 +294,7 @@ type TileType @entity {
   width: Int!
   height: Int!
   deprecated: Boolean!
-  tileType: Int!
+  tileType: BigInt!
   craftTime: BigInt!
   alchemicaCost: [BigInt!]!
   name: String!
