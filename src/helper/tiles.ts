@@ -21,6 +21,7 @@ export function getOrCreateTileType(tileId: BigInt): TileType {
       tile.height =  data.height;
       tile.width = data.width;
       tile.name = data.name;
+      tile.tileType = data.tileType;
   }
 
   return tile;
