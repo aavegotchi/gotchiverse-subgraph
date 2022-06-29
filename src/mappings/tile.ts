@@ -11,7 +11,7 @@ export function handleMintTile (event: MintTile): void {
     eventEntity.save();
 
     let type = getOrCreateTileType(event.params._tileId);
-    type.tileType = event.params._tileType;
+    type.tileType = event.params._tileType.toI32();
     type.save();
 
     // stats
