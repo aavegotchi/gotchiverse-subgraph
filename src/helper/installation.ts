@@ -1,13 +1,14 @@
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
 import { AddInstallationType, CraftTimeReduced, DeprecateInstallation, EditInstallationType, InstallationDiamond, MintInstallation, UpgradeFinalized, UpgradeInitiated, UpgradeTimeReduced } from "../../generated/InstallationDiamond/InstallationDiamond";
 import { AddInstallationTypeEvent, CraftTimeReducedEvent, DeprecateInstallationEvent, EditInstallationTypeEvent, Installation, InstallationType, MintInstallationEvent, UpgradeFinalizedEvent, UpgradeInitiatedEvent, UpgradeTimeReducedEvent } from "../../generated/schema"
-import { INSTALLATION_DIAMOND } from "./constants";
+import { BIGINT_ZERO, INSTALLATION_DIAMOND } from "./constants";
 
 export function getOrCreateInstallationType(typeId: BigInt, event: ethereum.Event): InstallationType {
     let id = typeId.toString();
     let installationType = InstallationType.load(id);
     if(!installationType) {
         installationType = new InstallationType(id);
+        installationType.amount = BIGINT_ZERO;
         installationType = updateInstallationType(installationType);
     }
     return installationType;
