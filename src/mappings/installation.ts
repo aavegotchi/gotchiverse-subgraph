@@ -15,11 +15,11 @@ export function handleMintInstallation(event: MintInstallation): void  {
 
     // stats
     let overallStats = getStat(StatCategory.OVERALL);
-    // overallStats = updateAlchemicaSpendOnInstallations(overallStats, installationType);
+    overallStats = updateAlchemicaSpendOnInstallations(overallStats, installationType);
     overallStats.installationsMintedTotal = overallStats.installationsMintedTotal.plus(BIGINT_ONE);
 
     let userStats = getStat(StatCategory.USER, event.params._owner.toHexString());
-    // userStats = updateAlchemicaSpendOnInstallations(userStats, installationType);
+    userStats = updateAlchemicaSpendOnInstallations(userStats, installationType);
     userStats.installationsMintedTotal = userStats.installationsMintedTotal.plus(BIGINT_ONE);
 
     // persist
