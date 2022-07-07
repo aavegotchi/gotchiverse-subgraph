@@ -65,7 +65,9 @@ export function updateAlchemicaSpendOnUpgrades(stats: Stat, installation: Instal
     let costs = installation.alchemicaCost;
     let spendTotal = stats.alchemicaSpendTotal;
     let spendDetail = stats.alchemicaSpendOnUpgrades; 
-
+    if(!costs) {
+        return stats;
+    }
     for(let i=0;i<costs.length; i++) {
         spendDetail[i] = spendDetail[i].plus(costs[i]);
         spendTotal[i] = spendTotal[i].plus(costs[i]);
@@ -81,7 +83,9 @@ export function updateAlchemicaSpendOnInstallations(stats: Stat, installation: I
     let costs = installation.alchemicaCost;
     let spendTotal = stats.alchemicaSpendTotal;
     let spendDetail = stats.alchemicaSpendOnInstallations; 
-
+    if(!costs) {
+        return stats;
+    }
     for(let i=0;i<costs.length; i++) {
         spendDetail[i] = spendDetail[i].plus(costs[i]);
         spendTotal[i] = spendTotal[i].plus(costs[i]);
