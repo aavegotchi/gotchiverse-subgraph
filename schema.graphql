@@ -281,7 +281,7 @@ type InstallationType @entity {
   craftTime: BigInt
   nextLevelId: BigInt
   deprecated: Boolean
-  alchemicaCost: [BigInt!]!
+  alchemicaCost: [BigInt!]
   harvestRate: BigInt
   capacity: BigInt
   prerequisites: [BigInt!]
