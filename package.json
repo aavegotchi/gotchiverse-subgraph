@@ -1,18 +1,22 @@
 {
-  "name": "gotchiverse-subgraph",
-  "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "codegen": "graph codegen",
-    "build": "graph build"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@graphprotocol/graph-cli": "0.30.2",
-    "@graphprotocol/graph-ts": "0.27.0",
-    "apollo-fetch": "^0.7.0"
-  }
+    "name": "gotchiverse-subgraph",
+    "version": "0.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "codegen": "graph codegen",
+        "build": "graph build"
+    },
+    "prettier": {
+        "trailingComma": "es5",
+        "tabWidth": 4
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@graphprotocol/graph-cli": "0.30.2",
+        "@graphprotocol/graph-ts": "0.27.0",
+        "apollo-fetch": "^0.7.0"
+    }
 }
