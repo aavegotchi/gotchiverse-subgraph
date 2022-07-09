@@ -6,13 +6,12 @@ import { createCraftTimeReducedEvent } from "../helper/installation";
 import { getStat, updateAlchemicaSpendOnTiles } from "../helper/stats";
 import { createMintTileEvent, getOrCreateTileType } from "../helper/tiles";
 
-export function handleMintTile (event: MintTile): void {
+export function handleMintTile(event: MintTile): void {
     let eventEntity = createMintTileEvent(event);
     eventEntity.save();
 
     let type = getOrCreateTileType(event.params._tileId);
-    type.tileType = event.params._tileType.toI32();
-    type.amount = type.amount.plus(BIGINT_ONE);
+    type.tileType = event.params._tileId.toI32();
     type.save();
 
     // stats
@@ -21,7 +20,10 @@ export function handleMintTile (event: MintTile): void {
     statsOverall = updateAlchemicaSpendOnTiles(statsOverall, type);
     statsOverall.save();
 
-    let statsUser = getStat(StatCategory.USER, event.params._owner.toHexString());
+    let statsUser = getStat(
+        StatCategory.USER,
+        event.params._owner.toHexString()
+    );
     statsUser.tilesMinted = statsUser.tilesMinted.plus(BIGINT_ONE);
     statsUser = updateAlchemicaSpendOnTiles(statsUser, type);
     statsUser.save();
@@ -32,15 +34,26 @@ export function handleCraftTimeReduced(event: CraftTimeReduced): void {
     eventEntity.save();
 
     // stats
-    let gltrSpend = event.params._blocksReduced.times(BigInt.fromString("1e18"));
+    let gltrSpend = event.params._blocksReduced.times(
+        BigInt.fromString("1e18")
+    );
     let overallStats = getStat(StatCategory.OVERALL);
-    overallStats.craftTimeReduced = overallStats.craftTimeReduced.plus(event.params._blocksReduced);
-    overallStats.gltrSpendOnCrafts = overallStats.gltrSpendOnCrafts!.plus(gltrSpend);
+    overallStats.craftTimeReduced = overallStats.craftTimeReduced.plus(
+        event.params._blocksReduced
+    );
+    overallStats.gltrSpendOnCrafts = overallStats.gltrSpendOnCrafts!.plus(
+        gltrSpend
+    );
     overallStats.gltrSpendTotal = overallStats.gltrSpendTotal!.plus(gltrSpend);
     overallStats.save();
 
-    let userStats = getStat(StatCategory.USER, event.transaction.from.toHexString());
-    userStats.craftTimeReduced = userStats.craftTimeReduced.plus(event.params._blocksReduced);
+    let userStats = getStat(
+        StatCategory.USER,
+        event.transaction.from.toHexString()
+    );
+    userStats.craftTimeReduced = userStats.craftTimeReduced.plus(
+        event.params._blocksReduced
+    );
     userStats.gltrSpendOnCrafts = userStats.gltrSpendOnCrafts!.plus(gltrSpend);
     userStats.gltrSpendTotal = userStats.gltrSpendTotal!.plus(gltrSpend);
     userStats.save();
