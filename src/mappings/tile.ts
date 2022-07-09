@@ -11,7 +11,6 @@ export function handleMintTile(event: MintTile): void {
     eventEntity.save();
 
     let type = getOrCreateTileType(event.params._tileId);
-    type.tileType = event.params._tileId.toI32();
     type.amount = type.amount.plus(BIGINT_ONE);
     type.save();
 
