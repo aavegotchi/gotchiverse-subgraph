@@ -1,7 +1,7 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 import { MintTileEvent, Parcel, Tile, TileType } from "../../generated/schema";
 import { MintTile, TileDiamond } from "../../generated/TileDiamond/TileDiamond";
-import { TILE_DIAMOND } from "./constants";
+import { BIGINT_ZERO, TILE_DIAMOND } from "./constants";
 
 export function getOrCreateTileType(tileId: BigInt): TileType {
     let id = tileId.toString();
@@ -22,6 +22,7 @@ export function getOrCreateTileType(tileId: BigInt): TileType {
         tile.width = data.width;
         tile.name = data.name;
         tile.tileType = data.tileType;
+        tile.amount = BIGINT_ZERO;
     }
 
     return tile;

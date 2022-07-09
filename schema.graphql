@@ -287,6 +287,7 @@ type InstallationType @entity {
   prerequisites: [BigInt!]
   amountPrerequisites: Int
   name: String
+  amount: BigInt!
 }
 
 type TileType @entity {
@@ -298,6 +299,7 @@ type TileType @entity {
   craftTime: BigInt!
   alchemicaCost: [BigInt!]!
   name: String!
+  amount: BigInt!
 }
 
 type Stat @entity {
