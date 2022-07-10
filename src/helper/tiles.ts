@@ -53,7 +53,6 @@ export function createMintTileEvent(event: MintTile): MintTileEvent {
   eventEntity.timestamp = event.block.timestamp;
   eventEntity.owner = event.params._owner;
   eventEntity.tile = event.params._tileType.toString();
-  log.warning("tileId = {}", [event.params._tileType.toString()])
   return eventEntity;
 }
 
