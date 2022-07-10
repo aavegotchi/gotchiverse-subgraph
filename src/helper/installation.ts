@@ -22,7 +22,7 @@ import {
     UpgradeInitiatedEvent,
     UpgradeTimeReducedEvent,
 } from "../../generated/schema";
-import { INSTALLATION_DIAMOND } from "./constants";
+import { BIGINT_ZERO, INSTALLATION_DIAMOND } from "./constants";
 
 export function getOrCreateInstallationType(
     typeId: BigInt,
@@ -32,6 +32,7 @@ export function getOrCreateInstallationType(
     let installationType = InstallationType.load(id);
     if (!installationType) {
         installationType = new InstallationType(id);
+        installationType.amount = BIGINT_ZERO;
         installationType = updateInstallationType(installationType);
     }
     return installationType;

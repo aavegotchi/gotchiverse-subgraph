@@ -37,6 +37,7 @@ export function handleMintInstallation(event: MintInstallation): void {
         event
     );
     installationType.installationType = event.params._installationType;
+    installationType.amount = installationType.amount.plus(BIGINT_ONE);
 
     // stats
     let overallStats = getStat(StatCategory.OVERALL);
