@@ -84,10 +84,12 @@ export function handleMintInstallations(event: MintInstallations): void {
 
   // stats
   let overallStats = getStat(StatCategory.OVERALL);
-  overallStats = updateAlchemicaSpendOnInstallations(
-    overallStats,
-    installationType
-  );
+  for (let i = 0; i < event.params._amount; i++) {
+    overallStats = updateAlchemicaSpendOnInstallations(
+      overallStats,
+      installationType
+    );
+  }
   overallStats.installationsMintedTotal = overallStats.installationsMintedTotal.plus(
     bigIntAmount
   );
@@ -96,10 +98,12 @@ export function handleMintInstallations(event: MintInstallations): void {
     StatCategory.USER,
     event.params._owner.toHexString()
   );
-  userStats = updateAlchemicaSpendOnInstallations(
-    userStats,
-    installationType
-  );
+  for (let i = 0; i < event.params._amount; i++) {
+    userStats = updateAlchemicaSpendOnInstallations(
+      userStats,
+      installationType
+    );
+  }
   userStats.installationsMintedTotal = userStats.installationsMintedTotal.plus(
     bigIntAmount
   );
