@@ -1,4 +1,4 @@
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { BigInt } from "@graphprotocol/graph-ts";
 import { MintTileEvent, MintTilesEvent, Parcel, Tile, TileType } from "../../generated/schema";
 import { MintTile, MintTiles, TileDiamond } from "../../generated/TileDiamond/TileDiamond";
 import { BIGINT_ZERO, TILE_DIAMOND } from "./constants";
