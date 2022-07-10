@@ -35,10 +35,10 @@ export function handleMintInstallation(event: MintInstallation): void {
   eventEntity.save();
 
   let installationType = getOrCreateInstallationType(
-    event.params._installationId,
+    event.params._installationType,
     event
   );
-  installationType.installationType = event.params._installationType;
+  installationType.installationType = event.params._installationId;
   installationType.amount = installationType.amount.plus(BIGINT_ONE);
 
   // stats
