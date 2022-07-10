@@ -78,6 +78,8 @@ dataSources:
       eventHandlers:
         - event: MintTile(indexed address,indexed uint256,uint256)
           handler: handleMintTile
+        - event: MintTiles(indexed address,indexed uint256,uint16)
+          handler: handleMintTiles
         - event: CraftTimeReduced(indexed uint256,uint256)
           handler: handleCraftTimeReduced
       file: ./src/mappings/tile.ts
@@ -105,6 +107,8 @@ dataSources:
       eventHandlers:
         - event: MintInstallation(indexed address,indexed uint256,uint256)
           handler: handleMintInstallation
+        - event: MintInstallations(indexed address,indexed uint256,uint16)
+          handler: handleMintInstallations
         - event: UpgradeInitiated(indexed uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleUpgradeInitiated
         - event: AddInstallationType(uint256)

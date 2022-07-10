@@ -122,6 +122,16 @@ type MintTileEvent @entity {
   tile: TileType
 }
 
+type MintTilesEvent @entity {
+  id: ID!
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes
+  owner: Bytes
+  tile: TileType
+  amount: Int
+}
+
 type MintInstallationEvent @entity {
   id: ID!
   block: BigInt!
@@ -129,6 +139,16 @@ type MintInstallationEvent @entity {
   transaction: Bytes
   owner: Bytes
   installationType: InstallationType
+}
+
+type MintInstallationsEvent @entity {
+  id: ID!
+  block: BigInt!
+  timestamp: BigInt!
+  transaction: Bytes
+  owner: Bytes
+  installationType: InstallationType
+  amount: Int
 }
 
 type UpgradeInitiatedEvent @entity {
