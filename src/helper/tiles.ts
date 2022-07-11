@@ -1,6 +1,16 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import { MintTileEvent, Parcel, Tile, TileType } from "../../generated/schema";
-import { MintTile, TileDiamond } from "../../generated/TileDiamond/TileDiamond";
+import {
+    MintTileEvent,
+    MintTilesEvent,
+    Parcel,
+    Tile,
+    TileType,
+} from "../../generated/schema";
+import {
+    MintTile,
+    MintTiles,
+    TileDiamond,
+} from "../../generated/TileDiamond/TileDiamond";
 import { BIGINT_ZERO, TILE_DIAMOND } from "./constants";
 
 export function getOrCreateTileType(tileId: BigInt): TileType {
@@ -52,6 +62,18 @@ export function createMintTileEvent(event: MintTile): MintTileEvent {
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;
     eventEntity.owner = event.params._owner;
+    eventEntity.tile = event.params._tileType.toString();
+    return eventEntity;
+}
+
+export function createMintTilesEvent(event: MintTiles): MintTilesEvent {
+    let id = event.transaction.hash.toHexString();
+    let eventEntity = new MintTilesEvent(id);
+    eventEntity.transaction = event.transaction.hash;
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+    eventEntity.owner = event.params._owner;
     eventEntity.tile = event.params._tileId.toString();
+    eventEntity.amount = event.params._amount;
     return eventEntity;
 }

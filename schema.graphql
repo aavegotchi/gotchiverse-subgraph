@@ -1,337 +1,357 @@
 # Events
 type TransferEvent @entity {
-  id: Bytes!
-  block: BigInt!
-  timestamp: BigInt!
-  contract: Bytes
-  from: Bytes
-  to: Bytes
-  tokenId: BigInt
+    id: Bytes!
+    block: BigInt!
+    timestamp: BigInt!
+    contract: Bytes
+    from: Bytes
+    to: Bytes
+    tokenId: BigInt
 }
 
 type MintParcelEvent @entity {
-  id: ID!
-  owner: Bytes
-  tokenId: BigInt
+    id: ID!
+    owner: Bytes
+    tokenId: BigInt
 }
 
 type ChannelAlchemicaEvent @entity {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
 
-  gotchi: Gotchi!
-  parcel: Parcel!
+    gotchi: Gotchi!
+    parcel: Parcel!
 
-  realmId: BigInt
-  gotchiId: BigInt
+    realmId: BigInt
+    gotchiId: BigInt
 
-  alchemica: [BigInt!]!
-  spilloverRate: BigInt!
-  spilloverRadius: BigInt!
+    alchemica: [BigInt!]!
+    spilloverRate: BigInt!
+    spilloverRadius: BigInt!
 
-  transaction: Bytes
+    transaction: Bytes
 }
 
 type AlchemicaClaimedEvent @entity {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
-  transaction: Bytes
-  gotchi: Gotchi
-  parcel: Parcel
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes
+    gotchi: Gotchi
+    parcel: Parcel
 
-  realmId: BigInt
-  gotchiId: BigInt
+    realmId: BigInt
+    gotchiId: BigInt
 
-  alchemicaType: BigInt
-  amount: BigInt
+    alchemicaType: BigInt
+    amount: BigInt
 
-  spilloverRadius: BigInt
-  spilloverRate: BigInt
+    spilloverRadius: BigInt
+    spilloverRate: BigInt
 }
 
 type ExitAlchemicaEvent @entity {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
-  transaction: Bytes
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes
 
-  gotchi: Gotchi
-  alchemica: [BigInt!]!
+    gotchi: Gotchi
+    alchemica: [BigInt!]!
 
-  gotchiId: BigInt
+    gotchiId: BigInt
 }
 
 type EquipInstallationEvent @entity {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
-  transaction: Bytes
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes
 
-  parcel: Parcel!
-  installation: InstallationType!
+    parcel: Parcel!
+    installation: InstallationType!
 
-  x: BigInt!
-  y: BigInt!
+    x: BigInt!
+    y: BigInt!
 
-  realmId: BigInt
-  installationId: BigInt
+    realmId: BigInt
+    installationId: BigInt
 }
 
 type UnequipInstallationEvent @entity {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
-  transaction: Bytes
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes
 
-  parcel: Parcel!
-  installation: InstallationType!
+    parcel: Parcel!
+    installation: InstallationType!
 
-  x: BigInt!
-  y: BigInt!
+    x: BigInt!
+    y: BigInt!
 
-  realmId: BigInt
-  installationId: BigInt
+    realmId: BigInt
+    installationId: BigInt
 }
 
 type InstallationUpgradedEvent @entity {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
-  transaction: Bytes
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes
 
-  parcel: Parcel!
-  prevInstallation: InstallationType!
-  nextInstallation: InstallationType!
+    parcel: Parcel!
+    prevInstallation: InstallationType!
+    nextInstallation: InstallationType!
 
-  x: BigInt!
-  y: BigInt!
+    x: BigInt!
+    y: BigInt!
 
-  realmId: BigInt
-  prevInstallationId: BigInt
-  nextInstallationId: BigInt
+    realmId: BigInt
+    prevInstallationId: BigInt
+    nextInstallationId: BigInt
 }
 
 type MintTileEvent @entity {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
-  transaction: Bytes
-  owner: Bytes
-  tile: TileType
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes
+    owner: Bytes
+    tile: TileType
+}
+
+type MintTilesEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes
+    owner: Bytes
+    tile: TileType
+    amount: Int
 }
 
 type MintInstallationEvent @entity {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
-  transaction: Bytes
-  owner: Bytes
-  installationType: InstallationType
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes
+    owner: Bytes
+    installationType: InstallationType
+}
+
+type MintInstallationsEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes
+    owner: Bytes
+    installationType: InstallationType
+    amount: Int
 }
 
 type UpgradeInitiatedEvent @entity {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
-  transaction: Bytes
-  parcel: Parcel
-  installation: InstallationType!
-  blockInitiated: BigInt!
-  readyBlock: BigInt!
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes
+    parcel: Parcel
+    installation: InstallationType!
+    blockInitiated: BigInt!
+    readyBlock: BigInt!
 
-  x: BigInt!
-  y: BigInt!
+    x: BigInt!
+    y: BigInt!
 
-  realmId: BigInt
-  installationId: BigInt
+    realmId: BigInt
+    installationId: BigInt
 }
 
 type AddInstallationTypeEvent @entity {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
-  transaction: Bytes
-  installationType: InstallationType
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes
+    installationType: InstallationType
 }
 
 type EditInstallationTypeEvent @entity {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
-  transaction: Bytes
-  installationType: InstallationType
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes
+    installationType: InstallationType
 }
 
 type DeprecateInstallationEvent @entity {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
-  transaction: Bytes
-  installationType: InstallationType
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes
+    installationType: InstallationType
 }
 
 type EquipTileEvent @entity {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
-  transaction: Bytes
-  parcel: Parcel
-  tile: Tile
-  x: BigInt
-  y: BigInt
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes
+    parcel: Parcel
+    tile: Tile
+    x: BigInt
+    y: BigInt
 
-  realmId: BigInt
-  tileId: BigInt
+    realmId: BigInt
+    tileId: BigInt
 }
 
 type UnequipTileEvent @entity {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
-  transaction: Bytes
-  parcel: Parcel
-  tile: Tile
-  x: BigInt
-  y: BigInt
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes
+    parcel: Parcel
+    tile: Tile
+    x: BigInt
+    y: BigInt
 
-  realmId: BigInt
-  tileId: BigInt
+    realmId: BigInt
+    tileId: BigInt
 }
 
 type CraftTimeReducedEvent @entity {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
-  transaction: Bytes!
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes!
 
-  x: BigInt!
-  y: BigInt!
-  blocksReduced: BigInt!
+    x: BigInt!
+    y: BigInt!
+    blocksReduced: BigInt!
 }
 
 type UpgradeTimeReducedEvent @entity {
-  id: ID!
-  block: BigInt!
-  timestamp: BigInt!
-  transaction: Bytes!
-  parcel: Parcel!
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes!
+    parcel: Parcel!
 
-  x: BigInt!
-  y: BigInt!
-  blocksReduced: BigInt!
+    x: BigInt!
+    y: BigInt!
+    blocksReduced: BigInt!
 
-  realmId: BigInt
+    realmId: BigInt
 }
 
 type UpgradeFinalizedEvent @entity {
-  id: Bytes!
-  block: BigInt!
-  timestamp: BigInt!
-  transaction: Bytes!
-  parcel: Parcel!
-  x: BigInt!
-  y: BigInt!
-  installation: InstallationType
+    id: Bytes!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes!
+    parcel: Parcel!
+    x: BigInt!
+    y: BigInt!
+    installation: InstallationType
 }
 
 type Parcel @entity {
-  id: ID!
-  equippedInstallations: [InstallationType!]!
-  lastChanneledAlchemica: BigInt
-  owner: Bytes
+    id: ID!
+    equippedInstallations: [InstallationType!]!
+    lastChanneledAlchemica: BigInt
+    owner: Bytes
 }
 
 type Gotchi @entity {
-  id: ID!
-  lastChanneledAlchemica: BigInt
+    id: ID!
+    lastChanneledAlchemica: BigInt
 }
 
 type Tile @entity {
-  id: ID!
-  type: TileType
-  x: BigInt
-  y: BigInt
-  equipped: Boolean
-  parcel: Parcel
-  owner: Bytes
+    id: ID!
+    type: TileType
+    x: BigInt
+    y: BigInt
+    equipped: Boolean
+    parcel: Parcel
+    owner: Bytes
 }
 
 type Installation @entity {
-  id: ID!
-  type: InstallationType
-  x: BigInt
-  y: BigInt
-  equipped: Boolean
-  parcel: Parcel
-  owner: Bytes
+    id: ID!
+    type: InstallationType
+    x: BigInt
+    y: BigInt
+    equipped: Boolean
+    parcel: Parcel
+    owner: Bytes
 }
 
 type InstallationType @entity {
-  id: ID!
-  width: Int
-  height: Int
-  installationType: BigInt
-  level: Int
-  alchemicaType: Int
-  spillRadius: BigInt
-  spillRate: Int
-  upgradeQueueBoost: Int
-  craftTime: BigInt
-  nextLevelId: BigInt
-  deprecated: Boolean
-  alchemicaCost: [BigInt!]
-  harvestRate: BigInt
-  capacity: BigInt
-  prerequisites: [BigInt!]
-  amountPrerequisites: Int
-  name: String
-  amount: BigInt!
+    id: ID!
+    width: Int
+    height: Int
+    installationType: BigInt
+    level: Int
+    alchemicaType: Int
+    spillRadius: BigInt
+    spillRate: Int
+    upgradeQueueBoost: Int
+    craftTime: BigInt
+    nextLevelId: BigInt
+    deprecated: Boolean
+    alchemicaCost: [BigInt!]
+    harvestRate: BigInt
+    capacity: BigInt
+    prerequisites: [BigInt!]
+    amountPrerequisites: Int
+    name: String
+    amount: BigInt!
 }
 
 type TileType @entity {
-  id: ID!
-  width: Int!
-  height: Int!
-  deprecated: Boolean!
-  tileType: Int!
-  craftTime: BigInt!
-  alchemicaCost: [BigInt!]!
-  name: String!
-  amount: BigInt!
+    id: ID!
+    width: Int!
+    height: Int!
+    deprecated: Boolean!
+    tileType: Int!
+    craftTime: BigInt!
+    alchemicaCost: [BigInt!]!
+    name: String!
+    amount: BigInt!
 }
 
 type Stat @entity {
-  id: ID!
-  countChannelAlchemicaEvents: BigInt!
-  countParcelInstallations: BigInt!
-  countInstallationTypes: BigInt!
-  countUpgradesInitiated: BigInt!
+    id: ID!
+    countChannelAlchemicaEvents: BigInt!
+    countParcelInstallations: BigInt!
+    countInstallationTypes: BigInt!
+    countUpgradesInitiated: BigInt!
 
-  alchemicaSpendOnInstallations: [BigInt!]!
-  alchemicaSpendOnUpgrades: [BigInt!]!
-  alchemicaSpendOnTiles: [BigInt!]!
-  alchemicaSpendTotal: [BigInt!]!
-  alchemicaChanneledTotal: [BigInt!]!
-  alchemicaClaimedTotal: [BigInt!]!
-  alchemicaExitedTotal: [BigInt!]!
+    alchemicaSpendOnInstallations: [BigInt!]!
+    alchemicaSpendOnUpgrades: [BigInt!]!
+    alchemicaSpendOnTiles: [BigInt!]!
+    alchemicaSpendTotal: [BigInt!]!
+    alchemicaChanneledTotal: [BigInt!]!
+    alchemicaClaimedTotal: [BigInt!]!
+    alchemicaExitedTotal: [BigInt!]!
 
-  tilesEquippedTotal: BigInt!
-  tilesUnequippedTotal: BigInt!
-  tilesEquippedCurrent: BigInt!
-  tilesMinted: BigInt!
+    tilesEquippedTotal: BigInt!
+    tilesUnequippedTotal: BigInt!
+    tilesEquippedCurrent: BigInt!
+    tilesMinted: BigInt!
 
-  installationsMintedTotal: BigInt!
-  installationsUpgradedTotal: BigInt!
-  installationsEquippedTotal: BigInt!
-  installationsUnequippedTotal: BigInt!
-  installationsEquippedCurrent: BigInt!
+    installationsMintedTotal: BigInt!
+    installationsUpgradedTotal: BigInt!
+    installationsEquippedTotal: BigInt!
+    installationsUnequippedTotal: BigInt!
+    installationsEquippedCurrent: BigInt!
 
-  craftTimeReduced: BigInt!
-  upgradeTimeReduced: BigInt!
+    craftTimeReduced: BigInt!
+    upgradeTimeReduced: BigInt!
 
-  gltrSpendOnUpgrades: BigInt
-  gltrSpendOnCrafts: BigInt
-  gltrSpendTotal: BigInt
+    gltrSpendOnUpgrades: BigInt
+    gltrSpendOnCrafts: BigInt
+    gltrSpendTotal: BigInt
 }

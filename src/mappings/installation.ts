@@ -5,6 +5,7 @@ import {
     DeprecateInstallation,
     EditInstallationType,
     MintInstallation,
+    MintInstallations,
     UpgradeFinalized,
     UpgradeInitiated,
     UpgradeTimeReduced,
@@ -16,6 +17,7 @@ import {
     createDeprecateInstallationEvent,
     createEditInstallationType,
     createMintInstallationEvent,
+    createMintInstallationsEvent,
     createUpgradeFinalizedEvent,
     createUpgradeInitiatedEvent,
     createUpgradeTimeReducedEvent,
@@ -33,10 +35,10 @@ export function handleMintInstallation(event: MintInstallation): void {
     eventEntity.save();
 
     let installationType = getOrCreateInstallationType(
-        event.params._installationId,
+        event.params._installationType,
         event
     );
-    installationType.installationType = event.params._installationType;
+    installationType.installationType = event.params._installationId;
     installationType.amount = installationType.amount.plus(BIGINT_ONE);
 
     // stats
@@ -59,6 +61,51 @@ export function handleMintInstallation(event: MintInstallation): void {
     );
     userStats.installationsMintedTotal = userStats.installationsMintedTotal.plus(
         BIGINT_ONE
+    );
+
+    // persist
+    userStats.save();
+    overallStats.save();
+    installationType.save();
+}
+
+export function handleMintInstallations(event: MintInstallations): void {
+    // Event entity
+    let eventEntity = createMintInstallationsEvent(event);
+    eventEntity.save();
+
+    let installationType = getOrCreateInstallationType(
+        event.params._installationId,
+        event
+    );
+
+    let bigIntAmount = BigInt.fromI32(event.params._amount);
+    installationType.amount = installationType.amount.plus(bigIntAmount);
+
+    // stats
+    let overallStats = getStat(StatCategory.OVERALL);
+    for (let i = 0; i < event.params._amount; i++) {
+        overallStats = updateAlchemicaSpendOnInstallations(
+            overallStats,
+            installationType
+        );
+    }
+    overallStats.installationsMintedTotal = overallStats.installationsMintedTotal.plus(
+        bigIntAmount
+    );
+
+    let userStats = getStat(
+        StatCategory.USER,
+        event.params._owner.toHexString()
+    );
+    for (let i = 0; i < event.params._amount; i++) {
+        userStats = updateAlchemicaSpendOnInstallations(
+            userStats,
+            installationType
+        );
+    }
+    userStats.installationsMintedTotal = userStats.installationsMintedTotal.plus(
+        bigIntAmount
     );
 
     // persist

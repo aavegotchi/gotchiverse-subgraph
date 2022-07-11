@@ -6,6 +6,7 @@ import {
     EditInstallationType,
     InstallationDiamond,
     MintInstallation,
+    MintInstallations,
     UpgradeFinalized,
     UpgradeInitiated,
     UpgradeTimeReduced,
@@ -18,6 +19,7 @@ import {
     Installation,
     InstallationType,
     MintInstallationEvent,
+    MintInstallationsEvent,
     UpgradeFinalizedEvent,
     UpgradeInitiatedEvent,
     UpgradeTimeReducedEvent,
@@ -76,6 +78,20 @@ export function createMintInstallationEvent(
     eventEntity.timestamp = event.block.timestamp;
     eventEntity.installationType = event.params._installationType.toString();
     eventEntity.owner = event.params._owner;
+    return eventEntity;
+}
+
+export function createMintInstallationsEvent(
+    event: MintInstallations
+): MintInstallationsEvent {
+    let id = event.transaction.hash.toHexString();
+    let eventEntity = new MintInstallationsEvent(id);
+    eventEntity.transaction = event.transaction.hash;
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+    eventEntity.installationType = event.params._installationId.toString();
+    eventEntity.owner = event.params._owner;
+    eventEntity.amount = event.params._amount;
     return eventEntity;
 }
 
