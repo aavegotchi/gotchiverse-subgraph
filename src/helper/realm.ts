@@ -233,12 +233,17 @@ export const createMintParcelEvent = (event: MintParcel): MintParcelEvent => {
 };
 
 export const createParcelTransferEvent = (event: Transfer): TransferEvent => {
-    let entity = new TransferEvent(event.transaction.hash);
+    let id =
+        event.transaction.hash.toString() +
+        "_" +
+        event.params._tokenId.toString();
+    let entity = new TransferEvent(id);
     entity.block = event.block.number;
     entity.timestamp = event.block.timestamp;
     entity.contract = event.address;
     entity.from = event.params._from;
     entity.to = event.params._to;
     entity.tokenId = event.params._tokenId;
+    entity.transaction = event.transaction.hash;
     return entity;
 };

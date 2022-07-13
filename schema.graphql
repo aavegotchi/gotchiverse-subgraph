@@ -1,12 +1,13 @@
 # Events
 type TransferEvent @entity {
-    id: Bytes!
+    id: ID!
     block: BigInt!
     timestamp: BigInt!
     contract: Bytes
     from: Bytes
     to: Bytes
     tokenId: BigInt
+    transaction: Bytes
 }
 
 type MintParcelEvent @entity {
