@@ -66,6 +66,10 @@ dataSources:
               - MintTileEvent
               - TileType
           abis:
+              - name: RealmDiamond
+                file: ./abis/RealmDiamond.json
+              - name: InstallationDiamond
+                file: ./abis/InstallationDiamond.json
               - name: TileDiamond
                 file: ./abis/TileDiamond.json
           eventHandlers:
@@ -94,8 +98,12 @@ dataSources:
               - EditInstallationTypeEvent
               - DeprecateInstallationEvent
           abis:
+              - name: RealmDiamond
+                file: ./abis/RealmDiamond.json
               - name: InstallationDiamond
                 file: ./abis/InstallationDiamond.json
+              - name: TileDiamond
+                file: ./abis/TileDiamond.json
           file: ./src/mappings/installation.ts
           eventHandlers:
               - event: MintInstallation(indexed address,indexed uint256,uint256)
