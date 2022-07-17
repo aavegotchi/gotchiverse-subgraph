@@ -12,7 +12,7 @@ const graph = apollo.createApolloFetch({
 
 function getInstallationsQuery() {
     return `
-      {installations(first: 1000 where: {id_gt:"${id}"}) {
+      {installations(first: 1000 where: {id_gt:"${id}" equipped: true}) {
         id
         x
         y
@@ -27,7 +27,7 @@ function getInstallationsQuery() {
 
 function getTilesQuery() {
     return `
-      {tiles(first: 1000 skip: 0 where: {id_gt:"${id}"}) {
+      {tiles(first: 1000 skip: 0 where: {id_gt:"${id}" equipped: true}) {
         id
         x
         y
