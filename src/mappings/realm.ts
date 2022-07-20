@@ -30,6 +30,7 @@ import {
     getOrCreateGotchi,
     getOrCreateParcel,
     removeParcelInstallation,
+    removeParcelTile,
 } from "../helper/realm";
 import {
     getStat,
@@ -299,6 +300,9 @@ export function handleEquipTile(event: EquipTile): void {
     tileType.save();
 
     let parcel = getOrCreateParcel(event.params._realmId);
+    parcel = createParcelInstallation(parcel, event.params._tileId);
+    parcel.save();
+
     let x = event.params._x;
     let y = event.params._y;
     let tile = getOrCreateTile(parcel, tileType, x, y);
@@ -333,6 +337,9 @@ export function handleUnequipTile(event: UnequipTile): void {
     tileType.save();
 
     let parcel = getOrCreateParcel(event.params._realmId);
+    parcel = removeParcelTile(parcel, event.params._tileId);
+    parcel.save();
+
     let x = event.params._x;
     let y = event.params._y;
     let tile = getOrCreateTile(parcel, tileType, x, y);
