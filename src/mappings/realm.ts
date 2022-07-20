@@ -24,6 +24,7 @@ import {
     createInstallationUpgradedEvent,
     createMintParcelEvent,
     createParcelInstallation,
+    createParcelTile,
     createParcelTransferEvent,
     createUnequipInstallationEvent,
     createUnequipTileEvent,
@@ -300,7 +301,7 @@ export function handleEquipTile(event: EquipTile): void {
     tileType.save();
 
     let parcel = getOrCreateParcel(event.params._realmId);
-    parcel = createParcelInstallation(parcel, event.params._tileId);
+    parcel = createParcelTile(parcel, event.params._tileId);
     parcel.save();
 
     let x = event.params._x;
