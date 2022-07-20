@@ -32,6 +32,7 @@ export const getOrCreateParcel = (realmId: BigInt): Parcel => {
     if (!parcel) {
         parcel = new Parcel(id);
         parcel.equippedInstallations = new Array<string>();
+        parcel.equippedTiles = new Array<string>();
     }
     return parcel;
 };
