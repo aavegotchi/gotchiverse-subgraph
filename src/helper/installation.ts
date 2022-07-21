@@ -245,6 +245,8 @@ export function createCraftTimeReducedEvent(
     event: CraftTimeReduced
 ): CraftTimeReducedEvent {
     let id =
+        event.transaction.from.toHexString() +
+        "-" +
         event.params._queueId.toString() +
         "-" +
         event.params._blocksReduced.toString() +
