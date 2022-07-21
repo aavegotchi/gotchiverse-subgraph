@@ -51,12 +51,19 @@ export function getOrCreateTile(
         tile = new Tile(id);
         tile.parcel = parcel.id;
         tile.type = tileType.id;
+        tile.x = x;
+        tile.y = y;
     }
     return tile;
 }
 
 export function createMintTileEvent(event: MintTile): MintTileEvent {
-    let id = event.transaction.hash.toHexString();
+    let id =
+        event.params._tileId.toString() +
+        "-" +
+        event.params._owner.toHexString() +
+        "-" +
+        event.block.number.toString();
     let eventEntity = new MintTileEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -67,7 +74,14 @@ export function createMintTileEvent(event: MintTile): MintTileEvent {
 }
 
 export function createMintTilesEvent(event: MintTiles): MintTilesEvent {
-    let id = event.transaction.hash.toHexString();
+    let id =
+        event.params._tileId.toString() +
+        "-" +
+        event.params._amount.toString() +
+        "-" +
+        event.params._owner.toHexString() +
+        "-" +
+        event.block.number.toString();
     let eventEntity = new MintTilesEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;

@@ -35,8 +35,7 @@ export function handleMintInstallation(event: MintInstallation): void {
     eventEntity.save();
 
     let installationType = getOrCreateInstallationType(
-        event.params._installationType,
-        event
+        event.params._installationType
     );
     installationType.installationType = event.params._installationId;
     installationType.amount = installationType.amount.plus(BIGINT_ONE);
@@ -75,8 +74,7 @@ export function handleMintInstallations(event: MintInstallations): void {
     eventEntity.save();
 
     let installationType = getOrCreateInstallationType(
-        event.params._installationId,
-        event
+        event.params._installationId
     );
 
     let bigIntAmount = BigInt.fromI32(event.params._amount);
@@ -118,7 +116,7 @@ export function handleUpgradeInitiated(event: UpgradeInitiated): void {
     let eventEntity = createUpgradeInitiatedEvent(event);
     eventEntity.save();
 
-    let type = getOrCreateInstallationType(event.params.installationId, event);
+    let type = getOrCreateInstallationType(event.params.installationId);
     type.save();
 
     // stats
@@ -145,10 +143,7 @@ export function handleAddInstallationType(event: AddInstallationType): void {
     eventEntity.save();
 
     let installationTypeId = event.params._installationId;
-    let installationType = getOrCreateInstallationType(
-        installationTypeId,
-        event
-    );
+    let installationType = getOrCreateInstallationType(installationTypeId);
     installationType.save();
 }
 
@@ -157,10 +152,7 @@ export function handleEditInstallationType(event: EditInstallationType): void {
     eventEntity.save();
 
     let installationTypeId = event.params._installationId;
-    let installationType = getOrCreateInstallationType(
-        installationTypeId,
-        event
-    );
+    let installationType = getOrCreateInstallationType(installationTypeId);
     installationType.save();
 }
 
@@ -171,10 +163,7 @@ export function handleDeprecateInstallation(
     eventEntity.save();
 
     let installationTypeId = event.params._installationId;
-    let installationType = getOrCreateInstallationType(
-        installationTypeId,
-        event
-    );
+    let installationType = getOrCreateInstallationType(installationTypeId);
     installationType.save();
 }
 
