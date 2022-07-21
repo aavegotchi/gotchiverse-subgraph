@@ -174,7 +174,7 @@ export function handleEquipInstallation(event: EquipInstallation): void {
         params._realmId,
         params._x,
         params._y,
-        event
+        event.transaction.from
     );
     installation.equipped = true;
     installation.save();
@@ -236,7 +236,7 @@ export function handleUnequipInstallation(event: UnequipInstallation): void {
         params._realmId,
         params._x,
         params._y,
-        event
+        event.transaction.from
     );
     installation.equipped = false;
     installation.save();
@@ -272,7 +272,7 @@ export function handleInstallationUpgraded(event: InstallationUpgraded): void {
         params._realmId,
         params._coordinateX,
         params._coordinateY,
-        event
+        event.transaction.from
     );
     installation.equipped = false;
     installation.save();
@@ -283,7 +283,7 @@ export function handleInstallationUpgraded(event: InstallationUpgraded): void {
         params._realmId,
         params._coordinateX,
         params._coordinateY,
-        event
+        event.transaction.from
     );
     installation.equipped = true;
     installation.save();
@@ -329,7 +329,12 @@ export function handleUnequipTile(event: UnequipTile): void {
     tileType.save();
 
     let parcel = getOrCreateParcel(event.params._realmId);
-    let tile = getOrCreateTile(parcel, tileType, event.params._x, event.params._y);
+    let tile = getOrCreateTile(
+        parcel,
+        tileType,
+        event.params._x,
+        event.params._y
+    );
     tile.equipped = false;
     tile.save();
 

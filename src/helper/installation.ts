@@ -1,4 +1,4 @@
-import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
+import { Address, BigInt } from "@graphprotocol/graph-ts";
 import {
     AddInstallationType,
     CraftTimeReduced,
@@ -42,7 +42,7 @@ export function getOrCreateInstallation(
     realmId: BigInt,
     x: BigInt,
     y: BigInt,
-    event: ethereum.Event
+    owner: Address
 ): Installation {
     let id =
         installationId.toString() +
@@ -60,7 +60,7 @@ export function getOrCreateInstallation(
         installation.type = installationId.toString();
         installation.parcel = realmId.toString();
         installation.equipped = true;
-        installation.owner = event.transaction.from;
+        installation.owner = owner;
     }
     return installation;
 }
