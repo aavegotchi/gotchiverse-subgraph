@@ -176,6 +176,7 @@ export function handleEquipInstallation(event: EquipInstallation): void {
         params._y,
         event.transaction.from
     );
+    installation.equipped = true;
     installation.save();
 
     // update stats
@@ -245,10 +246,7 @@ export function handleInstallationUpgraded(event: InstallationUpgraded): void {
     let eventEntity = createInstallationUpgradedEvent(event);
     eventEntity.save();
 
-    let type = getOrCreateInstallationType(
-        event.params._nextInstallationId,
-        event
-    );
+    let type = getOrCreateInstallationType(event.params._nextInstallationId);
     type.save();
 
     let parcel = getOrCreateParcel(event.params._realmId);
@@ -302,8 +300,6 @@ export function handleEquipTile(event: EquipTile): void {
     let x = event.params._x;
     let y = event.params._y;
     let tile = getOrCreateTile(parcel, tileType, x, y);
-    tile.x = x;
-    tile.y = y;
     tile.equipped = true;
     tile.save();
 
@@ -333,11 +329,12 @@ export function handleUnequipTile(event: UnequipTile): void {
     tileType.save();
 
     let parcel = getOrCreateParcel(event.params._realmId);
-    let x = event.params._x;
-    let y = event.params._y;
-    let tile = getOrCreateTile(parcel, tileType, x, y);
-    tile.x = event.params._x;
-    tile.y = event.params._y;
+    let tile = getOrCreateTile(
+        parcel,
+        tileType,
+        event.params._x,
+        event.params._y
+    );
     tile.equipped = false;
     tile.save();
 
