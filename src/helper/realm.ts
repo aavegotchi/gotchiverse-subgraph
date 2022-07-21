@@ -265,7 +265,7 @@ export const createMintParcelEvent = (event: MintParcel): MintParcelEvent => {
     entity.owner = event.params._owner;
     entity.tokenId = event.params._tokenId;
     entity.transaction = event.transaction.hash;
-    entity.block = event.block.timestamp;
+    entity.block = event.block.number;
     entity.timestamp = event.block.timestamp;
     entity.from = event.transaction.from;
     entity.to = event.transaction.to;
