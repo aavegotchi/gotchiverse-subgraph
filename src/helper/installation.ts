@@ -135,7 +135,10 @@ export function createUpgradeInitiatedEvent(
 export function createAddInstallationType(
     event: AddInstallationType
 ): AddInstallationTypeEvent {
-    let id = event.params._installationId + "-" + event.block.number.toString();
+    let id =
+        event.params._installationId.toString() +
+        "-" +
+        event.block.number.toString();
     let eventEntity = AddInstallationTypeEvent.load(id);
     if (!eventEntity) {
         eventEntity = new AddInstallationTypeEvent(id);
@@ -165,7 +168,10 @@ export function createEditInstallationType(
 export function createDeprecateInstallationEvent(
     event: DeprecateInstallation
 ): DeprecateInstallationEvent {
-    let id = event.params._installationId + "-" + event.block.number.toString();
+    let id =
+        event.params._installationId.toString() +
+        "-" +
+        event.block.number.toString();
     let eventEntity = DeprecateInstallationEvent.load(id);
     if (!eventEntity) {
         eventEntity = new DeprecateInstallationEvent(id);

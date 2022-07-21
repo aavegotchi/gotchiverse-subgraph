@@ -188,13 +188,13 @@ export const createUnequipTileEvent = (
     let id =
         event.params._realmId.toString() +
         "-" +
-        +event.params._tileId.toString() +
+        event.params._tileId.toString() +
         "-" +
-        +event.params._x.toString() +
+        event.params._x.toString() +
         "-" +
-        +event.params._y.toString() +
+        event.params._y.toString() +
         "-" +
-        +event.block.number.toString();
+        event.block.number.toString();
     let eventEntity = new UnequipTileEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
