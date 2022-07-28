@@ -124,3 +124,5 @@ dataSources:
                 handler: handleUpgradeTimeReduced
               - event: UpgradeFinalized(indexed uint256,uint256,uint256,uint256)
                 handler: handleUpgradeFinalized
+              - event: UpgradeQueued(indexed address,indexed uint256,indexed uint256)
+                handler: handleUpgradeQueued
