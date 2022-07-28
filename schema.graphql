@@ -265,6 +265,7 @@ type UpgradeFinalizedEvent @entity {
 type Parcel @entity {
     id: ID!
     equippedInstallations: [InstallationType!]!
+    equippedTiles: [TileType!]!
     lastChanneledAlchemica: BigInt
     owner: Bytes
 }

@@ -32,6 +32,7 @@ export const getOrCreateParcel = (realmId: BigInt): Parcel => {
     if (!parcel) {
         parcel = new Parcel(id);
         parcel.equippedInstallations = new Array<string>();
+        parcel.equippedTiles = new Array<string>();
     }
     return parcel;
 };
@@ -256,6 +257,28 @@ export const removeParcelInstallation = (
         }
     }
     parcel.equippedInstallations = newInstallations;
+    return parcel;
+};
+
+export const createParcelTile = (parcel: Parcel, tileId: BigInt): Parcel => {
+    let tiles = parcel.equippedTiles;
+    let id = tileId.toString();
+    tiles.push(id);
+    parcel.equippedTiles = tiles;
+    return parcel;
+};
+
+export const removeParcelTile = (parcel: Parcel, tileId: BigInt): Parcel => {
+    let tiles = parcel.equippedTiles;
+    let newTiles = new Array<string>();
+    let id = tileId.toString();
+    for (let i = 0; i < tiles.length; i++) {
+        let item = tiles[i];
+        if (item != id) {
+            newTiles.push(item);
+        }
+    }
+    parcel.equippedTiles = newTiles;
     return parcel;
 };
 
