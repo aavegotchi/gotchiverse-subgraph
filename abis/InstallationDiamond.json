@@ -2939,5 +2939,30 @@
         ],
         "name": "MintInstallations",
         "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_realmId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_queueIndex",
+                "type": "uint256"
+            }
+        ],
+        "name": "UpgradeQueued",
+        "type": "event"
     }
 ]
