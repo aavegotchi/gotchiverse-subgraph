@@ -1,4 +1,4 @@
-import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
+import { Address, BigInt } from "@graphprotocol/graph-ts";
 import {
     AddInstallationType,
     CraftTimeReduced,
@@ -26,10 +26,7 @@ import {
 } from "../../generated/schema";
 import { BIGINT_ZERO, INSTALLATION_DIAMOND } from "./constants";
 
-export function getOrCreateInstallationType(
-    typeId: BigInt,
-    event: ethereum.Event
-): InstallationType {
+export function getOrCreateInstallationType(typeId: BigInt): InstallationType {
     let id = typeId.toString();
     let installationType = InstallationType.load(id);
     if (!installationType) {
@@ -71,7 +68,11 @@ export function getOrCreateInstallation(
 export function createMintInstallationEvent(
     event: MintInstallation
 ): MintInstallationEvent {
-    let id = event.transaction.hash.toHexString();
+    let id =
+        event.params._installationId.toString() +
+        "_" +
+        event.block.number.toString();
+
     let eventEntity = new MintInstallationEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -84,7 +85,12 @@ export function createMintInstallationEvent(
 export function createMintInstallationsEvent(
     event: MintInstallations
 ): MintInstallationsEvent {
-    let id = event.transaction.hash.toHexString();
+    let id =
+        event.params._installationId.toString() +
+        "_" +
+        event.params._amount.toString() +
+        "_" +
+        event.block.number.toString();
     let eventEntity = new MintInstallationsEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -98,7 +104,16 @@ export function createMintInstallationsEvent(
 export function createUpgradeInitiatedEvent(
     event: UpgradeInitiated
 ): UpgradeInitiatedEvent {
-    let id = event.transaction.hash.toHexString();
+    let id =
+        event.params.installationId.toString() +
+        "-" +
+        event.params._realmId.toString() +
+        "-" +
+        event.params._coordinateX.toString() +
+        "-" +
+        event.params._coordinateY.toString() +
+        "-" +
+        event.block.number.toString();
     let eventEntity = UpgradeInitiatedEvent.load(id);
     if (!eventEntity) {
         eventEntity = new UpgradeInitiatedEvent(id);
@@ -120,7 +135,10 @@ export function createUpgradeInitiatedEvent(
 export function createAddInstallationType(
     event: AddInstallationType
 ): AddInstallationTypeEvent {
-    let id = event.transaction.hash.toHexString();
+    let id =
+        event.params._installationId.toString() +
+        "-" +
+        event.block.number.toString();
     let eventEntity = AddInstallationTypeEvent.load(id);
     if (!eventEntity) {
         eventEntity = new AddInstallationTypeEvent(id);
@@ -150,7 +168,10 @@ export function createEditInstallationType(
 export function createDeprecateInstallationEvent(
     event: DeprecateInstallation
 ): DeprecateInstallationEvent {
-    let id = event.transaction.hash.toHexString();
+    let id =
+        event.params._installationId.toString() +
+        "-" +
+        event.block.number.toString();
     let eventEntity = DeprecateInstallationEvent.load(id);
     if (!eventEntity) {
         eventEntity = new DeprecateInstallationEvent(id);
@@ -195,7 +216,16 @@ export function updateInstallationType(
 export function createUpgradeTimeReducedEvent(
     event: UpgradeTimeReduced
 ): UpgradeTimeReducedEvent {
-    let id = event.transaction.hash.toHexString();
+    let id =
+        event.params._realmId.toString() +
+        "-" +
+        event.params._queueId.toString() +
+        "-" +
+        event.params._coordinateX.toString() +
+        "-" +
+        event.params._coordinateY.toString() +
+        "-" +
+        event.block.number.toString();
     let eventEntity = UpgradeTimeReducedEvent.load(id);
     if (!eventEntity) {
         eventEntity = new UpgradeTimeReducedEvent(id);
@@ -214,7 +244,14 @@ export function createUpgradeTimeReducedEvent(
 export function createCraftTimeReducedEvent(
     event: CraftTimeReduced
 ): CraftTimeReducedEvent {
-    let id = event.transaction.hash.toHexString();
+    let id =
+        event.transaction.from.toHexString() +
+        "-" +
+        event.params._queueId.toString() +
+        "-" +
+        event.params._blocksReduced.toString() +
+        "-" +
+        event.block.number.toString();
     let eventEntity = CraftTimeReducedEvent.load(id);
     if (!eventEntity) {
         eventEntity = new CraftTimeReducedEvent(id);
@@ -229,7 +266,17 @@ export function createCraftTimeReducedEvent(
 export function createUpgradeFinalizedEvent(
     event: UpgradeFinalized
 ): UpgradeFinalizedEvent {
-    let eventEntity = new UpgradeFinalizedEvent(event.transaction.hash);
+    let id =
+        event.params._realmId.toString() +
+        "-" +
+        event.params._newInstallationId.toString() +
+        "-" +
+        event.params._coordinateX.toString() +
+        "-" +
+        event.params._coordinateY.toString() +
+        "-" +
+        event.block.number.toString();
+    let eventEntity = new UpgradeFinalizedEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;

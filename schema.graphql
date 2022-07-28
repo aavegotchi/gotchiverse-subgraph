@@ -12,8 +12,13 @@ type TransferEvent @entity {
 
 type MintParcelEvent @entity {
     id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    from: Bytes
+    to: Bytes
     owner: Bytes
     tokenId: BigInt
+    transaction: Bytes
 }
 
 type ChannelAlchemicaEvent @entity {
@@ -247,7 +252,7 @@ type UpgradeTimeReducedEvent @entity {
 }
 
 type UpgradeFinalizedEvent @entity {
-    id: Bytes!
+    id: ID!
     block: BigInt!
     timestamp: BigInt!
     transaction: Bytes!

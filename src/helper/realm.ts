@@ -75,7 +75,8 @@ export const createChannelAlchemicaEvent = (
 export const createAlchemicaClaimedEvent = (
     event: AlchemicaClaimed
 ): AlchemicaClaimedEvent => {
-    let id = event.transaction.hash.toHexString();
+    let id =
+        event.params._gotchiId.toString() + "-" + event.block.number.toString();
     let eventEntity = new AlchemicaClaimedEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -94,7 +95,8 @@ export const createAlchemicaClaimedEvent = (
 export const createExitAlchemicaEvent = (
     event: ExitAlchemica
 ): ExitAlchemicaEvent => {
-    let id = event.transaction.hash.toHexString();
+    let id =
+        event.params._gotchiId.toString() + "-" + event.block.number.toString();
     let eventEntity = new ExitAlchemicaEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -111,7 +113,13 @@ export const createEquipInstallationEvent = (
     let id =
         event.params._realmId.toString() +
         "-" +
-        event.params._installationId.toString();
+        event.params._installationId.toString() +
+        "-" +
+        event.params._x.toString() +
+        "-" +
+        event.params._y.toString() +
+        "-" +
+        event.block.number.toString();
     let eventEntity = new EquipInstallationEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -131,7 +139,13 @@ export const createUnequipInstallationEvent = (
     let id =
         event.params._realmId.toString() +
         "-" +
-        event.params._installationId.toString();
+        event.params._installationId.toString() +
+        "-" +
+        event.params._x.toString() +
+        "-" +
+        event.params._y.toString() +
+        "-" +
+        event.block.number.toString();
     let eventEntity = new UnequipInstallationEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -146,7 +160,16 @@ export const createUnequipInstallationEvent = (
 };
 
 export const createEquipTileEvent = (event: EquipTile): EquipTileEvent => {
-    let id = event.transaction.hash.toHexString();
+    let id =
+        event.params._realmId.toString() +
+        "-" +
+        event.params._tileId.toString() +
+        "-" +
+        event.params._x.toString() +
+        "-" +
+        event.params._y.toString() +
+        "-" +
+        event.block.number.toString();
     let eventEntity = new EquipTileEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -163,7 +186,16 @@ export const createEquipTileEvent = (event: EquipTile): EquipTileEvent => {
 export const createUnequipTileEvent = (
     event: UnequipTile
 ): UnequipTileEvent => {
-    let id = event.transaction.hash.toHexString();
+    let id =
+        event.params._realmId.toString() +
+        "-" +
+        event.params._tileId.toString() +
+        "-" +
+        event.params._x.toString() +
+        "-" +
+        event.params._y.toString() +
+        "-" +
+        event.block.number.toString();
     let eventEntity = new UnequipTileEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -185,7 +217,9 @@ export const createInstallationUpgradedEvent = (
         "-" +
         event.params._prevInstallationId.toString() +
         "-" +
-        event.params._nextInstallationId.toString();
+        event.params._nextInstallationId.toString() +
+        "-" +
+        event.block.number.toString();
     let eventEntity = new InstallationUpgradedEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -249,17 +283,20 @@ export const removeParcelTile = (parcel: Parcel, tileId: BigInt): Parcel => {
 };
 
 export const createMintParcelEvent = (event: MintParcel): MintParcelEvent => {
-    let entity = new MintParcelEvent(event.transaction.hash.toHexString());
+    let id = event.params._tokenId.toString() + event.block.number.toString();
+    let entity = new MintParcelEvent(id);
     entity.owner = event.params._owner;
     entity.tokenId = event.params._tokenId;
+    entity.transaction = event.transaction.hash;
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.from = event.transaction.from;
+    entity.to = event.transaction.to;
     return entity;
 };
 
 export const createParcelTransferEvent = (event: Transfer): TransferEvent => {
-    let id =
-        event.transaction.hash.toHexString() +
-        "_" +
-        event.params._tokenId.toString();
+    let id = event.params._tokenId.toString() + event.block.number.toString();
     let entity = new TransferEvent(id);
     entity.block = event.block.number;
     entity.timestamp = event.block.timestamp;
