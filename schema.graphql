@@ -119,6 +119,19 @@ type InstallationUpgradedEvent @entity {
     nextInstallationId: BigInt
 }
 
+type UpgradeQueuedEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes!
+
+    owner: Bytes!
+    realmId: BigInt
+    queueIndex: BigInt!
+
+    parcel: Parcel
+}
+
 type MintTileEvent @entity {
     id: ID!
     block: BigInt!

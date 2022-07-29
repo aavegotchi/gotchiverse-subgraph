@@ -8,6 +8,7 @@ import {
     MintInstallations,
     UpgradeFinalized,
     UpgradeInitiated,
+    UpgradeQueued,
     UpgradeTimeReduced,
 } from "../../generated/InstallationDiamond/InstallationDiamond";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
@@ -20,6 +21,7 @@ import {
     createMintInstallationsEvent,
     createUpgradeFinalizedEvent,
     createUpgradeInitiatedEvent,
+    createUpgradeQueuedEvent,
     createUpgradeTimeReducedEvent,
     getOrCreateInstallationType,
 } from "../helper/installation";
@@ -241,5 +243,10 @@ export function handleUpgradeTimeReduced(event: UpgradeTimeReduced): void {
 
 export function handleUpgradeFinalized(event: UpgradeFinalized): void {
     let eventEntity = createUpgradeFinalizedEvent(event);
+    eventEntity.save();
+}
+
+export function handleUpgradeQueued(event: UpgradeQueued): void {
+    let eventEntity = createUpgradeQueuedEvent(event);
     eventEntity.save();
 }

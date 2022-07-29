@@ -9,6 +9,7 @@ import {
     MintInstallations,
     UpgradeFinalized,
     UpgradeInitiated,
+    UpgradeQueued,
     UpgradeTimeReduced,
 } from "../../generated/InstallationDiamond/InstallationDiamond";
 import {
@@ -22,6 +23,7 @@ import {
     MintInstallationsEvent,
     UpgradeFinalizedEvent,
     UpgradeInitiatedEvent,
+    UpgradeQueuedEvent,
     UpgradeTimeReducedEvent,
 } from "../../generated/schema";
 import { BIGINT_ZERO, INSTALLATION_DIAMOND } from "./constants";
@@ -284,5 +286,29 @@ export function createUpgradeFinalizedEvent(
     eventEntity.y = event.params._coordinateY;
     eventEntity.installation = event.params._newInstallationId.toString();
     eventEntity.parcel = event.params._realmId.toString();
+    return eventEntity;
+}
+
+export function createUpgradeQueuedEvent(
+    event: UpgradeQueued
+): UpgradeQueuedEvent {
+    let id =
+        event.params._realmId.toString() +
+        "-" +
+        event.params._owner.toHexString() +
+        "-" +
+        event.params._queueIndex +
+        "-" +
+        event.block.number.toString();
+    let eventEntity = new UpgradeQueuedEvent(id);
+    eventEntity.transaction = event.transaction.hash;
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+
+    eventEntity.realmId = event.params._realmId;
+    eventEntity.owner = event.params._owner;
+    eventEntity.queueIndex = event.params._queueIndex;
+    eventEntity.parcel = event.params._realmId.toString();
+
     return eventEntity;
 }
