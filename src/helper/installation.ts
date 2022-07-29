@@ -297,7 +297,7 @@ export function createUpgradeQueuedEvent(
         "-" +
         event.params._owner.toHexString() +
         "-" +
-        event.params._queueIndex +
+        event.params._queueIndex.toString() +
         "-" +
         event.block.number.toString();
     let eventEntity = new UpgradeQueuedEvent(id);
