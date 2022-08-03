@@ -76,7 +76,13 @@ export const createAlchemicaClaimedEvent = (
     event: AlchemicaClaimed
 ): AlchemicaClaimedEvent => {
     let id =
-        event.params._gotchiId.toString() + "-" + event.block.number.toString();
+        event.params._realmId.toString() +
+        "-" +
+        event.params._alchemicaType.toString() +
+        "-" +
+        event.params._gotchiId.toString() +
+        "-" +
+        event.block.number.toString();
     let eventEntity = new AlchemicaClaimedEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
