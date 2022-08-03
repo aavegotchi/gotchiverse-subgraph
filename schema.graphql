@@ -280,6 +280,7 @@ type Parcel @entity {
     equippedInstallations: [InstallationType!]!
     equippedTiles: [TileType!]!
     lastChanneledAlchemica: BigInt
+    lastClaimedAlchemica: BigInt
     owner: Bytes
 }
 
