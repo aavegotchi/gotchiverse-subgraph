@@ -129,6 +129,11 @@ export function handleAlchemicaClaimed(event: AlchemicaClaimed): void {
     let eventEntity = createAlchemicaClaimedEvent(event);
     eventEntity.save();
 
+    // set last claim alchemica
+    let parcel = getOrCreateParcel(event.params._realmId);
+    parcel.lastClaimedAlchemica = event.block.timestamp;
+    parcel.save();
+
     // stats
     let overallStats = getStat(StatCategory.OVERALL);
     overallStats = updateAlchemicaClaimedStats(
