@@ -16,6 +16,8 @@ import {
     getOrCreateInstallationType,
 } from "../helper/installation";
 import {
+    addParcelInstallation,
+    addParcelTile,
     createAlchemicaClaimedEvent,
     createChannelAlchemicaEvent,
     createEquipInstallationEvent,
@@ -23,8 +25,6 @@ import {
     createExitAlchemicaEvent,
     createInstallationUpgradedEvent,
     createMintParcelEvent,
-    createParcelInstallation,
-    createParcelTile,
     createParcelTransferEvent,
     createUnequipInstallationEvent,
     createUnequipTileEvent,
@@ -170,11 +170,6 @@ export function handleEquipInstallation(event: EquipInstallation): void {
     let eventEntity = createEquipInstallationEvent(event);
     eventEntity.save();
 
-    // create if not exist
-    let parcel = getOrCreateParcel(event.params._realmId);
-    parcel = createParcelInstallation(parcel, event.params._installationId);
-    parcel.save();
-
     let params = event.params;
     let installation = getOrCreateInstallation(
         params._installationId,
@@ -185,6 +180,11 @@ export function handleEquipInstallation(event: EquipInstallation): void {
     );
     installation.equipped = true;
     installation.save();
+
+    // create if not exist
+    let parcel = getOrCreateParcel(event.params._realmId);
+    parcel = addParcelInstallation(parcel, installation);
+    parcel.save();
 
     // update stats
     let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel);
@@ -216,10 +216,6 @@ export function handleUnequipInstallation(event: UnequipInstallation): void {
     let eventEntity = createUnequipInstallationEvent(event);
     eventEntity.save();
 
-    let parcel = getOrCreateParcel(event.params._realmId);
-    parcel = removeParcelInstallation(parcel, event.params._installationId);
-    parcel.save();
-
     // update stats
     let userStats = getStat(
         StatCategory.USER,
@@ -247,6 +243,10 @@ export function handleUnequipInstallation(event: UnequipInstallation): void {
     );
     installation.equipped = false;
     installation.save();
+
+    let parcel = getOrCreateParcel(event.params._realmId);
+    parcel = removeParcelInstallation(parcel, installation);
+    parcel.save();
 }
 
 export function handleInstallationUpgraded(event: InstallationUpgraded): void {
@@ -255,11 +255,6 @@ export function handleInstallationUpgraded(event: InstallationUpgraded): void {
 
     let type = getOrCreateInstallationType(event.params._nextInstallationId);
     type.save();
-
-    let parcel = getOrCreateParcel(event.params._realmId);
-    parcel = removeParcelInstallation(parcel, event.params._prevInstallationId);
-    parcel = createParcelInstallation(parcel, event.params._nextInstallationId);
-    parcel.save();
 
     // stats
     let overallStats = getStat(StatCategory.OVERALL);
@@ -272,28 +267,34 @@ export function handleInstallationUpgraded(event: InstallationUpgraded): void {
     );
     parcelStats = updateInstallationUpgradedStats(parcelStats);
     parcelStats.save();
+
     // unequip old
     let params = event.params;
-    let installation = getOrCreateInstallation(
+    let oldInstallation = getOrCreateInstallation(
         params._prevInstallationId,
         params._realmId,
         params._coordinateX,
         params._coordinateY,
         event.transaction.from
     );
-    installation.equipped = false;
-    installation.save();
+    oldInstallation.equipped = false;
+    oldInstallation.save();
 
     // equip new
-    installation = getOrCreateInstallation(
+    let newInstallation = getOrCreateInstallation(
         params._nextInstallationId,
         params._realmId,
         params._coordinateX,
         params._coordinateY,
         event.transaction.from
     );
-    installation.equipped = true;
-    installation.save();
+    oldInstallation.equipped = true;
+    oldInstallation.save();
+
+    let parcel = getOrCreateParcel(event.params._realmId);
+    parcel = removeParcelInstallation(parcel, oldInstallation);
+    parcel = addParcelInstallation(parcel, newInstallation);
+    parcel.save();
 }
 
 export function handleEquipTile(event: EquipTile): void {
@@ -304,14 +305,15 @@ export function handleEquipTile(event: EquipTile): void {
     tileType.save();
 
     let parcel = getOrCreateParcel(event.params._realmId);
-    parcel = createParcelTile(parcel, event.params._tileId);
-    parcel.save();
 
     let x = event.params._x;
     let y = event.params._y;
     let tile = getOrCreateTile(parcel, tileType, x, y);
     tile.equipped = true;
     tile.save();
+
+    parcel = addParcelTile(parcel, tile);
+    parcel.save();
 
     // stats
     let userStats = getStat(
@@ -340,9 +342,6 @@ export function handleUnequipTile(event: UnequipTile): void {
 
     let parcel = getOrCreateParcel(event.params._realmId);
 
-    parcel = removeParcelTile(parcel, event.params._tileId);
-    parcel.save();
-
     let tile = getOrCreateTile(
         parcel,
         tileType,
@@ -351,6 +350,9 @@ export function handleUnequipTile(event: UnequipTile): void {
     );
     tile.equipped = false;
     tile.save();
+
+    parcel = removeParcelTile(parcel, tile);
+    parcel.save();
 
     // stats
     let userStats = getStat(

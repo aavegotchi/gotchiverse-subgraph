@@ -18,9 +18,11 @@ import {
     EquipTileEvent,
     ExitAlchemicaEvent,
     Gotchi,
+    Installation,
     InstallationUpgradedEvent,
     MintParcelEvent,
     Parcel,
+    Tile,
     TransferEvent,
     UnequipInstallationEvent,
     UnequipTileEvent,
@@ -238,24 +240,23 @@ export const createInstallationUpgradedEvent = (
     return eventEntity;
 };
 
-export const createParcelInstallation = (
+export const addParcelInstallation = (
     parcel: Parcel,
-    installationId: BigInt
+    installation: Installation
 ): Parcel => {
     let installations = parcel.equippedInstallations;
-    let id = installationId.toString();
-    installations.push(id);
+    installations.push(installation.id);
     parcel.equippedInstallations = installations;
     return parcel;
 };
 
 export const removeParcelInstallation = (
     parcel: Parcel,
-    installationId: BigInt
+    installation: Installation
 ): Parcel => {
     let installations = parcel.equippedInstallations;
     let newInstallations = new Array<string>();
-    let id = installationId.toString();
+    let id = installation.id;
     for (let i = 0; i < installations.length; i++) {
         let item = installations[i];
         if (item != id) {
@@ -266,18 +267,18 @@ export const removeParcelInstallation = (
     return parcel;
 };
 
-export const createParcelTile = (parcel: Parcel, tileId: BigInt): Parcel => {
+export const addParcelTile = (parcel: Parcel, tile: Tile): Parcel => {
     let tiles = parcel.equippedTiles;
-    let id = tileId.toString();
+    let id = tile.id;
     tiles.push(id);
     parcel.equippedTiles = tiles;
     return parcel;
 };
 
-export const removeParcelTile = (parcel: Parcel, tileId: BigInt): Parcel => {
+export const removeParcelTile = (parcel: Parcel, tile: Tile): Parcel => {
     let tiles = parcel.equippedTiles;
     let newTiles = new Array<string>();
-    let id = tileId.toString();
+    let id = tile.id;
     for (let i = 0; i < tiles.length; i++) {
         let item = tiles[i];
         if (item != id) {

@@ -277,8 +277,8 @@ type UpgradeFinalizedEvent @entity {
 
 type Parcel @entity {
     id: ID!
-    equippedInstallations: [InstallationType!]!
-    equippedTiles: [TileType!]!
+    equippedInstallations: [Installation!]!
+    equippedTiles: [Tile!]!
     lastChanneledAlchemica: BigInt
     lastClaimedAlchemica: BigInt
     owner: Bytes
