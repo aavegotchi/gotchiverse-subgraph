@@ -409,6 +409,13 @@ type Aavegotchi @entity {
     tokenId: BigInt!
     kinship: BigInt!
     brs: BigInt!
+    xp: BigInt!
+    status: BigInt!
+    owner: Bytes!
+    originalOwner: Bytes!
+
+    equippedWearables: [BigInt!]
+    numericTraits: [BigInt!]
 }
 
 ## Lending
@@ -455,6 +462,7 @@ type GotchiLending @entity {
 
 type Whitelist @entity {
     id: ID!
+    name: String
     owner: Bytes
     members: [Bytes!]!
 }

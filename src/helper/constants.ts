@@ -20,3 +20,11 @@ export const TILE_DIAMOND = Address.fromString(
 export const INSTALLATION_DIAMOND = Address.fromString(
     "0x19f870bD94A34b3adAa9CaA439d333DA18d6812A"
 );
+
+export const ZERO_ADDRESS = Address.fromString(
+    "0x0000000000000000000000000000000000000000"
+);
+
+export const STATUS_CLAIMED = BigInt.fromI32(3);
+export const STATUS_PORTAL_OPENED = BigInt.fromI32(2);
+export const STATUS_PORTAL_CLOSED = BigInt.fromI32(1);
