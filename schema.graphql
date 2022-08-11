@@ -376,3 +376,66 @@ type Stat @entity {
     gltrSpendOnCrafts: BigInt
     gltrSpendTotal: BigInt
 }
+
+## Core
+type Aavegotchi @entity {
+    id: ID!
+    tokenId: BigInt!
+    kinship: BigInt!
+    brs: BigInt!
+}
+
+## Lending
+type GotchiLending @entity {
+    id: ID!
+    rentDuration: BigInt!
+    upfrontCost: BigInt!
+    period: BigInt!
+
+    gotchi: Aavegotchi!
+
+    # gotch filter attributes
+    gotchiBRS: BigInt
+    gotchiTokenId: BigInt!
+    gotchiKinship: BigInt!
+
+    # profit split
+    splitOwner: BigInt
+    splitBorrower: BigInt
+    splitOther: BigInt
+
+    # tokens to share
+    tokensToShare: [Bytes!]!
+
+    whitelist: Whitelist
+    whitelistMembers: [Bytes!]!
+    whitelistId: BigInt
+    thirdPartyAddress: Bytes
+
+    borrower: Bytes
+    lender: Bytes
+    originalOwner: Bytes
+
+    cancelled: Boolean!
+    completed: Boolean!
+    lastClaimed: BigInt
+
+    timeAgreed: BigInt
+    timeCreated: BigInt
+    timeEnded: BigInt
+
+    claimed: [ClaimedToken!]! @derivedFrom(field: "lending")
+}
+
+type Whitelist @entity {
+    id: ID!
+    owner: Bytes
+    members: [Bytes!]!
+}
+
+type ClaimedToken @entity {
+    id: ID!
+    lending: GotchiLending!
+    token: Bytes!
+    amount: BigInt!
+}
