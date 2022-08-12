@@ -13,6 +13,7 @@ import {
     GotchiLendingEnded,
     GotchiLendingExecuted,
     GrantExperience,
+    ItemModifiersSet,
     MintPortals,
     PortalOpened,
     RemoveExperience,
@@ -230,4 +231,15 @@ export function handleSetAavegotchiName(event: SetAavegotchiName): void {
     let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
     gotchi.name = event.params._newName;
     gotchi.save();
+}
+
+export function handleItemModifiersSet(event: ItemModifiersSet): void {
+    let itemType = getOrCreateItemType(event.params._wearableId.toString());
+    itemType.traitModifiers = event.params._traitModifiers.map<BigInt>(
+        (e: i32) => BigInt.fromI32(e)
+    );
+    itemType.rarityScoreModifier = BigInt.fromI32(
+        event.params._rarityScoreModifier
+    );
+    itemType.save();
 }
