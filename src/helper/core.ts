@@ -118,8 +118,13 @@ export function updateSkillpoints(
 export function updateBRS(gotchi: Aavegotchi): Aavegotchi {
     let brs = BIGINT_ZERO;
     for (let i = 0; i < gotchi.equippedWearables!.length; i++) {
-        let item = getOrCreateWearable(gotchi.equippedWearables![i]);
-        brs = brs.plus(item.)
+        let itemId = gotchi.equippedWearables![i];
+        if (itemId && itemId != BIGINT_ZERO) {
+            let item = getOrCreateItemType(
+                gotchi.equippedWearables![i].toString()
+            );
+            brs = brs.plus(BigInt.fromI32(item.rarityScoreModifier!));
+        }
     }
 
     return gotchi;
@@ -127,7 +132,7 @@ export function updateBRS(gotchi: Aavegotchi): Aavegotchi {
 
 export function getOrCreateItemType(id: string): ItemType {
     let item = ItemType.load(id);
-    if(!item) {
+    if (!item) {
         item = new ItemType(id);
     }
 
