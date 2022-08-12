@@ -31,6 +31,7 @@ import {
     getOrCreateAavegotchi,
     getOrCreateClaimedToken,
     getOrCreateGotchiLending,
+    getOrCreateItemType,
     getOrCreateWhitelist,
 } from "../helper/core";
 
@@ -202,6 +203,10 @@ export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
 }
 
 export function handleAddItemType(event: AddItemType): void {
-    event.params._itemType.rarityScoreModifier;
-    event.params._itemType.traitModifiers;
+    let item = getOrCreateItemType(event.params._itemType.svgId.toString());
+    item.rarityScoreModifier = event.params._itemType.rarityScoreModifier;
+    item.traitModifiers = event.params._itemType.traitModifiers;
+    item.name = event.params._itemType.name;
+    item.experienceBonus = event.params._itemType.experienceBonus;
+    item.save();
 }

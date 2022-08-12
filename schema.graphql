@@ -473,3 +473,11 @@ type ClaimedToken @entity {
     token: Bytes!
     amount: BigInt!
 }
+
+type ItemType @entity {
+    id: ID!
+    traitModifiers: [BigInt!]
+    rarityScoreModifier: BigInt
+    name: String
+    experienceBonus: BigInt
+}

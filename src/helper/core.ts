@@ -4,6 +4,7 @@ import {
     Aavegotchi,
     ClaimedToken,
     GotchiLending,
+    ItemType,
     Whitelist,
 } from "../../generated/schema";
 import { BIGINT_ZERO, ZERO_ADDRESS } from "./constants";
@@ -122,4 +123,13 @@ export function updateBRS(gotchi: Aavegotchi): Aavegotchi {
     }
 
     return gotchi;
+}
+
+export function getOrCreateItemType(id: string): ItemType {
+    let item = ItemType.load(id);
+    if(!item) {
+        item = new ItemType(id);
+    }
+
+    return item;
 }
