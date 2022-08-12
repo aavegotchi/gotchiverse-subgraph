@@ -380,6 +380,7 @@ type Stat @entity {
 ## Core
 type Aavegotchi @entity {
     id: ID!
+    name: String
     tokenId: BigInt!
     kinship: BigInt!
     brs: BigInt!

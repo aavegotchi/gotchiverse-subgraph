@@ -16,6 +16,7 @@ import {
     MintPortals,
     PortalOpened,
     RemoveExperience,
+    SetAavegotchiName,
     SpendSkillpoints,
     Transfer,
     Xingyun,
@@ -56,7 +57,9 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
     let contract = AavegotchiDiamond.bind(event.address);
     let result = contract.try_getAavegotchi(event.params._tokenId);
     if (result.value) {
-        gotchi.numericTraits = result.value.numericTraits;
+        gotchi.numericTraits = result.value.numericTraits.map<BigInt>(
+            (e: i32) => BigInt.fromI32(e)
+        );
         gotchi.brs = result.value.baseRarityScore;
     }
     gotchi.status = STATUS_CLAIMED;
@@ -66,11 +69,17 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
 export function handleSpendSkillpoints(event: SpendSkillpoints): void {
     let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
     if (!gotchi.numericTraits) {
-        gotchi.numericTraits = event.params._values;
+        gotchi.numericTraits = event.params._values.map<BigInt>((e: i32) =>
+            BigInt.fromI32(e)
+        );
     } else {
         let traits = gotchi.numericTraits;
         for (let i = 0; i < event.params._values.length; i++) {
-            traits[i] = traits[i].plus(event.params._values[i]);
+            if (traits) {
+                traits[i] = traits[i].plus(
+                    BigInt.fromI32(event.params._values[i])
+                );
+            }
         }
         gotchi.numericTraits = traits;
     }
@@ -78,7 +87,9 @@ export function handleSpendSkillpoints(event: SpendSkillpoints): void {
 }
 export function handleEquipWearables(event: EquipWearables): void {
     let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
-    gotchi.equippedWearables = event.params._newWearables;
+    gotchi.equippedWearables = event.params._newWearables.map<BigInt>(
+        (e: i32) => BigInt.fromI32(e)
+    );
     gotchi.save();
 }
 export function handleGrantExperience(event: GrantExperience): void {
@@ -153,7 +164,7 @@ export function handleGotchiLendingAdded(event: GotchiLendingAdded): void {
             lending.whitelistId = event.params.whitelistId;
         }
     }
-    let gotchi = getOrCreateAavegotchi(event.params.tokenId.toString())!;
+    let gotchi = getOrCreateAavegotchi(event.params.tokenId.toString());
     lending.gotchi = gotchi.id;
     lending.gotchiTokenId = event.params.tokenId;
     lending.gotchiKinship = gotchi.kinship;
@@ -190,7 +201,7 @@ export function handleGotchiLendingExecuted(
     lending.timeAgreed = event.params.timeAgreed;
     lending.save();
 
-    let gotchi = getOrCreateAavegotchi(lending.gotchi)!;
+    let gotchi = getOrCreateAavegotchi(lending.gotchi);
     gotchi.originalOwner = event.params.lender;
     gotchi.save();
 }
@@ -204,9 +215,19 @@ export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
 
 export function handleAddItemType(event: AddItemType): void {
     let item = getOrCreateItemType(event.params._itemType.svgId.toString());
-    item.rarityScoreModifier = event.params._itemType.rarityScoreModifier;
-    item.traitModifiers = event.params._itemType.traitModifiers;
+    item.rarityScoreModifier = BigInt.fromI32(
+        event.params._itemType.rarityScoreModifier
+    );
+    item.traitModifiers = event.params._itemType.traitModifiers.map<BigInt>(
+        (e: i32) => BigInt.fromI32(e)
+    );
     item.name = event.params._itemType.name;
     item.experienceBonus = event.params._itemType.experienceBonus;
     item.save();
+}
+
+export function handleSetAavegotchiName(event: SetAavegotchiName): void {
+    let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
+    gotchi.name = event.params._newName;
+    gotchi.save();
 }
