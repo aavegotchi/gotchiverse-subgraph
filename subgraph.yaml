@@ -204,8 +204,8 @@ dataSources:
               #   handler: handleItemTypeMaxQuantity
               - event: ExperienceTransfer(indexed uint256,indexed uint256,uint256)
                 handler: handleExperienceTransfer
-              # - event: ItemModifiersSet(uint256,int8[6],uint8)
-              #   handler: handleItemModifiersSet
+              - event: ItemModifiersSet(uint256,int8[6],uint8)
+                handler: handleItemModifiersSet
               # - event: WearableSlotPositionsSet(uint256,bool[16])
               #   handler: handleWearableSlotPositionsSet
               - event: MintPortals(indexed address,indexed address,uint256,uint256,uint256)
