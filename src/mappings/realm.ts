@@ -9,6 +9,8 @@ import {
     Transfer,
     UnequipInstallation,
     UnequipTile,
+    ResyncParcel,
+    RealmDiamond,
 } from "../../generated/RealmDiamond/RealmDiamond";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import {
@@ -388,5 +390,31 @@ export function handleTransfer(event: Transfer): void {
     // maintain parcel owner field
     let parcel = getOrCreateParcel(event.params._tokenId);
     parcel.owner = event.params._to;
+    parcel.save();
+}
+
+export function handleResyncParcel(event: ResyncParcel): void {
+    let parcel = getOrCreateParcel(event.params._tokenId);
+    let contract = RealmDiamond.bind(event.address);
+    let parcelInfo = contract.try_getParcelInfo(event.params._tokenId);
+
+    if (!parcelInfo.reverted) {
+        let parcelMetadata = parcelInfo.value;
+        parcel.parcelId = parcelMetadata.parcelId;
+        parcel.tokenId = event.params._tokenId;
+        parcel.coordinateX = parcelMetadata.coordinateX;
+        parcel.coordinateY = parcelMetadata.coordinateY;
+        parcel.district = parcelMetadata.district;
+        parcel.parcelHash = parcelMetadata.parcelAddress;
+
+        parcel.size = parcelMetadata.size;
+
+        let boostArray = parcelMetadata.boost;
+        parcel.fudBoost = boostArray[0];
+        parcel.fomoBoost = boostArray[1];
+        parcel.alphaBoost = boostArray[2];
+        parcel.kekBoost = boostArray[3];
+    }
+
     parcel.save();
 }

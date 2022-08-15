@@ -50,6 +50,8 @@ dataSources:
                 handler: handleTransfer
               - event: MintParcel(indexed address,indexed uint256)
                 handler: handleMintParcel
+              - event: ResyncParcel(uint256)
+                handler: handleResyncParcel
           file: ./src/mappings/realm.ts
     - kind: ethereum/contract
       name: TileDiamond
