@@ -282,6 +282,20 @@ type Parcel @entity {
     lastChanneledAlchemica: BigInt
     lastClaimedAlchemica: BigInt
     owner: Bytes
+
+    tokenId: BigInt
+    parcelId: String
+    coordinateX: BigInt
+    coordinateY: BigInt
+    district: BigInt
+    parcelHash: String
+
+    fudBoost: BigInt
+    fomoBoost: BigInt
+    alphaBoost: BigInt
+    kekBoost: BigInt
+
+    size: BigInt
 }
 
 type Gotchi @entity {
