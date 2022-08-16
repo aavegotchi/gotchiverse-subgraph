@@ -81,6 +81,8 @@ dataSources:
                 handler: handleMintTiles
               - event: CraftTimeReduced(indexed uint256,uint256)
                 handler: handleCraftTimeReduced
+              - event: URI(string,indexed uint256)
+                handler: handleURI
           file: ./src/mappings/tile.ts
     - kind: ethereum/contract
       name: InstallationDiamond
@@ -128,3 +130,5 @@ dataSources:
                 handler: handleUpgradeFinalized
               - event: UpgradeQueued(indexed address,indexed uint256,indexed uint256)
                 handler: handleUpgradeQueued
+              - event: URI(string,indexed uint256)
+                handler: handleURI

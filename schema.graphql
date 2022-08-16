@@ -275,6 +275,16 @@ type UpgradeFinalizedEvent @entity {
     installation: InstallationType
 }
 
+type URIEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes!
+    contract: Bytes!
+    tokenId: BigInt!
+    value: String
+}
+
 type Parcel @entity {
     id: ID!
     equippedInstallations: [InstallationType!]!
@@ -343,6 +353,7 @@ type InstallationType @entity {
     amountPrerequisites: Int
     name: String
     amount: BigInt!
+    uri: String
 }
 
 type TileType @entity {
@@ -355,6 +366,7 @@ type TileType @entity {
     alchemicaCost: [BigInt!]!
     name: String!
     amount: BigInt!
+    uri: String
 }
 
 type Stat @entity {

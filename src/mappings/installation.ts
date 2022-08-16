@@ -10,7 +10,9 @@ import {
     UpgradeInitiated,
     UpgradeQueued,
     UpgradeTimeReduced,
+    URI,
 } from "../../generated/InstallationDiamond/InstallationDiamond";
+import { URIEvent } from "../../generated/schema";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import {
     createAddInstallationType,
@@ -249,4 +251,27 @@ export function handleUpgradeFinalized(event: UpgradeFinalized): void {
 export function handleUpgradeQueued(event: UpgradeQueued): void {
     let eventEntity = createUpgradeQueuedEvent(event);
     eventEntity.save();
+}
+
+export function handleURI(event: URI): void {
+    // create event
+    let id =
+        event.transaction.from.toHexString() +
+        "-" +
+        event.params._tokenId.toString() +
+        "-" +
+        event.block.number.toString();
+    let eventEntity = new URIEvent(id);
+    eventEntity.transaction = event.transaction.hash;
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+    eventEntity.contract = event.address;
+    eventEntity.value = event.params._value;
+    eventEntity.tokenId = event.params._tokenId;
+    eventEntity.save();
+
+    // update installationtype
+    let installation = getOrCreateInstallationType(event.params._tokenId);
+    installation.uri = event.params._value;
+    installation.save();
 }

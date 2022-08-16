@@ -1,6 +1,11 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 import { CraftTimeReduced } from "../../generated/InstallationDiamond/InstallationDiamond";
-import { MintTile, MintTiles } from "../../generated/TileDiamond/TileDiamond";
+import { URIEvent } from "../../generated/schema";
+import {
+    MintTile,
+    MintTiles,
+    URI,
+} from "../../generated/TileDiamond/TileDiamond";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import { createCraftTimeReducedEvent } from "../helper/installation";
 import { getStat, updateAlchemicaSpendOnTiles } from "../helper/stats";
@@ -89,4 +94,27 @@ export function handleCraftTimeReduced(event: CraftTimeReduced): void {
     userStats.gltrSpendOnCrafts = userStats.gltrSpendOnCrafts!.plus(gltrSpend);
     userStats.gltrSpendTotal = userStats.gltrSpendTotal!.plus(gltrSpend);
     userStats.save();
+}
+
+export function handleURI(event: URI): void {
+    // create event
+    let id =
+        event.transaction.from.toHexString() +
+        "-" +
+        event.params._tokenId.toString() +
+        "-" +
+        event.block.number.toString();
+    let eventEntity = new URIEvent(id);
+    eventEntity.transaction = event.transaction.hash;
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+    eventEntity.contract = event.address;
+    eventEntity.value = event.params._value;
+    eventEntity.tokenId = event.params._tokenId;
+    eventEntity.save();
+
+    // update tile
+    let tile = getOrCreateTileType(event.params._tokenId);
+    tile.uri = event.params._value;
+    tile.save();
 }
