@@ -20,6 +20,8 @@ import {
     SetAavegotchiName,
     SpendSkillpoints,
     Transfer,
+    WhitelistCreated,
+    WhitelistUpdated,
     Xingyun,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
@@ -30,6 +32,7 @@ import {
     STATUS_PORTAL_OPENED,
 } from "../helper/constants";
 import {
+    createOrUpdateWhitelist,
     getOrCreateAavegotchi,
     getOrCreateClaimedToken,
     getOrCreateGotchiLending,
@@ -242,4 +245,14 @@ export function handleItemModifiersSet(event: ItemModifiersSet): void {
         event.params._rarityScoreModifier
     );
     itemType.save();
+}
+
+export function handleWhitelistCreated(event: WhitelistCreated): void {
+    let whitelist = getOrCreateWhitelist(event.params.whitelistId, event);
+    whitelist?.save();
+}
+
+export function handleWhitelistUpdated(event: WhitelistUpdated): void {
+    let whitelist = createOrUpdateWhitelist(event.params.whitelistId, event);
+    whitelist?.save();
 }
