@@ -1,4 +1,18 @@
 # Events
+type BuyPortalsEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    contract: Bytes
+    transaction: Bytes
+
+    from: Bytes
+    numAavegotchisToPurchase: Int
+    to: Bytes
+    totalPrice: BigInt
+    tokenId: BigInt
+}
+
 type TransferEvent @entity {
     id: ID!
     block: BigInt!

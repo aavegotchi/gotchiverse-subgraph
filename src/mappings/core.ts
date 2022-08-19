@@ -32,6 +32,7 @@ import {
     STATUS_PORTAL_OPENED,
 } from "../helper/constants";
 import {
+    createBuyPortalsEvent,
     createOrUpdateWhitelist,
     getOrCreateAavegotchi,
     getOrCreateClaimedToken,
@@ -41,6 +42,8 @@ import {
 } from "../helper/core";
 
 export function handleBuyPortals(event: BuyPortals): void {
+    createBuyPortalsEvent(event);
+
     let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
     gotchi.status = STATUS_PORTAL_CLOSED;
     gotchi.save();
@@ -57,7 +60,6 @@ export function handlePortalOpened(event: PortalOpened): void {
 }
 export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
     let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
-
     let contract = AavegotchiDiamond.bind(event.address);
     let result = contract.try_getAavegotchi(event.params._tokenId);
     if (result.value) {
