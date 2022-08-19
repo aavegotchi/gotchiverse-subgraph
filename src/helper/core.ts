@@ -8,6 +8,7 @@ import {
     ExperienceTransfer,
     GrantExperience,
     MintPortals,
+    RemoveExperience,
     SpendSkillpoints,
     Xingyun,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
@@ -23,6 +24,7 @@ import {
     GrantExperienceEvent,
     ItemType,
     MintPortalsEvent,
+    RemoveExperienceEvent,
     SpendSkillpointsEvent,
     Whitelist,
     XingyunEvent,
@@ -251,6 +253,24 @@ export function createGrantExperienceEvent(event: GrantExperience): void {
         event.block.number.toString();
 
     let eventEntity = new GrantExperienceEvent(id);
+    eventEntity.transaction = event.transaction.hash;
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+    eventEntity.contract = event.address;
+
+    eventEntity.tokenIds = event.params._tokenIds;
+    eventEntity.xpValues = event.params._xpValues;
+
+    eventEntity.save();
+}
+
+export function createRemoveExperienceEvent(event: RemoveExperience): void {
+    let id =
+        event.transaction.hash.toHexString() +
+        "_" +
+        event.block.number.toString();
+
+    let eventEntity = new RemoveExperienceEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;

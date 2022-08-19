@@ -40,6 +40,7 @@ import {
     createGrantExperienceEvent,
     createMintPortalsEvent,
     createOrUpdateWhitelist,
+    createRemoveExperienceEvent,
     createSpendSkillpointsEvent,
     createXingyunEvent,
     getOrCreateAavegotchi,
@@ -156,6 +157,8 @@ export function handleMintPortals(event: MintPortals): void {
 }
 
 export function handleRemoveExperience(event: RemoveExperience): void {
+    createRemoveExperienceEvent(event);
+
     for (let i = 0; i < event.params._tokenIds.length; i++) {
         let gotchi = getOrCreateAavegotchi(
             event.params._tokenIds[i].toString()
