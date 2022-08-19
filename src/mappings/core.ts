@@ -35,6 +35,7 @@ import {
     createBuyPortalsEvent,
     createClaimAavegotchiEvent,
     createEquipWearablesEvent,
+    createGrantExperienceEvent,
     createOrUpdateWhitelist,
     createSpendSkillpointsEvent,
     createXingyunEvent,
@@ -111,6 +112,8 @@ export function handleEquipWearables(event: EquipWearables): void {
     gotchi.save();
 }
 export function handleGrantExperience(event: GrantExperience): void {
+    createGrantExperienceEvent(event);
+
     for (let i = 0; i < event.params._tokenIds.length; i++) {
         let gotchi = getOrCreateAavegotchi(
             event.params._tokenIds[i].toString()

@@ -4,6 +4,7 @@ import {
     BuyPortals,
     ClaimAavegotchi,
     EquipWearables,
+    GrantExperience,
     SpendSkillpoints,
     Xingyun,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
@@ -14,6 +15,7 @@ import {
     ClaimedToken,
     EquipWearablesEvent,
     GotchiLending,
+    GrantExperienceEvent,
     ItemType,
     SpendSkillpointsEvent,
     Whitelist,
@@ -162,6 +164,7 @@ export function createBuyPortalsEvent(event: BuyPortals): void {
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;
+    eventEntity.contract = event.address;
 
     eventEntity.from = event.params._from;
     eventEntity.numAavegotchisToPurchase = event.params._numAavegotchisToPurchase.toI32();
@@ -182,6 +185,7 @@ export function createXingyunEvent(event: Xingyun): void {
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;
+    eventEntity.contract = event.address;
 
     eventEntity.from = event.params._from;
     eventEntity.numAavegotchisToPurchase = event.params._numAavegotchisToPurchase.toI32();
@@ -198,6 +202,7 @@ export function createClaimAavegotchiEvent(event: ClaimAavegotchi): void {
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;
+    eventEntity.contract = event.address;
 
     eventEntity.tokenId = event.params._tokenId;
     eventEntity.save();
@@ -210,6 +215,7 @@ export function createSpendSkillpointsEvent(event: SpendSkillpoints): void {
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;
+    eventEntity.contract = event.address;
 
     eventEntity.tokenId = event.params._tokenId;
     eventEntity.values = event.params._values;
@@ -220,13 +226,32 @@ export function createEquipWearablesEvent(event: EquipWearables): void {
     let id =
         event.params._tokenId.toString() + "_" + event.block.number.toString();
 
-    let eventEntity = new EquipWearablesEvent(id);  
+    let eventEntity = new EquipWearablesEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;
+    eventEntity.contract = event.address;
 
     eventEntity.tokenId = event.params._tokenId;
-    eventEntity.newWearables = event.params._newWearables
-    eventEntity.oldWearables = event.params._oldWearables
-    eventEntity.save();  
+    eventEntity.newWearables = event.params._newWearables;
+    eventEntity.oldWearables = event.params._oldWearables;
+    eventEntity.save();
+}
+
+export function createGrantExperienceEvent(event: GrantExperience): void {
+    let id =
+        event.transaction.hash.toHexString() +
+        "_" +
+        event.block.number.toString();
+
+    let eventEntity = new GrantExperienceEvent(id);
+    eventEntity.transaction = event.transaction.hash;
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+    eventEntity.contract = event.address;
+
+    eventEntity.tokenIds = event.params._tokenIds;
+    eventEntity.xpValues = event.params._xpValues;
+
+    eventEntity.save();
 }
