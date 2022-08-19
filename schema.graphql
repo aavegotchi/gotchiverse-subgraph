@@ -37,6 +37,17 @@ type ClaimAavegotchiEvent @entity {
     tokenId: BigInt
 }
 
+type SpendSkillpointsEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    contract: Bytes
+    transaction: Bytes
+
+    tokenId: BigInt
+    values: [Int!]
+}
+
 type TransferEvent @entity {
     id: ID!
     block: BigInt!

@@ -35,6 +35,7 @@ import {
     createBuyPortalsEvent,
     createClaimAavegotchiEvent,
     createOrUpdateWhitelist,
+    createSpendSkillpointsEvent,
     createXingyunEvent,
     getOrCreateAavegotchi,
     getOrCreateClaimedToken,
@@ -79,6 +80,8 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
 }
 
 export function handleSpendSkillpoints(event: SpendSkillpoints): void {
+    createSpendSkillpointsEvent(event);
+
     let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
     if (!gotchi.numericTraits) {
         gotchi.numericTraits = event.params._values.map<BigInt>((e: i32) =>
