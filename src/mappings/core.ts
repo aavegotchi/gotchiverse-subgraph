@@ -249,10 +249,14 @@ export function handleItemModifiersSet(event: ItemModifiersSet): void {
 
 export function handleWhitelistCreated(event: WhitelistCreated): void {
     let whitelist = getOrCreateWhitelist(event.params.whitelistId, event);
-    whitelist?.save();
+    if (whitelist) {
+        whitelist.save();
+    }
 }
 
 export function handleWhitelistUpdated(event: WhitelistUpdated): void {
     let whitelist = createOrUpdateWhitelist(event.params.whitelistId, event);
-    whitelist?.save();
+    if (whitelist) {
+        whitelist.save();
+    }
 }
