@@ -36,6 +36,7 @@ import {
     createBuyPortalsEvent,
     createClaimAavegotchiEvent,
     createEquipWearablesEvent,
+    createExperienceTransferEvent,
     createGrantExperienceEvent,
     createOrUpdateWhitelist,
     createSpendSkillpointsEvent,
@@ -133,6 +134,8 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
 }
 
 export function handleExperienceTransfer(event: ExperienceTransfer): void {
+    createExperienceTransferEvent(event);
+
     let fromGotchi = getOrCreateAavegotchi(
         event.params._fromTokenId.toString()
     );

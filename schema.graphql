@@ -82,6 +82,18 @@ type AavegotchiInteractEvent @entity {
     kinship: BigInt
 }
 
+type ExperienceTransferEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    contract: Bytes
+    transaction: Bytes
+
+    fromTokenId: BigInt
+    toTokenId: BigInt
+    experience: BigInt
+}
+
 type TransferEvent @entity {
     id: ID!
     block: BigInt!

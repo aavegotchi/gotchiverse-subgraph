@@ -5,6 +5,7 @@ import {
     BuyPortals,
     ClaimAavegotchi,
     EquipWearables,
+    ExperienceTransfer,
     GrantExperience,
     SpendSkillpoints,
     Xingyun,
@@ -16,6 +17,7 @@ import {
     ClaimAavegotchiEvent,
     ClaimedToken,
     EquipWearablesEvent,
+    ExperienceTransferEvent,
     GotchiLending,
     GrantExperienceEvent,
     ItemType,
@@ -274,6 +276,29 @@ export function createAavegotchiInteractEvent(event: AavegotchiInteract): void {
 
     eventEntity.tokenId = event.params._tokenId;
     eventEntity.kinship = event.params.kinship;
+
+    eventEntity.save();
+}
+
+export function createExperienceTransferEvent(event: ExperienceTransfer): void {
+    let id =
+        event.params._fromTokenId.toString() +
+        "_" +
+        event.params._toTokenId.toString() +
+        "_" +
+        event.params.experience.toString() +
+        "_" +
+        event.block.number.toString();
+
+    let eventEntity = new ExperienceTransferEvent(id);
+    eventEntity.transaction = event.transaction.hash;
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+    eventEntity.contract = event.address;
+
+    eventEntity.fromTokenId = event.params._fromTokenId;
+    eventEntity.toTokenId = event.params._toTokenId;
+    eventEntity.experience = event.params.experience;
 
     eventEntity.save();
 }
