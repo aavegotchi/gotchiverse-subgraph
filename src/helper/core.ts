@@ -11,6 +11,7 @@ import {
     RemoveExperience,
     SpendSkillpoints,
     Transfer,
+    WhitelistCreated,
     WhitelistUpdated,
     Xingyun,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
@@ -30,6 +31,7 @@ import {
     SpendSkillpointsEvent,
     TransferEvent,
     Whitelist,
+    WhitelistCreatedEvent,
     WhitelistUpdatedEvent,
     XingyunEvent,
 } from "../../generated/schema";
@@ -366,6 +368,21 @@ export const createTransferEvent = (event: Transfer): void => {
     entity.transaction = event.transaction.hash;
     entity.save();
 };
+
+export function createWhitelistCreatedEvent(event: WhitelistCreated): void {
+    let id =
+        event.params.whitelistId.toString() +
+        "-" +
+        event.block.number.toString();
+    let entity = new WhitelistCreatedEvent(id);
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.contract = event.address;
+    entity.transaction = event.transaction.hash;
+    entity.whitelistId = event.params.whitelistId;
+
+    entity.save();
+}
 
 export function createWhitelistUpdatedEvent(event: WhitelistUpdated): void {
     let id =
