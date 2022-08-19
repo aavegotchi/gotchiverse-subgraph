@@ -7,6 +7,7 @@ import {
     EquipWearables,
     ExperienceTransfer,
     GrantExperience,
+    ItemModifiersSet,
     MintPortals,
     RemoveExperience,
     SpendSkillpoints,
@@ -25,6 +26,7 @@ import {
     ExperienceTransferEvent,
     GotchiLending,
     GrantExperienceEvent,
+    ItemModifiersSetEvent,
     ItemType,
     MintPortalsEvent,
     RemoveExperienceEvent,
@@ -395,6 +397,24 @@ export function createWhitelistUpdatedEvent(event: WhitelistUpdated): void {
     entity.contract = event.address;
     entity.transaction = event.transaction.hash;
     entity.whitelistId = event.params.whitelistId;
+
+    entity.save();
+}
+
+export function createItemModifiersSetEvent(event: ItemModifiersSet): void {
+    let id =
+        event.params._wearableId.toString() +
+        "-" +
+        event.block.number.toString();
+    let entity = new ItemModifiersSetEvent(id);
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.contract = event.address;
+    entity.transaction = event.transaction.hash;
+
+    entity.rarityScoreModifier = event.params._rarityScoreModifier;
+    entity.traitModifiers = event.params._traitModifiers;
+    entity.wearableId = event.params._wearableId;
 
     entity.save();
 }

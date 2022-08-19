@@ -38,6 +38,7 @@ import {
     createEquipWearablesEvent,
     createExperienceTransferEvent,
     createGrantExperienceEvent,
+    createItemModifiersSetEvent,
     createMintPortalsEvent,
     createOrUpdateWhitelist,
     createRemoveExperienceEvent,
@@ -272,6 +273,8 @@ export function handleSetAavegotchiName(event: SetAavegotchiName): void {
 }
 
 export function handleItemModifiersSet(event: ItemModifiersSet): void {
+    createItemModifiersSetEvent(event);
+
     let itemType = getOrCreateItemType(event.params._wearableId.toString());
     itemType.traitModifiers = event.params._traitModifiers.map<BigInt>(
         (e: i32) => BigInt.fromI32(e)

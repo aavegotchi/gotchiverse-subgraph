@@ -148,6 +148,18 @@ type WhitelistUpdatedEvent @entity {
     whitelistId: BigInt
 }
 
+type ItemModifiersSetEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    contract: Bytes
+    transaction: Bytes
+
+    rarityScoreModifier: Int
+    traitModifiers: [Int!]
+    wearableId: BigInt
+}
+
 type MintParcelEvent @entity {
     id: ID!
     block: BigInt!
