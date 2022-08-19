@@ -34,6 +34,7 @@ import {
 import {
     createBuyPortalsEvent,
     createOrUpdateWhitelist,
+    createXingyunEvent,
     getOrCreateAavegotchi,
     getOrCreateClaimedToken,
     getOrCreateGotchiLending,
@@ -49,6 +50,8 @@ export function handleBuyPortals(event: BuyPortals): void {
     gotchi.save();
 }
 export function handleXingyun(event: Xingyun): void {
+    createXingyunEvent(event);
+    
     let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
     gotchi.status = STATUS_PORTAL_CLOSED;
     gotchi.save();

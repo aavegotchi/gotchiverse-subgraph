@@ -11,6 +11,7 @@ import {
     GotchiLending,
     ItemType,
     Whitelist,
+    XingyunEvent,
 } from "../../generated/schema";
 import { BIGINT_ZERO, ZERO_ADDRESS } from "./constants";
 
@@ -152,6 +153,25 @@ export function createBuyPortalsEvent(event: BuyPortals): void {
         "_" +
         event.block.number.toString();
     let eventEntity = new BuyPortalsEvent(id);
+    eventEntity.transaction = event.transaction.hash;
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+
+    eventEntity.from = event.params._from;
+    eventEntity.numAavegotchisToPurchase = event.params._numAavegotchisToPurchase.toI32();
+    eventEntity.to = event.params._to;
+    eventEntity.totalPrice = event.params._totalPrice;
+    eventEntity.save();
+}
+
+export function createXingyunEvent(event: Xingyun): void {
+    let id =
+        event.params._tokenId.toString() +
+        "_" +
+        event.params._numAavegotchisToPurchase.toString() +
+        "_" +
+        event.block.number.toString();
+    let eventEntity = new XingyunEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;
