@@ -38,6 +38,7 @@ import {
     createEquipWearablesEvent,
     createExperienceTransferEvent,
     createGrantExperienceEvent,
+    createMintPortalsEvent,
     createOrUpdateWhitelist,
     createSpendSkillpointsEvent,
     createXingyunEvent,
@@ -147,6 +148,8 @@ export function handleExperienceTransfer(event: ExperienceTransfer): void {
 }
 
 export function handleMintPortals(event: MintPortals): void {
+    createMintPortalsEvent(event);
+
     let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
     gotchi.status = STATUS_PORTAL_CLOSED;
     gotchi.save();

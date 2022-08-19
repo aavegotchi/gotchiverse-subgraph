@@ -7,6 +7,7 @@ import {
     EquipWearables,
     ExperienceTransfer,
     GrantExperience,
+    MintPortals,
     SpendSkillpoints,
     Xingyun,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
@@ -21,6 +22,7 @@ import {
     GotchiLending,
     GrantExperienceEvent,
     ItemType,
+    MintPortalsEvent,
     SpendSkillpointsEvent,
     Whitelist,
     XingyunEvent,
@@ -299,6 +301,30 @@ export function createExperienceTransferEvent(event: ExperienceTransfer): void {
     eventEntity.fromTokenId = event.params._fromTokenId;
     eventEntity.toTokenId = event.params._toTokenId;
     eventEntity.experience = event.params.experience;
+
+    eventEntity.save();
+}
+
+export function createMintPortalsEvent(event: MintPortals): void {
+    let id =
+        event.params._tokenId.toString() +
+        "_" +
+        event.params._numAavegotchisToPurchase.toString() +
+        "_" +
+        event.block.number.toString();
+
+    let eventEntity = new MintPortalsEvent(id);
+    eventEntity.transaction = event.transaction.hash;
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+    eventEntity.contract = event.address;
+
+    eventEntity.from = event.params._from;
+    eventEntity.hauntId = event.params._hauntId;
+    eventEntity.numAavegotchisToPurchase =
+        event.params._numAavegotchisToPurchase;
+    eventEntity.to = event.params._to;
+    eventEntity.tokenId = event.params._tokenId;
 
     eventEntity.save();
 }

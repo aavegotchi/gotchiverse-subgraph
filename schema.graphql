@@ -94,6 +94,20 @@ type ExperienceTransferEvent @entity {
     experience: BigInt
 }
 
+type MintPortalsEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    contract: Bytes
+    transaction: Bytes
+
+    from: Bytes
+    hauntId: BigInt
+    numAavegotchisToPurchase: BigInt
+    to: Bytes
+    tokenId: BigInt
+}
+
 type TransferEvent @entity {
     id: ID!
     block: BigInt!
