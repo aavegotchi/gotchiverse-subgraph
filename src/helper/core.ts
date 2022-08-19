@@ -10,6 +10,7 @@ import {
     MintPortals,
     RemoveExperience,
     SpendSkillpoints,
+    Transfer,
     Xingyun,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
@@ -26,6 +27,7 @@ import {
     MintPortalsEvent,
     RemoveExperienceEvent,
     SpendSkillpointsEvent,
+    TransferEvent,
     Whitelist,
     XingyunEvent,
 } from "../../generated/schema";
@@ -348,3 +350,16 @@ export function createMintPortalsEvent(event: MintPortals): void {
 
     eventEntity.save();
 }
+
+export const createTransferEvent = (event: Transfer): void => {
+    let id = event.params._tokenId.toString() + event.block.number.toString();
+    let entity = new TransferEvent(id);
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.contract = event.address;
+    entity.from = event.params._from;
+    entity.to = event.params._to;
+    entity.tokenId = event.params._tokenId;
+    entity.transaction = event.transaction.hash;
+    entity.save();
+};

@@ -42,6 +42,7 @@ import {
     createOrUpdateWhitelist,
     createRemoveExperienceEvent,
     createSpendSkillpointsEvent,
+    createTransferEvent,
     createXingyunEvent,
     getOrCreateAavegotchi,
     getOrCreateClaimedToken,
@@ -169,6 +170,8 @@ export function handleRemoveExperience(event: RemoveExperience): void {
 }
 
 export function handleTransfer(event: Transfer): void {
+    createTransferEvent(event);
+
     let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
     gotchi.owner = event.params._to;
     gotchi.originalOwner = event.params._to;
