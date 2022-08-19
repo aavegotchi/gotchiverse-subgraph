@@ -2,11 +2,13 @@ import { BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
 import {
     AavegotchiDiamond,
     BuyPortals,
+    ClaimAavegotchi,
     Xingyun,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
     Aavegotchi,
     BuyPortalsEvent,
+    ClaimAavegotchiEvent,
     ClaimedToken,
     GotchiLending,
     ItemType,
@@ -161,6 +163,7 @@ export function createBuyPortalsEvent(event: BuyPortals): void {
     eventEntity.numAavegotchisToPurchase = event.params._numAavegotchisToPurchase.toI32();
     eventEntity.to = event.params._to;
     eventEntity.totalPrice = event.params._totalPrice;
+    eventEntity.tokenId = event.params._tokenId;
     eventEntity.save();
 }
 
@@ -180,5 +183,18 @@ export function createXingyunEvent(event: Xingyun): void {
     eventEntity.numAavegotchisToPurchase = event.params._numAavegotchisToPurchase.toI32();
     eventEntity.to = event.params._to;
     eventEntity.totalPrice = event.params._totalPrice;
+    eventEntity.tokenId = event.params._tokenId;
+    eventEntity.save();
+}
+
+export function createClaimAavegotchiEvent(event: ClaimAavegotchi): void {
+    let id =
+        event.params._tokenId.toString() + "_" + event.block.number.toString();
+    let eventEntity = new ClaimAavegotchiEvent(id);
+    eventEntity.transaction = event.transaction.hash;
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+
+    eventEntity.tokenId = event.params._tokenId;
     eventEntity.save();
 }

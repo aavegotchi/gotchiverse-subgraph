@@ -33,6 +33,7 @@ import {
 } from "../helper/constants";
 import {
     createBuyPortalsEvent,
+    createClaimAavegotchiEvent,
     createOrUpdateWhitelist,
     createXingyunEvent,
     getOrCreateAavegotchi,
@@ -51,7 +52,7 @@ export function handleBuyPortals(event: BuyPortals): void {
 }
 export function handleXingyun(event: Xingyun): void {
     createXingyunEvent(event);
-    
+
     let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
     gotchi.status = STATUS_PORTAL_CLOSED;
     gotchi.save();
@@ -62,6 +63,8 @@ export function handlePortalOpened(event: PortalOpened): void {
     gotchi.save();
 }
 export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
+    createClaimAavegotchiEvent(event);
+
     let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
     let contract = AavegotchiDiamond.bind(event.address);
     let result = contract.try_getAavegotchi(event.params._tokenId);

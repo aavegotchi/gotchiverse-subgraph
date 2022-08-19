@@ -27,6 +27,16 @@ type XingyunEvent @entity {
     tokenId: BigInt
 }
 
+type ClaimAavegotchiEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    contract: Bytes
+    transaction: Bytes
+
+    tokenId: BigInt
+}
+
 type TransferEvent @entity {
     id: ID!
     block: BigInt!
