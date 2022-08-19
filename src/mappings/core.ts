@@ -43,6 +43,7 @@ import {
     createRemoveExperienceEvent,
     createSpendSkillpointsEvent,
     createTransferEvent,
+    createWhitelistUpdatedEvent,
     createXingyunEvent,
     getOrCreateAavegotchi,
     getOrCreateClaimedToken,
@@ -288,6 +289,8 @@ export function handleWhitelistCreated(event: WhitelistCreated): void {
 }
 
 export function handleWhitelistUpdated(event: WhitelistUpdated): void {
+    createWhitelistUpdatedEvent(event);
+
     let whitelist = createOrUpdateWhitelist(event.params.whitelistId, event);
     if (whitelist) {
         whitelist.save();

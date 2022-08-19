@@ -11,6 +11,7 @@ import {
     RemoveExperience,
     SpendSkillpoints,
     Transfer,
+    WhitelistUpdated,
     Xingyun,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
@@ -29,6 +30,7 @@ import {
     SpendSkillpointsEvent,
     TransferEvent,
     Whitelist,
+    WhitelistUpdatedEvent,
     XingyunEvent,
 } from "../../generated/schema";
 import { BIGINT_ZERO, ZERO_ADDRESS } from "./constants";
@@ -352,7 +354,8 @@ export function createMintPortalsEvent(event: MintPortals): void {
 }
 
 export const createTransferEvent = (event: Transfer): void => {
-    let id = event.params._tokenId.toString() + event.block.number.toString();
+    let id =
+        event.params._tokenId.toString() + "-" + event.block.number.toString();
     let entity = new TransferEvent(id);
     entity.block = event.block.number;
     entity.timestamp = event.block.timestamp;
@@ -363,3 +366,18 @@ export const createTransferEvent = (event: Transfer): void => {
     entity.transaction = event.transaction.hash;
     entity.save();
 };
+
+export function createWhitelistUpdatedEvent(event: WhitelistUpdated): void {
+    let id =
+        event.params.whitelistId.toString() +
+        "-" +
+        event.block.number.toString();
+    let entity = new WhitelistUpdatedEvent(id);
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.contract = event.address;
+    entity.transaction = event.transaction.hash;
+    entity.whitelistId = event.params.whitelistId;
+
+    entity.save();
+}

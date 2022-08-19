@@ -130,6 +130,15 @@ type TransferEvent @entity {
     transaction: Bytes
 }
 
+type WhitelistUpdatedEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    contract: Bytes
+    transaction: Bytes
+    whitelistId: BigInt
+}
+
 type MintParcelEvent @entity {
     id: ID!
     block: BigInt!
