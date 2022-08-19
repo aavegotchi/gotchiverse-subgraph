@@ -1,6 +1,7 @@
 import { BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
 import {
     AavegotchiDiamond,
+    AavegotchiInteract,
     BuyPortals,
     ClaimAavegotchi,
     EquipWearables,
@@ -10,6 +11,7 @@ import {
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
     Aavegotchi,
+    AavegotchiInteractEvent,
     BuyPortalsEvent,
     ClaimAavegotchiEvent,
     ClaimedToken,
@@ -252,6 +254,26 @@ export function createGrantExperienceEvent(event: GrantExperience): void {
 
     eventEntity.tokenIds = event.params._tokenIds;
     eventEntity.xpValues = event.params._xpValues;
+
+    eventEntity.save();
+}
+
+export function createAavegotchiInteractEvent(event: AavegotchiInteract): void {
+    let id =
+        event.params._tokenId.toString() +
+        "_" +
+        event.params.kinship.toString() +
+        "_" +
+        event.block.number.toString();
+
+    let eventEntity = new AavegotchiInteractEvent(id);
+    eventEntity.transaction = event.transaction.hash;
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+    eventEntity.contract = event.address;
+
+    eventEntity.tokenId = event.params._tokenId;
+    eventEntity.kinship = event.params.kinship;
 
     eventEntity.save();
 }

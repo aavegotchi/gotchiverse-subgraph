@@ -32,6 +32,7 @@ import {
     STATUS_PORTAL_OPENED,
 } from "../helper/constants";
 import {
+    createAavegotchiInteractEvent,
     createBuyPortalsEvent,
     createClaimAavegotchiEvent,
     createEquipWearablesEvent,
@@ -124,8 +125,11 @@ export function handleGrantExperience(event: GrantExperience): void {
 }
 
 export function handleAavegotchiInteract(event: AavegotchiInteract): void {
+    createAavegotchiInteractEvent(event);
+
     let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
     gotchi.kinship = event.params.kinship;
+    gotchi.save();
 }
 
 export function handleExperienceTransfer(event: ExperienceTransfer): void {

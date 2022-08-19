@@ -71,6 +71,17 @@ type GrantExperienceEvent @entity {
     xpValues: [BigInt!]
 }
 
+type AavegotchiInteractEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    contract: Bytes
+    transaction: Bytes
+
+    tokenId: BigInt
+    kinship: BigInt
+}
+
 type TransferEvent @entity {
     id: ID!
     block: BigInt!
