@@ -3,6 +3,7 @@ import {
     AavegotchiDiamond,
     BuyPortals,
     ClaimAavegotchi,
+    EquipWearables,
     SpendSkillpoints,
     Xingyun,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
@@ -11,6 +12,7 @@ import {
     BuyPortalsEvent,
     ClaimAavegotchiEvent,
     ClaimedToken,
+    EquipWearablesEvent,
     GotchiLending,
     ItemType,
     SpendSkillpointsEvent,
@@ -212,4 +214,19 @@ export function createSpendSkillpointsEvent(event: SpendSkillpoints): void {
     eventEntity.tokenId = event.params._tokenId;
     eventEntity.values = event.params._values;
     eventEntity.save();
+}
+
+export function createEquipWearablesEvent(event: EquipWearables): void {
+    let id =
+        event.params._tokenId.toString() + "_" + event.block.number.toString();
+
+    let eventEntity = new EquipWearablesEvent(id);  
+    eventEntity.transaction = event.transaction.hash;
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+
+    eventEntity.tokenId = event.params._tokenId;
+    eventEntity.newWearables = event.params._newWearables
+    eventEntity.oldWearables = event.params._oldWearables
+    eventEntity.save();  
 }

@@ -34,6 +34,7 @@ import {
 import {
     createBuyPortalsEvent,
     createClaimAavegotchiEvent,
+    createEquipWearablesEvent,
     createOrUpdateWhitelist,
     createSpendSkillpointsEvent,
     createXingyunEvent,
@@ -101,6 +102,8 @@ export function handleSpendSkillpoints(event: SpendSkillpoints): void {
     gotchi.save();
 }
 export function handleEquipWearables(event: EquipWearables): void {
+    createEquipWearablesEvent(event);
+
     let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
     gotchi.equippedWearables = event.params._newWearables.map<BigInt>(
         (e: i32) => BigInt.fromI32(e)

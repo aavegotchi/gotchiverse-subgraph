@@ -48,6 +48,18 @@ type SpendSkillpointsEvent @entity {
     values: [Int!]
 }
 
+type EquipWearablesEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    contract: Bytes
+    transaction: Bytes
+
+    tokenId: BigInt
+    oldWearables: [Int!]
+    newWearables: [Int!]
+}
+
 type TransferEvent @entity {
     id: ID!
     block: BigInt!
