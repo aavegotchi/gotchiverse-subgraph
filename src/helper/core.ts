@@ -7,10 +7,16 @@ import {
     ClaimAavegotchi,
     EquipWearables,
     ExperienceTransfer,
+    GotchiLendingAdded,
+    GotchiLendingCanceled,
+    GotchiLendingClaimed,
+    GotchiLendingEnded,
+    GotchiLendingExecuted,
     GrantExperience,
     ItemModifiersSet,
     MintPortals,
     RemoveExperience,
+    SetAavegotchiName,
     SpendSkillpoints,
     Transfer,
     WhitelistCreated,
@@ -27,11 +33,17 @@ import {
     EquipWearablesEvent,
     ExperienceTransferEvent,
     GotchiLending,
+    GotchiLendingAddedEvent,
+    GotchiLendingCanceledEvent,
+    GotchiLendingClaimedEvent,
+    GotchiLendingEndedEvent,
+    GotchiLendingExecutedEvent,
     GrantExperienceEvent,
     ItemModifiersSetEvent,
     ItemType,
     MintPortalsEvent,
     RemoveExperienceEvent,
+    SetAavegotchiNameEvent,
     SpendSkillpointsEvent,
     TransferEvent,
     Whitelist,
@@ -383,6 +395,7 @@ export function createWhitelistCreatedEvent(event: WhitelistCreated): void {
     entity.timestamp = event.block.timestamp;
     entity.contract = event.address;
     entity.transaction = event.transaction.hash;
+
     entity.whitelistId = event.params.whitelistId;
 
     entity.save();
@@ -398,6 +411,7 @@ export function createWhitelistUpdatedEvent(event: WhitelistUpdated): void {
     entity.timestamp = event.block.timestamp;
     entity.contract = event.address;
     entity.transaction = event.transaction.hash;
+
     entity.whitelistId = event.params.whitelistId;
 
     entity.save();
@@ -433,6 +447,156 @@ export function createAddItemTypeEvent(event: AddItemType): void {
     entity.transaction = event.transaction.hash;
 
     entity.itemType = event.params._itemType.svgId.toString();
+
+    entity.save();
+}
+
+export function createSetAavegotchiNameEvent(event: SetAavegotchiName): void {
+    let id =
+        event.params._tokenId.toString() + "-" + event.block.number.toString();
+    let entity = new SetAavegotchiNameEvent(id);
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.contract = event.address;
+    entity.transaction = event.transaction.hash;
+
+    entity.tokenId = event.params._tokenId;
+    entity.oldName = event.params._oldName;
+    entity.newName = event.params._newName;
+    entity.save();
+}
+
+export function createGotchiLendingAddedEvent(event: GotchiLendingAdded): void {
+    let id =
+        event.params.listingId.toString() + "-" + event.block.number.toString();
+
+    let entity = new GotchiLendingAddedEvent(id);
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.contract = event.address;
+    entity.transaction = event.transaction.hash;
+
+    entity.initialCost = event.params.initialCost;
+    entity.lender = event.params.lender;
+    entity.listingId = event.params.listingId;
+    entity.originalOwner = event.params.originalOwner;
+    entity.period = event.params.period;
+    entity.revenueSplit = event.params.revenueSplit;
+    entity.revenueTokens = event.params.revenueTokens.map<Bytes>(e => e);
+    entity.thirdParty = event.params.thirdParty;
+    entity.timeCreated = event.params.timeCreated;
+    entity.tokenId = event.params.tokenId;
+    entity.whitelistId = event.params.whitelistId;
+
+    entity.save();
+}
+
+export function createGotchiLendingClaimedEvent(
+    event: GotchiLendingClaimed
+): void {
+    let id =
+        event.params.listingId.toString() + "-" + event.block.number.toString();
+
+    let entity = new GotchiLendingClaimedEvent(id);
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.contract = event.address;
+    entity.transaction = event.transaction.hash;
+
+    entity.amounts = event.params.amounts;
+    entity.borrower = event.params.borrower;
+    entity.initialCost = event.params.initialCost;
+    entity.lender = event.params.lender;
+    entity.listingId = event.params.listingId;
+    entity.originalOwner = event.params.originalOwner;
+    entity.period = event.params.period;
+    entity.revenueSplit = event.params.revenueSplit;
+    entity.revenueTokens = event.params.revenueTokens.map<Bytes>(e => e);
+    entity.thirdParty = event.params.thirdParty;
+    entity.timeClaimed = event.params.timeClaimed;
+    entity.tokenId = event.params.tokenId;
+    entity.whitelistId = event.params.whitelistId;
+
+    entity.save();
+}
+
+export function createGotchiLendingCanceledEvent(
+    event: GotchiLendingCanceled
+): void {
+    let id =
+        event.params.listingId.toString() + "-" + event.block.number.toString();
+
+    let entity = new GotchiLendingCanceledEvent(id);
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.contract = event.address;
+    entity.transaction = event.transaction.hash;
+
+    entity.initialCost = event.params.initialCost;
+    entity.lender = event.params.lender;
+    entity.listingId = event.params.listingId;
+    entity.originalOwner = event.params.originalOwner;
+    entity.period = event.params.period;
+    entity.revenueSplit = event.params.revenueSplit;
+    entity.revenueTokens = event.params.revenueTokens.map<Bytes>(e => e);
+    entity.thirdParty = event.params.thirdParty;
+    entity.timeCanceled = event.params.timeCanceled;
+    entity.tokenId = event.params.tokenId;
+    entity.whitelistId = event.params.whitelistId;
+
+    entity.save();
+}
+
+export function createGotchiLendingExecutedEvent(
+    event: GotchiLendingExecuted
+): void {
+    let id =
+        event.params.listingId.toString() + "-" + event.block.number.toString();
+
+    let entity = new GotchiLendingExecutedEvent(id);
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.contract = event.address;
+    entity.transaction = event.transaction.hash;
+
+    entity.borrower = event.params.borrower;
+    entity.initialCost = event.params.initialCost;
+    entity.lender = event.params.lender;
+    entity.listingId = event.params.listingId;
+    entity.originalOwner = event.params.originalOwner;
+    entity.period = event.params.period;
+    entity.revenueSplit = event.params.revenueSplit;
+    entity.revenueTokens = event.params.revenueTokens.map<Bytes>(e => e);
+    entity.thirdParty = event.params.thirdParty;
+    entity.timeAgreed = event.params.timeAgreed;
+    entity.tokenId = event.params.tokenId;
+    entity.whitelistId = event.params.whitelistId;
+
+    entity.save();
+}
+
+export function createGotchiLendingEndedEvent(event: GotchiLendingEnded): void {
+    let id =
+        event.params.listingId.toString() + "-" + event.block.number.toString();
+
+    let entity = new GotchiLendingEndedEvent(id);
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.contract = event.address;
+    entity.transaction = event.transaction.hash;
+
+    entity.borrower = event.params.borrower;
+    entity.initialCost = event.params.initialCost;
+    entity.lender = event.params.lender;
+    entity.listingId = event.params.listingId;
+    entity.originalOwner = event.params.originalOwner;
+    entity.period = event.params.period;
+    entity.revenueSplit = event.params.revenueSplit;
+    entity.revenueTokens = event.params.revenueTokens.map<Bytes>(e => e);
+    entity.thirdParty = event.params.thirdParty;
+    entity.timeEnded = event.params.timeEnded;
+    entity.tokenId = event.params.tokenId;
+    entity.whitelistId = event.params.whitelistId;
 
     entity.save();
 }

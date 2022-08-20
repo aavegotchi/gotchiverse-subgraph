@@ -93,6 +93,18 @@ type AavegotchiInteractEvent @entity {
     kinship: BigInt
 }
 
+type SetAavegotchiNameEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    contract: Bytes
+    transaction: Bytes
+
+    tokenId: BigInt
+    oldName: String
+    newName: String
+}
+
 type ExperienceTransferEvent @entity {
     id: ID!
     block: BigInt!
@@ -145,6 +157,114 @@ type WhitelistUpdatedEvent @entity {
     timestamp: BigInt!
     contract: Bytes
     transaction: Bytes
+    whitelistId: BigInt
+}
+
+type GotchiLendingAddedEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    contract: Bytes
+    transaction: Bytes
+
+    initialCost: BigInt
+    lender: Bytes
+    listingId: BigInt
+    originalOwner: Bytes
+    period: BigInt
+    revenueSplit: [Int!]
+    revenueTokens: [Bytes!]
+    thirdParty: Bytes
+    timeCreated: BigInt
+    tokenId: BigInt
+    whitelistId: BigInt
+}
+
+type GotchiLendingClaimedEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    contract: Bytes
+    transaction: Bytes
+
+    amounts: [BigInt!]
+    borrower: Bytes
+    initialCost: BigInt
+    lender: Bytes
+    listingId: BigInt
+    originalOwner: Bytes
+    period: BigInt
+    revenueSplit: [Int!]
+    revenueTokens: [Bytes!]
+    thirdParty: Bytes
+    timeClaimed: BigInt
+    tokenId: BigInt
+    whitelistId: BigInt
+}
+
+type GotchiLendingExecutedEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    contract: Bytes
+    transaction: Bytes
+
+    amounts: [BigInt!]
+    borrower: Bytes
+    initialCost: BigInt
+    lender: Bytes
+    listingId: BigInt
+    originalOwner: Bytes
+    period: BigInt
+    revenueSplit: [Int!]
+    revenueTokens: [Bytes!]
+    thirdParty: Bytes
+    timeAgreed: BigInt
+    tokenId: BigInt
+    whitelistId: BigInt
+}
+
+type GotchiLendingEndedEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    contract: Bytes
+    transaction: Bytes
+
+    amounts: [BigInt!]
+    borrower: Bytes
+    initialCost: BigInt
+    lender: Bytes
+    listingId: BigInt
+    originalOwner: Bytes
+    period: BigInt
+    revenueSplit: [Int!]
+    revenueTokens: [Bytes!]
+    thirdParty: Bytes
+    timeEnded: BigInt
+    tokenId: BigInt
+    whitelistId: BigInt
+}
+
+type GotchiLendingCanceledEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    contract: Bytes
+    transaction: Bytes
+
+    amounts: [BigInt!]
+    borrower: Bytes
+    initialCost: BigInt
+    lender: Bytes
+    listingId: BigInt
+    originalOwner: Bytes
+    period: BigInt
+    revenueSplit: [Int!]
+    revenueTokens: [Bytes!]
+    thirdParty: Bytes
+    timeCanceled: BigInt
+    tokenId: BigInt
     whitelistId: BigInt
 }
 

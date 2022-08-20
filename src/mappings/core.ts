@@ -38,11 +38,17 @@ import {
     createClaimAavegotchiEvent,
     createEquipWearablesEvent,
     createExperienceTransferEvent,
+    createGotchiLendingAddedEvent,
+    createGotchiLendingCanceledEvent,
+    createGotchiLendingClaimedEvent,
+    createGotchiLendingEndedEvent,
+    createGotchiLendingExecutedEvent,
     createGrantExperienceEvent,
     createItemModifiersSetEvent,
     createMintPortalsEvent,
     createOrUpdateWhitelist,
     createRemoveExperienceEvent,
+    createSetAavegotchiNameEvent,
     createSpendSkillpointsEvent,
     createTransferEvent,
     createWhitelistCreatedEvent,
@@ -183,6 +189,8 @@ export function handleTransfer(event: Transfer): void {
 }
 
 export function handleGotchiLendingAdded(event: GotchiLendingAdded): void {
+    createGotchiLendingAddedEvent(event);
+
     let lending = getOrCreateGotchiLending(event.params.listingId);
     lending.upfrontCost = event.params.initialCost;
     lending.rentDuration = event.params.period;
@@ -214,6 +222,8 @@ export function handleGotchiLendingAdded(event: GotchiLendingAdded): void {
 }
 
 export function handleGotchiLendingClaimed(event: GotchiLendingClaimed): void {
+    createGotchiLendingClaimedEvent(event);
+
     let lending = getOrCreateGotchiLending(event.params.listingId);
     for (let i = 0; i < event.params.revenueTokens.length; i++) {
         let ctoken = getOrCreateClaimedToken(
@@ -230,6 +240,8 @@ export function handleGotchiLendingClaimed(event: GotchiLendingClaimed): void {
 export function handleGotchiLendingCanceled(
     event: GotchiLendingCanceled
 ): void {
+    createGotchiLendingCanceledEvent(event);
+
     let lending = getOrCreateGotchiLending(event.params.listingId);
     lending.cancelled = true;
     lending.save();
@@ -238,6 +250,8 @@ export function handleGotchiLendingCanceled(
 export function handleGotchiLendingExecuted(
     event: GotchiLendingExecuted
 ): void {
+    createGotchiLendingExecutedEvent(event);
+
     let lending = getOrCreateGotchiLending(event.params.listingId);
     lending.timeAgreed = event.params.timeAgreed;
     lending.save();
@@ -248,6 +262,8 @@ export function handleGotchiLendingExecuted(
 }
 
 export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
+    createGotchiLendingEndedEvent(event);
+
     let lending = getOrCreateGotchiLending(event.params.listingId);
     lending.completed = true;
     lending.timeEnded = event.block.timestamp;
@@ -283,6 +299,8 @@ export function handleAddItemType(event: AddItemType): void {
 }
 
 export function handleSetAavegotchiName(event: SetAavegotchiName): void {
+    createSetAavegotchiNameEvent(event);
+
     let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
     gotchi.name = event.params._newName;
     gotchi.save();
