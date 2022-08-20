@@ -345,6 +345,15 @@ type AddInstallationTypeEvent @entity {
     installationType: InstallationType
 }
 
+type AddItemTypeEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    contract: Bytes
+    transaction: Bytes
+    itemType: ItemType
+}
+
 type EditInstallationTypeEvent @entity {
     id: ID!
     block: BigInt!
@@ -627,8 +636,25 @@ type ClaimedToken @entity {
 
 type ItemType @entity {
     id: ID!
-    traitModifiers: [BigInt!]
-    rarityScoreModifier: BigInt
-    name: String
+    allowedCollaterals: [Int!]
+    author: String
+    canBeTransferred: Boolean
+    canPurchaseWithGhst: Boolean
+    category: Int
+    description: String
+    dimensionsX: Int
+    dimensionsY: Int
+    dimensionsHeight: Int
+    dimensionsWidth: Int
     experienceBonus: BigInt
+    ghstPrice: BigInt
+    kinshipBonus: Int
+    maxQuantity: BigInt
+    minLevel: Int
+    name: String
+    rarityScoreModifier: Int
+    slotPositions: [Boolean!]
+    svgId: BigInt
+    totalQuantity: BigInt
+    traitModifiers: [Int!]
 }

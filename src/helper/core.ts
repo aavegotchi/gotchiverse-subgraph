@@ -2,6 +2,7 @@ import { BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
 import {
     AavegotchiDiamond,
     AavegotchiInteract,
+    AddItemType,
     BuyPortals,
     ClaimAavegotchi,
     EquipWearables,
@@ -19,6 +20,7 @@ import {
 import {
     Aavegotchi,
     AavegotchiInteractEvent,
+    AddItemTypeEvent,
     BuyPortalsEvent,
     ClaimAavegotchiEvent,
     ClaimedToken,
@@ -415,6 +417,22 @@ export function createItemModifiersSetEvent(event: ItemModifiersSet): void {
     entity.rarityScoreModifier = event.params._rarityScoreModifier;
     entity.traitModifiers = event.params._traitModifiers;
     entity.wearableId = event.params._wearableId;
+
+    entity.save();
+}
+
+export function createAddItemTypeEvent(event: AddItemType): void {
+    let id =
+        event.params._itemType.svgId.toString() +
+        "-" +
+        event.block.number.toString();
+    let entity = new AddItemTypeEvent(id);
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.contract = event.address;
+    entity.transaction = event.transaction.hash;
+
+    entity.itemType = event.params._itemType.svgId.toString();
 
     entity.save();
 }

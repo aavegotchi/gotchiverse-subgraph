@@ -33,6 +33,7 @@ import {
 } from "../helper/constants";
 import {
     createAavegotchiInteractEvent,
+    createAddItemTypeEvent,
     createBuyPortalsEvent,
     createClaimAavegotchiEvent,
     createEquipWearablesEvent,
@@ -254,15 +255,30 @@ export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
 }
 
 export function handleAddItemType(event: AddItemType): void {
+    createAddItemTypeEvent(event);
+
     let item = getOrCreateItemType(event.params._itemType.svgId.toString());
-    item.rarityScoreModifier = BigInt.fromI32(
-        event.params._itemType.rarityScoreModifier
-    );
-    item.traitModifiers = event.params._itemType.traitModifiers.map<BigInt>(
-        (e: i32) => BigInt.fromI32(e)
-    );
-    item.name = event.params._itemType.name;
+    item.allowedCollaterals = event.params._itemType.allowedCollaterals;
+    item.author = event.params._itemType.author;
+    item.canBeTransferred = event.params._itemType.canBeTransferred;
+    item.canPurchaseWithGhst = event.params._itemType.canPurchaseWithGhst;
+    item.category = event.params._itemType.category;
+    item.description = event.params._itemType.description;
+    item.dimensionsX = event.params._itemType.dimensions.x;
+    item.dimensionsY = event.params._itemType.dimensions.y;
+    item.dimensionsWidth = event.params._itemType.dimensions.width;
+    item.dimensionsHeight = event.params._itemType.dimensions.height;
     item.experienceBonus = event.params._itemType.experienceBonus;
+    item.ghstPrice = event.params._itemType.ghstPrice;
+    item.kinshipBonus = event.params._itemType.kinshipBonus;
+    item.maxQuantity = event.params._itemType.maxQuantity;
+    item.minLevel = event.params._itemType.minLevel;
+    item.name = event.params._itemType.name;
+    item.rarityScoreModifier = event.params._itemType.rarityScoreModifier;
+    item.slotPositions = event.params._itemType.slotPositions;
+    item.svgId = event.params._itemType.svgId;
+    item.totalQuantity = event.params._itemType.totalQuantity;
+    item.traitModifiers = event.params._itemType.traitModifiers;
     item.save();
 }
 
@@ -276,12 +292,8 @@ export function handleItemModifiersSet(event: ItemModifiersSet): void {
     createItemModifiersSetEvent(event);
 
     let itemType = getOrCreateItemType(event.params._wearableId.toString());
-    itemType.traitModifiers = event.params._traitModifiers.map<BigInt>(
-        (e: i32) => BigInt.fromI32(e)
-    );
-    itemType.rarityScoreModifier = BigInt.fromI32(
-        event.params._rarityScoreModifier
-    );
+    itemType.traitModifiers = event.params._traitModifiers;
+    itemType.rarityScoreModifier = event.params._rarityScoreModifier;
     itemType.save();
 }
 
