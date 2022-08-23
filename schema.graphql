@@ -337,7 +337,7 @@ type InstallationType @entity {
     id: ID!
     width: Int
     height: Int
-    installationType: BigInt
+    installationType: Int
     level: Int
     alchemicaType: Int
     spillRadius: BigInt
