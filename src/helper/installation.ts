@@ -197,6 +197,7 @@ export function updateInstallationType(
     }
     let newType = result.value;
     installationType.width = newType.width;
+    installationType.installationType = newType.installationType;
     installationType.height = newType.height;
     installationType.level = newType.level;
     installationType.alchemicaType = newType.alchemicaType;
