@@ -7,6 +7,7 @@ import {
     ExitAlchemica,
     InstallationUpgraded,
     MintParcel,
+    NFTDisplayStatusUpdated,
     Transfer,
     UnequipInstallation,
     UnequipTile,
@@ -20,6 +21,7 @@ import {
     Gotchi,
     InstallationUpgradedEvent,
     MintParcelEvent,
+    NFTDisplayStatus,
     Parcel,
     TransferEvent,
     UnequipInstallationEvent,
@@ -311,5 +313,20 @@ export const createParcelTransferEvent = (event: Transfer): TransferEvent => {
     entity.to = event.params._to;
     entity.tokenId = event.params._tokenId;
     entity.transaction = event.transaction.hash;
+    return entity;
+};
+
+export const getOrCreatetypeNFTDisplayStatus = (
+    event: NFTDisplayStatusUpdated
+): NFTDisplayStatus => {
+    let id =
+        event.params._token.toHexString() +
+        "-" +
+        event.params._chainId.toString();
+    let entity = NFTDisplayStatus.load(id);
+    if (!entity) {
+        entity = new NFTDisplayStatus(id);
+    }
+
     return entity;
 };

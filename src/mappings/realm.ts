@@ -33,6 +33,7 @@ import {
     createUnequipTileEvent,
     getOrCreateGotchi,
     getOrCreateParcel,
+    getOrCreatetypeNFTDisplayStatus,
     removeParcelInstallation,
     removeParcelTile,
 } from "../helper/realm";
@@ -422,4 +423,10 @@ export function handleResyncParcel(event: ResyncParcel): void {
 
 export function handleNFTDisplayStatusUpdated(
     event: NFTDisplayStatusUpdated
-): void {}
+): void {
+    let entity = getOrCreatetypeNFTDisplayStatus(event);
+    entity.chainId = event.params._chainId.toI32();
+    entity.token = event.params._token;
+    entity.allowed = event.params._allowed;
+    entity.save();
+}
