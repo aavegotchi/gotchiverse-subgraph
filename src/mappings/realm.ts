@@ -26,6 +26,7 @@ import {
     createExitAlchemicaEvent,
     createInstallationUpgradedEvent,
     createMintParcelEvent,
+    createNFTDisplayStatusUpdatedEvent,
     createParcelInstallation,
     createParcelTile,
     createParcelTransferEvent,
@@ -424,6 +425,9 @@ export function handleResyncParcel(event: ResyncParcel): void {
 export function handleNFTDisplayStatusUpdated(
     event: NFTDisplayStatusUpdated
 ): void {
+    let eventEntity = createNFTDisplayStatusUpdatedEvent(event);
+    eventEntity.save();
+
     let entity = getOrCreatetypeNFTDisplayStatus(event);
     entity.chainId = event.params._chainId.toI32();
     entity.token = event.params._token;

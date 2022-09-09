@@ -285,6 +285,18 @@ type URIEvent @entity {
     value: String
 }
 
+type NFTDisplayStatusUpdatedEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes!
+    contract: Bytes!
+
+    token: Bytes
+    chainId: Int
+    allowed: Boolean
+}
+
 type Parcel @entity {
     id: ID!
     equippedInstallations: [InstallationType!]!

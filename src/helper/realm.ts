@@ -22,6 +22,7 @@ import {
     InstallationUpgradedEvent,
     MintParcelEvent,
     NFTDisplayStatus,
+    NFTDisplayStatusUpdatedEvent,
     Parcel,
     TransferEvent,
     UnequipInstallationEvent,
@@ -328,5 +329,25 @@ export const getOrCreatetypeNFTDisplayStatus = (
         entity = new NFTDisplayStatus(id);
     }
 
+    return entity;
+};
+
+export const createNFTDisplayStatusUpdatedEvent = (
+    event: NFTDisplayStatusUpdated
+): NFTDisplayStatusUpdatedEvent => {
+    let id =
+        event.params._token.toHexString() +
+        "-" +
+        event.params._chainId.toString() +
+        "-" +
+        event.block.number.toString();
+    let entity = new NFTDisplayStatusUpdatedEvent(id);
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.contract = event.address;
+    entity.token = event.params._token;
+    entity.chainId = event.params._chainId.toI32();
+    entity.allowed = event.params._allowed;
+    entity.transaction = event.transaction.hash;
     return entity;
 };
