@@ -11,6 +11,7 @@ import {
     UnequipTile,
     ResyncParcel,
     RealmDiamond,
+    NFTDisplayStatusUpdated,
 } from "../../generated/RealmDiamond/RealmDiamond";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import {
@@ -418,3 +419,7 @@ export function handleResyncParcel(event: ResyncParcel): void {
 
     parcel.save();
 }
+
+export function handleNFTDisplayStatusUpdated(
+    event: NFTDisplayStatusUpdated
+): void {}
