@@ -52,6 +52,8 @@ dataSources:
                 handler: handleMintParcel
               - event: ResyncParcel(uint256)
                 handler: handleResyncParcel
+              - event: NFTDisplayStatusUpdated(address,uint256,bool)
+                handler: handleNFTDisplayStatusUpdated
           file: ./src/mappings/realm.ts
     - kind: ethereum/contract
       name: TileDiamond
