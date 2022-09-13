@@ -318,6 +318,16 @@ type Parcel @entity {
     kekBoost: BigInt
 
     size: BigInt
+
+    accessRights: [AccessRight!]!
+}
+
+type AccessRight @entity {
+    id: ID!
+    parcel: Parcel!
+
+    accessRight: Int!
+    actionRight: Int!
 }
 
 type Gotchi @entity {
