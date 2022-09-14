@@ -397,5 +397,30 @@
         ],
         "name": "NFTDisplayStatusUpdated",
         "type": "event"
+    },
+    {
+        "type": "event",
+        "name": "ParcelAccessRightSet",
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_realmId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_actionRight",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_accessRight",
+                "type": "uint256"
+            }
+        ]
     }
 ]
