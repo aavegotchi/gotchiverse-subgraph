@@ -297,6 +297,18 @@ type NFTDisplayStatusUpdatedEvent @entity {
     allowed: Boolean
 }
 
+type ParcelAccessRightSetEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes!
+    contract: Bytes!
+
+    realmId: Int!
+    accessRight: Int!
+    actionRight: Int!
+}
+
 type Parcel @entity {
     id: ID!
     equippedInstallations: [InstallationType!]!
@@ -319,10 +331,10 @@ type Parcel @entity {
 
     size: BigInt
 
-    accessRights: [AccessRight!]!
+    accessRights: [ParcelAccessRight!]! @derivedFrom(field: "parcel")
 }
 
-type AccessRight @entity {
+type ParcelAccessRight @entity {
     id: ID!
     parcel: Parcel!
 
