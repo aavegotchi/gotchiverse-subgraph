@@ -443,6 +443,10 @@ export function handleParcelAccessRightSet(event: ParcelAccessRightSet): void {
     let eventEntity = createParcelAccessRightSetEvent(event);
     eventEntity.save();
 
+    // parcel
+    let parcel = getOrCreateParcel(event.params._realmId);
+    parcel.save();
+
     // entity
     let entity = getOrCreateParcelAccessRight(
         event.params._realmId,

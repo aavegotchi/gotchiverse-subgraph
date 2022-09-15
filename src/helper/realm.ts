@@ -383,7 +383,7 @@ export const getOrCreateParcelAccessRight = (
     let entity = ParcelAccessRight.load(id);
     if (!entity) {
         entity = new ParcelAccessRight(id);
-        entity.accessRight = accessRight;
+        entity.accessRight = accessRight.toI32();
         entity.parcel = realmId.toString();
     }
 
