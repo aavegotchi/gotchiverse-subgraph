@@ -56,8 +56,6 @@ dataSources:
                 handler: handleNFTDisplayStatusUpdated
               - event: ParcelAccessRightSet(uint256,uint256,uint256)
                 handler: handleParcelAccessRightSet
-              - event: NFTDisplayStatusUpdated(address,uint256,bool)
-                handler: handleNFTDisplayStatusUpdated
           file: ./src/mappings/realm.ts
     - kind: ethereum/contract
       name: TileDiamond
