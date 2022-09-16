@@ -422,5 +422,31 @@
                 "type": "uint256"
             }
         ]
+    },
+    {
+        "type": "event",
+        "name": "EditTileType",
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": "true",
+                "internalType": "uint256",
+                "name": "_tileId",
+                "type": "uint256"
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "name": "EditDeprecateTime",
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": "true",
+                "internalType": "uint256",
+                "name": "_tileId",
+                "type": "uint256"
+            }
+        ]
     }
 ]
