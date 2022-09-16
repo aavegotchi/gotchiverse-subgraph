@@ -8,6 +8,7 @@ import {
     InstallationUpgraded,
     MintParcel,
     NFTDisplayStatusUpdated,
+    ParcelAccessRightSet,
     Transfer,
     UnequipInstallation,
     UnequipTile,
@@ -24,6 +25,8 @@ import {
     NFTDisplayStatus,
     NFTDisplayStatusUpdatedEvent,
     Parcel,
+    ParcelAccessRight,
+    ParcelAccessRightSetEvent,
     TransferEvent,
     UnequipInstallationEvent,
     UnequipTileEvent,
@@ -349,5 +352,40 @@ export const createNFTDisplayStatusUpdatedEvent = (
     entity.chainId = event.params._chainId.toI32();
     entity.allowed = event.params._allowed;
     entity.transaction = event.transaction.hash;
+    return entity;
+};
+
+export const createParcelAccessRightSetEvent = (
+    event: ParcelAccessRightSet
+): ParcelAccessRightSetEvent => {
+    let id =
+        event.params._realmId.toString() +
+        "-" +
+        event.params._realmId.toString() +
+        "-" +
+        event.block.number.toString();
+    let entity = new ParcelAccessRightSetEvent(id);
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.contract = event.address;
+    entity.realmId = event.params._realmId.toI32();
+    entity.accessRight = event.params._accessRight.toI32();
+    entity.actionRight = event.params._actionRight.toI32();
+    entity.transaction = event.transaction.hash;
+    return entity;
+};
+
+export const getOrCreateParcelAccessRight = (
+    realmId: BigInt,
+    accessRight: BigInt
+): ParcelAccessRight => {
+    let id = realmId.toString() + "-" + accessRight.toString();
+    let entity = ParcelAccessRight.load(id);
+    if (!entity) {
+        entity = new ParcelAccessRight(id);
+        entity.accessRight = accessRight.toI32();
+        entity.parcel = realmId.toString();
+    }
+
     return entity;
 };

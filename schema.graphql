@@ -297,6 +297,18 @@ type NFTDisplayStatusUpdatedEvent @entity {
     allowed: Boolean
 }
 
+type ParcelAccessRightSetEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes!
+    contract: Bytes!
+
+    realmId: Int!
+    accessRight: Int!
+    actionRight: Int!
+}
+
 type Parcel @entity {
     id: ID!
     equippedInstallations: [InstallationType!]!
@@ -318,6 +330,16 @@ type Parcel @entity {
     kekBoost: BigInt
 
     size: BigInt
+
+    accessRights: [ParcelAccessRight!]! @derivedFrom(field: "parcel")
+}
+
+type ParcelAccessRight @entity {
+    id: ID!
+    parcel: Parcel!
+
+    accessRight: Int!
+    actionRight: Int!
 }
 
 type Gotchi @entity {
