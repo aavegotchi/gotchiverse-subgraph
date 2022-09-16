@@ -395,6 +395,7 @@ type TileType @entity {
     width: Int!
     height: Int!
     deprecated: Boolean!
+    deprecatedAt: Int
     tileType: Int!
     craftTime: BigInt!
     alchemicaCost: [BigInt!]!

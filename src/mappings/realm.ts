@@ -13,6 +13,8 @@ import {
     RealmDiamond,
     NFTDisplayStatusUpdated,
     ParcelAccessRightSet,
+    EditTileType,
+    EditDeprecateTime,
 } from "../../generated/RealmDiamond/RealmDiamond";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import {
@@ -454,4 +456,18 @@ export function handleParcelAccessRightSet(event: ParcelAccessRightSet): void {
     );
     entity.actionRight = event.params._actionRight.toI32();
     entity.save();
+}
+
+export function handleEditTileType(event: EditTileType): void {
+    let tileType = getOrCreateTileType(event.params._tileId);
+    // tileType.alchemicaCost = event.params._event.address.
+    // ...
+    tileType.save();
+}
+
+export function handleEditDeprecateTime(event: EditDeprecateTime): void {
+    let tileType = getOrCreateTileType(event.params._tileId);
+    tileType.deprecated = true;
+    // tileType.deprecatedAt = event.params.deprecatedAt;
+    tileType.save();
 }

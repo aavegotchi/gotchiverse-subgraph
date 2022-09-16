@@ -2,6 +2,7 @@ import { BigInt } from "@graphprotocol/graph-ts";
 import {
     AlchemicaClaimed,
     ChannelAlchemica,
+    EditTileType,
     EquipInstallation,
     EquipTile,
     ExitAlchemica,
