@@ -2,6 +2,8 @@ import { BigInt } from "@graphprotocol/graph-ts";
 import { CraftTimeReduced } from "../../generated/InstallationDiamond/InstallationDiamond";
 import { URIEvent } from "../../generated/schema";
 import {
+    EditDeprecateTime,
+    EditTileType,
     MintTile,
     MintTiles,
     URI,
@@ -117,4 +119,23 @@ export function handleURI(event: URI): void {
     let tile = getOrCreateTileType(event.params._tokenId);
     tile.uri = event.params._value;
     tile.save();
+}
+
+export function handleEditTileType(event: EditTileType): void {
+    let tileType = getOrCreateTileType(event.params._tileId);
+    tileType.alchemicaCost = event.params.param1.alchemicaCost;
+    tileType.craftTime = event.params.param1.craftTime;
+    tileType.deprecated = event.params.param1.deprecated;
+    tileType.height = event.params.param1.height;
+    tileType.width = event.params.param1.width;
+    tileType.name = event.params.param1.name;
+    tileType.tileType = event.params.param1.tileType;
+    tileType.save();
+}
+
+export function handleEditDeprecateTime(event: EditDeprecateTime): void {
+    let tileType = getOrCreateTileType(event.params._tileId);
+    tileType.deprecated = true;
+    tileType.deprecatedAt = event.params._newDeprecatetime.toI32();
+    tileType.save();
 }
