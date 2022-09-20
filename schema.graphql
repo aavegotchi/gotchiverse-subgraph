@@ -326,7 +326,6 @@ type EditTileTypeEvent @entity {
     _height: Int
     _width: Int
     _name: String
-    _tileType: Int
 }
 
 type EditDeprecateTimeEvent @entity {

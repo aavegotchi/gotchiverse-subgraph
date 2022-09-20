@@ -147,7 +147,6 @@ export function handleEditTileType(event: EditTileType): void {
     eventEntity._height = event.params.param1.height;
     eventEntity._width = event.params.param1.width;
     eventEntity._name = event.params.param1.name;
-    eventEntity._tileType = event.params.param1.tileType;
 
     eventEntity.save();
 
