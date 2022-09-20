@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, log } from "@graphprotocol/graph-ts";
 import {
     AlchemicaClaimed,
     ChannelAlchemica,
@@ -31,6 +31,8 @@ import {
     UnequipInstallationEvent,
     UnequipTileEvent,
 } from "../../generated/schema";
+import { StatCategory } from "./constants";
+import { getStat } from "./stats";
 
 export const getOrCreateParcel = (realmId: BigInt): Parcel => {
     let id = realmId.toString();
@@ -323,13 +325,24 @@ export const createParcelTransferEvent = (event: Transfer): TransferEvent => {
 export const getOrCreatetypeNFTDisplayStatus = (
     event: NFTDisplayStatusUpdated
 ): NFTDisplayStatus => {
-    let id =
-        event.params._token.toHexString() +
-        "-" +
-        event.params._chainId.toString();
+    let id = "";
+    let stats = getStat(StatCategory.OVERALL);
+    let tokens = stats.tokens;
+    let index = tokens.indexOf(event.params._token);
+    if (index == -1) {
+        index = tokens.length;
+        id = index.toString() + "-" + event.params._chainId.toString();
+        tokens.push(event.params._token);
+        stats.tokens = tokens;
+        stats.save();
+    } else {
+        id = index.toString() + "-" + event.params._chainId.toString();
+    }
+
     let entity = NFTDisplayStatus.load(id);
     if (!entity) {
         entity = new NFTDisplayStatus(id);
+        entity.tokenId = index;
     }
 
     return entity;
