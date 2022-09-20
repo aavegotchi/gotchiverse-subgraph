@@ -318,6 +318,15 @@ type EditTileTypeEvent @entity {
 
     tileId: Int
     tileType: TileType
+
+    # param1
+    _alchemicaCost: [BigInt!]
+    _craftTime: Int
+    _deprecated: Boolean
+    _height: Int
+    _width: Int
+    _name: String
+    _tileType: Int
 }
 
 type EditDeprecateTimeEvent @entity {

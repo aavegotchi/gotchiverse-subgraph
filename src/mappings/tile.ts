@@ -140,6 +140,15 @@ export function handleEditTileType(event: EditTileType): void {
     eventEntity.contract = event.address;
     eventEntity.tileId = event.params._tileId.toI32();
     eventEntity.tileType = event.params._tileId.toString();
+
+    eventEntity._alchemicaCost = event.params.param1.alchemicaCost;
+    eventEntity._craftTime = event.params.param1.craftTime.toI32();
+    eventEntity._deprecated = event.params.param1.deprecated;
+    eventEntity._height = event.params.param1.height;
+    eventEntity._width = event.params.param1.width;
+    eventEntity._name = event.params.param1.name;
+    eventEntity._tileType = event.params.param1.tileType;
+
     eventEntity.save();
 
     // update tileType
