@@ -309,6 +309,29 @@ type ParcelAccessRightSetEvent @entity {
     actionRight: Int!
 }
 
+type EditTileTypeEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes!
+    contract: Bytes!
+
+    tileId: Int
+    tileType: TileType
+}
+
+type EditDeprecateTimeEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes!
+    contract: Bytes!
+
+    newDeprecatetime: Int
+    tileId: Int
+    tileType: TileType
+}
+
 type Parcel @entity {
     id: ID!
     equippedInstallations: [InstallationType!]!
