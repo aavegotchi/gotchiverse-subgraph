@@ -327,13 +327,13 @@ export const getOrCreatetypeNFTDisplayStatus = (
 ): NFTDisplayStatus => {
     let id = "";
     let stats = getStat(StatCategory.OVERALL);
-    let tokens = stats.tokens;
+    let tokens = stats.contracts;
     let index = tokens.indexOf(event.params._token);
     if (index == -1) {
         index = tokens.length;
         id = index.toString() + "-" + event.params._chainId.toString();
         tokens.push(event.params._token);
-        stats.tokens = tokens;
+        stats.contracts = tokens;
         stats.save();
     } else {
         id = index.toString() + "-" + event.params._chainId.toString();
@@ -342,7 +342,7 @@ export const getOrCreatetypeNFTDisplayStatus = (
     let entity = NFTDisplayStatus.load(id);
     if (!entity) {
         entity = new NFTDisplayStatus(id);
-        entity.tokenId = index;
+        entity.contractId = index;
     }
 
     return entity;

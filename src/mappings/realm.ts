@@ -433,7 +433,7 @@ export function handleNFTDisplayStatusUpdated(
 
     let entity = getOrCreatetypeNFTDisplayStatus(event);
     entity.chainId = event.params._chainId.toI32();
-    entity.token = event.params._token;
+    entity.contractAddress = event.params._token;
     entity.allowed = event.params._allowed;
     entity.save();
 }

@@ -51,7 +51,7 @@ export const getStat = (
         stats.craftTimeReduced = BIGINT_ZERO;
         stats.upgradeTimeReduced = BIGINT_ZERO;
 
-        stats.tokens = new Array<Bytes>();
+        stats.contracts = new Array<Bytes>();
     }
 
     if (!stats.gltrSpendTotal) {
