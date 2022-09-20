@@ -435,11 +435,14 @@ type Stat @entity {
     gltrSpendOnUpgrades: BigInt
     gltrSpendOnCrafts: BigInt
     gltrSpendTotal: BigInt
+
+    tokens: [Bytes!]!
 }
 
 type NFTDisplayStatus @entity {
     id: ID!
     token: Bytes
+    tokenId: Int
     chainId: Int
     allowed: Boolean
 }
