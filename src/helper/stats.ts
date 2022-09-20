@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 import { InstallationType, Stat, TileType } from "../../generated/schema";
 import {
     BIGINT_ONE,
@@ -50,6 +50,8 @@ export const getStat = (
 
         stats.craftTimeReduced = BIGINT_ZERO;
         stats.upgradeTimeReduced = BIGINT_ZERO;
+
+        stats.tokens = new Array<Bytes>();
     }
 
     if (!stats.gltrSpendTotal) {
