@@ -2348,5 +2348,80 @@
         ],
         "name": "MintTiles",
         "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_tileId",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint8",
+                        "name": "width",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "height",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "deprecated",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "tileType",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "craftTime",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint256[4]",
+                        "name": "alchemicaCost",
+                        "type": "uint256[4]"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct TileType",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "name": "EditTileType",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_tileId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_newDeprecatetime",
+                "type": "uint256"
+            }
+        ],
+        "name": "EditDeprecateTime",
+        "type": "event"
     }
 ]

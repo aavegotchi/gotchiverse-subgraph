@@ -1,7 +1,13 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 import { CraftTimeReduced } from "../../generated/InstallationDiamond/InstallationDiamond";
-import { URIEvent } from "../../generated/schema";
 import {
+    EditDeprecateTimeEvent,
+    EditTileTypeEvent,
+    URIEvent,
+} from "../../generated/schema";
+import {
+    EditDeprecateTime,
+    EditTileType,
     MintTile,
     MintTiles,
     URI,
@@ -117,4 +123,66 @@ export function handleURI(event: URI): void {
     let tile = getOrCreateTileType(event.params._tokenId);
     tile.uri = event.params._value;
     tile.save();
+}
+
+export function handleEditTileType(event: EditTileType): void {
+    // create Event entity
+    let id =
+        event.transaction.from.toHexString() +
+        "-" +
+        event.params._tileId.toString() +
+        "-" +
+        event.block.number.toString();
+    let eventEntity = new EditTileTypeEvent(id);
+    eventEntity.transaction = event.transaction.hash;
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+    eventEntity.contract = event.address;
+    eventEntity.tileId = event.params._tileId.toI32();
+    eventEntity.tileType = event.params._tileId.toString();
+
+    eventEntity._alchemicaCost = event.params.param1.alchemicaCost;
+    eventEntity._craftTime = event.params.param1.craftTime.toI32();
+    eventEntity._deprecated = event.params.param1.deprecated;
+    eventEntity._height = event.params.param1.height;
+    eventEntity._width = event.params.param1.width;
+    eventEntity._name = event.params.param1.name;
+
+    eventEntity.save();
+
+    // update tileType
+    let tileType = getOrCreateTileType(event.params._tileId);
+    tileType.alchemicaCost = event.params.param1.alchemicaCost;
+    tileType.craftTime = event.params.param1.craftTime;
+    tileType.deprecated = event.params.param1.deprecated;
+    tileType.height = event.params.param1.height;
+    tileType.width = event.params.param1.width;
+    tileType.name = event.params.param1.name;
+    tileType.tileType = event.params.param1.tileType;
+    tileType.save();
+}
+
+export function handleEditDeprecateTime(event: EditDeprecateTime): void {
+    // create Event entity
+    let id =
+        event.transaction.from.toHexString() +
+        "-" +
+        event.params._tileId.toString() +
+        "-" +
+        event.block.number.toString();
+    let eventEntity = new EditDeprecateTimeEvent(id);
+    eventEntity.transaction = event.transaction.hash;
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+    eventEntity.contract = event.address;
+    eventEntity.tileId = event.params._tileId.toI32();
+    eventEntity.newDeprecatetime = eventEntity.newDeprecatetime;
+    eventEntity.tileType = event.params._tileId.toString();
+    eventEntity.save();
+
+    // update tileType
+    let tileType = getOrCreateTileType(event.params._tileId);
+    tileType.deprecated = true;
+    tileType.deprecatedAt = event.params._newDeprecatetime.toI32();
+    tileType.save();
 }

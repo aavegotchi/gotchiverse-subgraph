@@ -297,6 +297,49 @@ type NFTDisplayStatusUpdatedEvent @entity {
     allowed: Boolean
 }
 
+type ParcelAccessRightSetEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes!
+    contract: Bytes!
+
+    realmId: Int!
+    accessRight: Int!
+    actionRight: Int!
+}
+
+type EditTileTypeEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes!
+    contract: Bytes!
+
+    tileId: Int
+    tileType: TileType
+
+    # param1
+    _alchemicaCost: [BigInt!]
+    _craftTime: Int
+    _deprecated: Boolean
+    _height: Int
+    _width: Int
+    _name: String
+}
+
+type EditDeprecateTimeEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes!
+    contract: Bytes!
+
+    newDeprecatetime: Int
+    tileId: Int
+    tileType: TileType
+}
+
 type Parcel @entity {
     id: ID!
     equippedInstallations: [InstallationType!]!
@@ -318,6 +361,16 @@ type Parcel @entity {
     kekBoost: BigInt
 
     size: BigInt
+
+    accessRights: [ParcelAccessRight!]! @derivedFrom(field: "parcel")
+}
+
+type ParcelAccessRight @entity {
+    id: ID!
+    parcel: Parcel!
+
+    accessRight: Int!
+    actionRight: Int!
 }
 
 type Gotchi @entity {
@@ -373,6 +426,7 @@ type TileType @entity {
     width: Int!
     height: Int!
     deprecated: Boolean!
+    deprecatedAt: Int
     tileType: Int!
     craftTime: BigInt!
     alchemicaCost: [BigInt!]!
@@ -413,11 +467,14 @@ type Stat @entity {
     gltrSpendOnUpgrades: BigInt
     gltrSpendOnCrafts: BigInt
     gltrSpendTotal: BigInt
+
+    contracts: [Bytes!]!
 }
 
 type NFTDisplayStatus @entity {
     id: ID!
-    token: Bytes
+    contractAddress: Bytes
+    contractId: Int
     chainId: Int
     allowed: Boolean
 }

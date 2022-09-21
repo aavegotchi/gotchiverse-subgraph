@@ -12,6 +12,7 @@ import {
     ResyncParcel,
     RealmDiamond,
     NFTDisplayStatusUpdated,
+    ParcelAccessRightSet,
 } from "../../generated/RealmDiamond/RealmDiamond";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import {
@@ -27,6 +28,7 @@ import {
     createInstallationUpgradedEvent,
     createMintParcelEvent,
     createNFTDisplayStatusUpdatedEvent,
+    createParcelAccessRightSetEvent,
     createParcelInstallation,
     createParcelTile,
     createParcelTransferEvent,
@@ -34,6 +36,7 @@ import {
     createUnequipTileEvent,
     getOrCreateGotchi,
     getOrCreateParcel,
+    getOrCreateParcelAccessRight,
     getOrCreatetypeNFTDisplayStatus,
     removeParcelInstallation,
     removeParcelTile,
@@ -430,7 +433,25 @@ export function handleNFTDisplayStatusUpdated(
 
     let entity = getOrCreatetypeNFTDisplayStatus(event);
     entity.chainId = event.params._chainId.toI32();
-    entity.token = event.params._token;
+    entity.contractAddress = event.params._token;
     entity.allowed = event.params._allowed;
+    entity.save();
+}
+
+export function handleParcelAccessRightSet(event: ParcelAccessRightSet): void {
+    // event
+    let eventEntity = createParcelAccessRightSetEvent(event);
+    eventEntity.save();
+
+    // parcel
+    let parcel = getOrCreateParcel(event.params._realmId);
+    parcel.save();
+
+    // entity
+    let entity = getOrCreateParcelAccessRight(
+        event.params._realmId,
+        event.params._accessRight
+    );
+    entity.actionRight = event.params._actionRight.toI32();
     entity.save();
 }

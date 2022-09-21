@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, log } from "@graphprotocol/graph-ts";
 import {
     AlchemicaClaimed,
     ChannelAlchemica,
@@ -8,6 +8,7 @@ import {
     InstallationUpgraded,
     MintParcel,
     NFTDisplayStatusUpdated,
+    ParcelAccessRightSet,
     Transfer,
     UnequipInstallation,
     UnequipTile,
@@ -24,10 +25,14 @@ import {
     NFTDisplayStatus,
     NFTDisplayStatusUpdatedEvent,
     Parcel,
+    ParcelAccessRight,
+    ParcelAccessRightSetEvent,
     TransferEvent,
     UnequipInstallationEvent,
     UnequipTileEvent,
 } from "../../generated/schema";
+import { StatCategory } from "./constants";
+import { getStat } from "./stats";
 
 export const getOrCreateParcel = (realmId: BigInt): Parcel => {
     let id = realmId.toString();
@@ -320,13 +325,24 @@ export const createParcelTransferEvent = (event: Transfer): TransferEvent => {
 export const getOrCreatetypeNFTDisplayStatus = (
     event: NFTDisplayStatusUpdated
 ): NFTDisplayStatus => {
-    let id =
-        event.params._token.toHexString() +
-        "-" +
-        event.params._chainId.toString();
+    let id = "";
+    let stats = getStat(StatCategory.OVERALL);
+    let tokens = stats.contracts;
+    let index = tokens.indexOf(event.params._token);
+    if (index == -1) {
+        index = tokens.length;
+        id = index.toString() + "-" + event.params._chainId.toString();
+        tokens.push(event.params._token);
+        stats.contracts = tokens;
+        stats.save();
+    } else {
+        id = index.toString() + "-" + event.params._chainId.toString();
+    }
+
     let entity = NFTDisplayStatus.load(id);
     if (!entity) {
         entity = new NFTDisplayStatus(id);
+        entity.contractId = index;
     }
 
     return entity;
@@ -349,5 +365,40 @@ export const createNFTDisplayStatusUpdatedEvent = (
     entity.chainId = event.params._chainId.toI32();
     entity.allowed = event.params._allowed;
     entity.transaction = event.transaction.hash;
+    return entity;
+};
+
+export const createParcelAccessRightSetEvent = (
+    event: ParcelAccessRightSet
+): ParcelAccessRightSetEvent => {
+    let id =
+        event.params._realmId.toString() +
+        "-" +
+        event.params._realmId.toString() +
+        "-" +
+        event.block.number.toString();
+    let entity = new ParcelAccessRightSetEvent(id);
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.contract = event.address;
+    entity.realmId = event.params._realmId.toI32();
+    entity.accessRight = event.params._accessRight.toI32();
+    entity.actionRight = event.params._actionRight.toI32();
+    entity.transaction = event.transaction.hash;
+    return entity;
+};
+
+export const getOrCreateParcelAccessRight = (
+    realmId: BigInt,
+    accessRight: BigInt
+): ParcelAccessRight => {
+    let id = realmId.toString() + "-" + accessRight.toString();
+    let entity = ParcelAccessRight.load(id);
+    if (!entity) {
+        entity = new ParcelAccessRight(id);
+        entity.accessRight = accessRight.toI32();
+        entity.parcel = realmId.toString();
+    }
+
     return entity;
 };

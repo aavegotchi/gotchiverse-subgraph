@@ -54,6 +54,8 @@ dataSources:
                 handler: handleResyncParcel
               - event: NFTDisplayStatusUpdated(address,uint256,bool)
                 handler: handleNFTDisplayStatusUpdated
+              - event: ParcelAccessRightSet(uint256,uint256,uint256)
+                handler: handleParcelAccessRightSet
           file: ./src/mappings/realm.ts
     - kind: ethereum/contract
       name: TileDiamond
@@ -85,6 +87,10 @@ dataSources:
                 handler: handleCraftTimeReduced
               - event: URI(string,indexed uint256)
                 handler: handleURI
+              - event: EditTileType(indexed uint256,(uint8,uint8,bool,uint16,uint32,uint256[4],string))
+                handler: handleEditTileType
+              - event: EditDeprecateTime(uint256,uint256)
+                handler: handleEditDeprecateTime
           file: ./src/mappings/tile.ts
     - kind: ethereum/contract
       name: InstallationDiamond
