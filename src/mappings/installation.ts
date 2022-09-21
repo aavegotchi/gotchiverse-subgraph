@@ -1,4 +1,4 @@
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
     AddInstallationType,
     CraftTimeReduced,
@@ -171,9 +171,6 @@ export function handleDeprecateInstallation(
 }
 
 export function handleCraftTimeReduced(event: CraftTimeReduced): void {
-    log.critical("craft time reduced: realmId = {}, blocksReduced = {}", [
-        event.params._blocksReduced.toString(),
-    ]);
     let eventEntity = createCraftTimeReducedEvent(event);
     eventEntity.save();
 
