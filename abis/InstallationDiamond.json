@@ -649,9 +649,9 @@
             },
             {
                 "indexed": false,
-                "internalType": "uint256",
+                "internalType": "uint40",
                 "name": "_blocksReduced",
-                "type": "uint256"
+                "type": "uint40"
             }
         ],
         "name": "UpgradeTimeReduced",
