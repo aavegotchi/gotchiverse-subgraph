@@ -204,10 +204,6 @@ export function handleCraftTimeReduced(event: CraftTimeReduced): void {
 }
 
 export function handleUpgradeTimeReduced(event: UpgradeTimeReduced): void {
-    log.critical("upgrade time reduced: realmId = {}, blocksReduced = {}", [
-        event.params._realmId.toString(),
-        event.params._blocksReduced.toString(),
-    ]);
     let eventEntity = createUpgradeTimeReducedEvent(event);
     eventEntity.save();
 
