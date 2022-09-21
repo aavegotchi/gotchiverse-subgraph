@@ -132,7 +132,7 @@ dataSources:
                 handler: handleDeprecateInstallation
               - event: CraftTimeReduced(indexed uint256,uint256)
                 handler: handleCraftTimeReduced
-              - event: UpgradeTimeReduced(indexed uint256,indexed uint256,uint256,uint256,uint256)
+              - event: UpgradeTimeReduced(indexed uint256,indexed uint256,uint256,uint256,uint40)
                 handler: handleUpgradeTimeReduced
               - event: UpgradeFinalized(indexed uint256,uint256,uint256,uint256)
                 handler: handleUpgradeFinalized
