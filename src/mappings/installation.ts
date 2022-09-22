@@ -176,7 +176,7 @@ export function handleCraftTimeReduced(event: CraftTimeReduced): void {
 
     // stats
     let gltrSpend = event.params._blocksReduced.times(
-        BigInt.fromString("1e18")
+        BigInt.fromString("1000000000000000000")
     );
     let overallStats = getStat(StatCategory.OVERALL);
     overallStats.craftTimeReduced = overallStats.craftTimeReduced.plus(
@@ -206,7 +206,7 @@ export function handleUpgradeTimeReduced(event: UpgradeTimeReduced): void {
 
     // stats
     let gltrSpend = event.params._blocksReduced.times(
-        BigInt.fromString("1e18")
+        BigInt.fromString("1000000000000000000")
     );
     let overallStats = getStat(StatCategory.OVERALL);
     overallStats.upgradeTimeReduced = overallStats.upgradeTimeReduced.plus(
