@@ -11,7 +11,7 @@ import {
     MintTiles,
     TileDiamond,
 } from "../../generated/TileDiamond/TileDiamond";
-import { BIGINT_ZERO, TILE_DIAMOND } from "./constants";
+import { BIGINT_ONE, BIGINT_ZERO, TILE_DIAMOND } from "./constants";
 
 export function getOrCreateTileType(tileId: BigInt): TileType {
     let id = tileId.toString();
@@ -64,12 +64,20 @@ export function createMintTileEvent(event: MintTile): MintTileEvent {
         event.params._owner.toHexString() +
         "-" +
         event.block.number.toString();
-    let eventEntity = new MintTileEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.owner = event.params._owner;
-    eventEntity.tile = event.params._tileType.toString();
+    // bugfix
+    let eventEntity = MintTileEvent.load(id);
+    if (!eventEntity) {
+        eventEntity = new MintTileEvent(id);
+        eventEntity.transaction = event.transaction.hash;
+        eventEntity.block = event.block.number;
+        eventEntity.amount = 1;
+        eventEntity.timestamp = event.block.timestamp;
+        eventEntity.owner = event.params._owner;
+        eventEntity.tile = event.params._tileType.toString();
+    } else {
+        eventEntity.amount = eventEntity.amount + 1;
+    }
+
     return eventEntity;
 }
 
