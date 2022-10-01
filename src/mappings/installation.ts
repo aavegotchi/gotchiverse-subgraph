@@ -26,6 +26,7 @@ import {
     createUpgradeQueuedEvent,
     createUpgradeTimeReducedEvent,
     getOrCreateInstallationType,
+    updateInstallationType,
 } from "../helper/installation";
 import {
     getStat,
@@ -156,6 +157,7 @@ export function handleEditInstallationType(event: EditInstallationType): void {
 
     let installationTypeId = event.params._installationId;
     let installationType = getOrCreateInstallationType(installationTypeId);
+    installationType = updateInstallationType(installationType);
     installationType.save();
 }
 
@@ -167,6 +169,7 @@ export function handleDeprecateInstallation(
 
     let installationTypeId = event.params._installationId;
     let installationType = getOrCreateInstallationType(installationTypeId);
+    installationType.deprecated = true;
     installationType.save();
 }
 
