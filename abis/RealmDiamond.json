@@ -422,5 +422,56 @@
                 "type": "uint256"
             }
         ]
+    },
+    {
+        "type": "event",
+        "name": "EventStarted",
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_eventId",
+                "type": "uint256"
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "name": "EventCancelled",
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_eventId",
+                "type": "uint256"
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "name": "EventPriorityAndDurationUpdated",
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_eventId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint120",
+                "name": "_eventId",
+                "type": "uint120"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "_eventId",
+                "type": "uint64"
+            }
+        ]
     }
 ]

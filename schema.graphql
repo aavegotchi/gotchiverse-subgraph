@@ -512,7 +512,7 @@ type NFTDisplayStatus @entity {
     allowed: Boolean
 }
 
-type BoundaryGateEvent @entity {
+type BounceGateEvent @entity {
     id: ID!
     title: String
     startTime: Int
