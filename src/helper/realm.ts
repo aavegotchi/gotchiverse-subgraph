@@ -421,7 +421,7 @@ export const createBounceGateEventStartedEvent = (
     entity.contract = event.address;
     entity.transaction = event.transaction.hash;
 
-    entity._eventId = event.params._eventId.toI32();
+    entity._eventId = event.params._eventId;
     return entity;
 };
 
@@ -436,7 +436,7 @@ export const createBounceGateEventCancelledEvent = (
     entity.contract = event.address;
     entity.transaction = event.transaction.hash;
 
-    entity._eventId = event.params._eventId.toI32();
+    entity._eventId = event.params._eventId;
     return entity;
 };
 
@@ -451,9 +451,9 @@ export const createBounceGateEventPriorityAndDurationUpdatedEvent = (
     entity.contract = event.address;
     entity.transaction = event.transaction.hash;
 
-    entity._eventId = event.params._eventId.toI32();
-    entity._newEndTime = event.params._newEndTime.toI32();
-    entity._newPriority = event.params._newPriority.toI32();
+    entity._eventId = event.params._eventId;
+    entity._newEndTime = event.params._newEndTime;
+    entity._newPriority = event.params._newPriority;
 
     return entity;
 };

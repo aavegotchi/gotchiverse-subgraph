@@ -347,7 +347,7 @@ type BounceGateEventStarted @entity {
     transaction: Bytes!
     contract: Bytes!
 
-    _eventId: Int
+    _eventId: BigInt
     # @todo: bounceGateDetails
 }
 
@@ -358,7 +358,7 @@ type BounceGateEventCancelled @entity {
     transaction: Bytes!
     contract: Bytes!
 
-    _eventId: Int
+    _eventId: BigInt
 }
 
 type BounceGateEventPriorityAndDurationUpdated @entity {
@@ -368,9 +368,9 @@ type BounceGateEventPriorityAndDurationUpdated @entity {
     transaction: Bytes!
     contract: Bytes!
 
-    _eventId: Int
-    _newPriority: Int
-    _newEndTime: Int
+    _eventId: BigInt
+    _newPriority: BigInt
+    _newEndTime: BigInt
 }
 
 type Parcel @entity {
@@ -515,10 +515,10 @@ type NFTDisplayStatus @entity {
 type BounceGateEvent @entity {
     id: ID!
     title: String
-    startTime: Int
-    endTime: Int
-    priority: Int
+    startTime: BigInt
+    endTime: BigInt
+    priority: BigInt
     equipped: Boolean
-    lastTimeUpdated: Int
+    lastTimeUpdated: BigInt
     cancelled: Boolean
 }
