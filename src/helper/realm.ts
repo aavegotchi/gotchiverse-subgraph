@@ -422,6 +422,13 @@ export const createBounceGateEventStartedEvent = (
     entity.transaction = event.transaction.hash;
 
     entity._eventId = event.params._eventId;
+    entity._endTime = event.params.eventDetails.endTime;
+    entity._equipped = event.params.eventDetails.equipped;
+    entity._lastTimeUpdated = event.params.eventDetails.lastTimeUpdated;
+    entity._priority = event.params.eventDetails.priority;
+    entity._startTime = event.params.eventDetails.startTime;
+    entity._title = event.params.eventDetails.title;
+
     return entity;
 };
 

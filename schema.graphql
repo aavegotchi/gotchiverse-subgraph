@@ -348,7 +348,12 @@ type BounceGateEventStarted @entity {
     contract: Bytes!
 
     _eventId: BigInt
-    # @todo: bounceGateDetails
+    _endTime: BigInt
+    _equipped: Boolean
+    _lastTimeUpdated: BigInt
+    _priority: BigInt
+    _startTime: BigInt
+    _title: String
 }
 
 type BounceGateEventCancelled @entity {
