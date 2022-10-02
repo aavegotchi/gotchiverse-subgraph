@@ -56,7 +56,7 @@ dataSources:
                 handler: handleNFTDisplayStatusUpdated
               - event: ParcelAccessRightSet(uint256,uint256,uint256)
                 handler: handleParcelAccessRightSet
-              - event: EventStarted(indexed uint256)
+              - event: EventStarted(indexed uint256,(string,uint64,uint64,uint120,bool,uint64))
                 handler: handleBounceGateEventStarted
               - event: EventCancelled(indexed uint256)
                 handler: handleBounceGateEventCancelled
