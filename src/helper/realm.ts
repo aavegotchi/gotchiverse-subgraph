@@ -458,7 +458,9 @@ export const createBounceGateEventPriorityAndDurationUpdatedEvent = (
     return entity;
 };
 
-export const getOrCreateBounceGateEvent = (eventId: BigInt) => {
+export const getOrCreateBounceGateEvent = (
+    eventId: BigInt
+): BounceGateEvent => {
     let id = eventId.toString();
     let entity = BounceGateEvent.load(id);
     if (!entity) {

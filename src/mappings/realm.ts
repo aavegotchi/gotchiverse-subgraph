@@ -468,7 +468,14 @@ export function handleBounceGateEventStarted(event: EventStarted): void {
     eventEntity.save();
 
     let entity = getOrCreateBounceGateEvent(event.params._eventId);
-    // @todo: add params
+    entity.startTime = event.params.eventDetails.startTime.toI32();
+    entity.endTime = event.params.eventDetails.endTime.toI32();
+    entity.title = event.params.eventDetails.title;
+
+    entity.priority = event.params.eventDetails.priority.toI32();
+
+    entity.equipped = event.params.eventDetails.equipped;
+    entity.lastTimeUpdated = event.block.timestamp.toI32();
     entity.save();
 }
 
@@ -484,12 +491,14 @@ export function handleBounceGateEventCancelled(event: EventCancelled): void {
 export function handleBounceGateEventPriorityAndDurationUpdated(
     event: EventPriorityAndDurationUpdated
 ): void {
-    let eventEntity = createBounceGateEventPriorityAndDurationUpdatedEvent(event);
+    let eventEntity = createBounceGateEventPriorityAndDurationUpdatedEvent(
+        event
+    );
     eventEntity.save();
 
     let entity = getOrCreateBounceGateEvent(event.params._eventId);
     entity.priority = event.params._newPriority.toI32();
     entity.endTime = event.params._newEndTime.toI32();
+    entity.lastTimeUpdated = event.block.timestamp.toI32();
     entity.save();
-
 }
