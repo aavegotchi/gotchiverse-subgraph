@@ -13,6 +13,9 @@ import {
     RealmDiamond,
     NFTDisplayStatusUpdated,
     ParcelAccessRightSet,
+    EventStarted,
+    EventCancelled,
+    EventPriorityAndDurationUpdated,
 } from "../../generated/RealmDiamond/RealmDiamond";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import {
@@ -21,6 +24,9 @@ import {
 } from "../helper/installation";
 import {
     createAlchemicaClaimedEvent,
+    createBounceGateEventCancelledEvent,
+    createBounceGateEventPriorityAndDurationUpdatedEvent,
+    createBounceGateEventStartedEvent,
     createChannelAlchemicaEvent,
     createEquipInstallationEvent,
     createEquipTileEvent,
@@ -34,6 +40,7 @@ import {
     createParcelTransferEvent,
     createUnequipInstallationEvent,
     createUnequipTileEvent,
+    getOrCreateBounceGateEvent,
     getOrCreateGotchi,
     getOrCreateParcel,
     getOrCreateParcelAccessRight,
@@ -454,4 +461,35 @@ export function handleParcelAccessRightSet(event: ParcelAccessRightSet): void {
     );
     entity.actionRight = event.params._actionRight.toI32();
     entity.save();
+}
+
+export function handleBounceGateEventStarted(event: EventStarted): void {
+    let eventEntity = createBounceGateEventStartedEvent(event);
+    eventEntity.save();
+
+    let entity = getOrCreateBounceGateEvent(event.params._eventId);
+    // @todo: add params
+    entity.save();
+}
+
+export function handleBounceGateEventCancelled(event: EventCancelled): void {
+    let eventEntity = createBounceGateEventCancelledEvent(event);
+    eventEntity.save();
+
+    let entity = getOrCreateBounceGateEvent(event.params._eventId);
+    entity.cancelled = true;
+    entity.save();
+}
+
+export function handleBounceGateEventPriorityAndDurationUpdated(
+    event: EventPriorityAndDurationUpdated
+): void {
+    let eventEntity = createBounceGateEventPriorityAndDurationUpdatedEvent(event);
+    eventEntity.save();
+
+    let entity = getOrCreateBounceGateEvent(event.params._eventId);
+    entity.priority = event.params._newPriority.toI32();
+    entity.endTime = event.params._newEndTime.toI32();
+    entity.save();
+
 }

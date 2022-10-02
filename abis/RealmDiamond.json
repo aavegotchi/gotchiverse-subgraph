@@ -463,13 +463,13 @@
             {
                 "indexed": false,
                 "internalType": "uint120",
-                "name": "_eventId",
+                "name": "_newPriority",
                 "type": "uint120"
             },
             {
                 "indexed": false,
                 "internalType": "uint64",
-                "name": "_eventId",
+                "name": "_newEndTime",
                 "type": "uint64"
             }
         ]
