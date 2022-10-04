@@ -63,8 +63,6 @@ export function createMintTileEvent(event: MintTile): MintTileEvent {
         "-" +
         event.params._owner.toHexString() +
         "-" +
-        event.block.number.toString() +
-        "-" +
         event.transaction.hash.toHexString();
     let eventEntity = new MintTileEvent(id);
     eventEntity.transaction = event.transaction.hash;
@@ -82,8 +80,6 @@ export function createMintTilesEvent(event: MintTiles): MintTilesEvent {
         event.params._amount.toString() +
         "-" +
         event.params._owner.toHexString() +
-        "-" +
-        event.block.number.toString() +
         "-" +
         event.transaction.hash.toHexString();
     let eventEntity = new MintTilesEvent(id);

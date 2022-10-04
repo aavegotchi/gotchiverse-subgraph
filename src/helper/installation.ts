@@ -73,8 +73,6 @@ export function createMintInstallationEvent(
     let id =
         event.params._installationId.toString() +
         "_" +
-        event.block.number.toString() +
-        "-" +
         event.transaction.hash.toHexString();
 
     let eventEntity = new MintInstallationEvent(id);
@@ -94,8 +92,6 @@ export function createMintInstallationsEvent(
         "_" +
         event.params._amount.toString() +
         "_" +
-        event.block.number.toString() +
-        "-" +
         event.transaction.hash.toHexString();
     let eventEntity = new MintInstallationsEvent(id);
     eventEntity.transaction = event.transaction.hash;
@@ -118,8 +114,6 @@ export function createUpgradeInitiatedEvent(
         event.params._coordinateX.toString() +
         "-" +
         event.params._coordinateY.toString() +
-        "-" +
-        event.block.number.toString() +
         "-" +
         event.transaction.hash.toHexString();
     let eventEntity = UpgradeInitiatedEvent.load(id);
@@ -145,8 +139,6 @@ export function createAddInstallationType(
 ): AddInstallationTypeEvent {
     let id =
         event.params._installationId.toString() +
-        "-" +
-        event.block.number.toString() +
         "-" +
         event.transaction.hash.toHexString();
     let eventEntity = AddInstallationTypeEvent.load(id);
@@ -180,8 +172,6 @@ export function createDeprecateInstallationEvent(
 ): DeprecateInstallationEvent {
     let id =
         event.params._installationId.toString() +
-        "-" +
-        event.block.number.toString() +
         "-" +
         event.transaction.hash.toHexString();
     let eventEntity = DeprecateInstallationEvent.load(id);
@@ -238,8 +228,6 @@ export function createUpgradeTimeReducedEvent(
         "-" +
         event.params._coordinateY.toString() +
         "-" +
-        event.block.number.toString() +
-        "-" +
         event.transaction.hash.toHexString();
     let eventEntity = UpgradeTimeReducedEvent.load(id);
     if (!eventEntity) {
@@ -266,8 +254,6 @@ export function createCraftTimeReducedEvent(
         "-" +
         event.params._blocksReduced.toString() +
         "-" +
-        event.block.number.toString() +
-        "-" +
         event.transaction.hash.toHexString();
     let eventEntity = CraftTimeReducedEvent.load(id);
     if (!eventEntity) {
@@ -292,8 +278,6 @@ export function createUpgradeFinalizedEvent(
         "-" +
         event.params._coordinateY.toString() +
         "-" +
-        event.block.number.toString() +
-        "-" +
         event.transaction.hash.toHexString();
     let eventEntity = new UpgradeFinalizedEvent(id);
     eventEntity.transaction = event.transaction.hash;
@@ -315,8 +299,6 @@ export function createUpgradeQueuedEvent(
         event.params._owner.toHexString() +
         "-" +
         event.params._queueIndex.toString() +
-        "-" +
-        event.block.number.toString() +
         "-" +
         event.transaction.hash.toHexString();
     let eventEntity = new UpgradeQueuedEvent(id);
