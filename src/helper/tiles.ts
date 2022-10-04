@@ -64,12 +64,18 @@ export function createMintTileEvent(event: MintTile): MintTileEvent {
         event.params._owner.toHexString() +
         "-" +
         event.transaction.hash.toHexString();
-    let eventEntity = new MintTileEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.owner = event.params._owner;
-    eventEntity.tile = event.params._tileType.toString();
+    let eventEntity = MintTileEvent.load(id);
+    if (!eventEntity) {
+        eventEntity = new MintTileEvent(id);
+        eventEntity.transaction = event.transaction.hash;
+        eventEntity.block = event.block.number;
+        eventEntity.timestamp = event.block.timestamp;
+        eventEntity.owner = event.params._owner;
+        eventEntity.tile = event.params._tileType.toString();
+        eventEntity.quantity = 1;
+    } else {
+        eventEntity.quantity = eventEntity.quantity + 1;
+    }
     return eventEntity;
 }
 

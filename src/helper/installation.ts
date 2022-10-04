@@ -75,12 +75,18 @@ export function createMintInstallationEvent(
         "_" +
         event.transaction.hash.toHexString();
 
-    let eventEntity = new MintInstallationEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.installationType = event.params._installationType.toString();
-    eventEntity.owner = event.params._owner;
+    let eventEntity = MintInstallationEvent.load(id);
+    if (!eventEntity) {
+        eventEntity = new MintInstallationEvent(id);
+        eventEntity.transaction = event.transaction.hash;
+        eventEntity.block = event.block.number;
+        eventEntity.timestamp = event.block.timestamp;
+        eventEntity.installationType = event.params._installationType.toString();
+        eventEntity.owner = event.params._owner;
+        eventEntity.quantity = 1;
+    } else {
+        eventEntity.quantity = eventEntity.quantity + 1;
+    }
     return eventEntity;
 }
 

@@ -139,6 +139,7 @@ type MintTileEvent @entity {
     transaction: Bytes
     owner: Bytes
     tile: TileType
+    quantity: Int
 }
 
 type MintTilesEvent @entity {
@@ -158,6 +159,7 @@ type MintInstallationEvent @entity {
     transaction: Bytes
     owner: Bytes
     installationType: InstallationType
+    quantity: Int
 }
 
 type MintInstallationsEvent @entity {
