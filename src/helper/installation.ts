@@ -72,7 +72,7 @@ export function createMintInstallationEvent(
 ): MintInstallationEvent {
     let id =
         event.params._installationId.toString() +
-        "_" +
+        "-" +
         event.transaction.hash.toHexString();
 
     let eventEntity = MintInstallationEvent.load(id);
@@ -95,9 +95,9 @@ export function createMintInstallationsEvent(
 ): MintInstallationsEvent {
     let id =
         event.params._installationId.toString() +
-        "_" +
+        "-" +
         event.params._amount.toString() +
-        "_" +
+        "-" +
         event.transaction.hash.toHexString();
     let eventEntity = new MintInstallationsEvent(id);
     eventEntity.transaction = event.transaction.hash;
