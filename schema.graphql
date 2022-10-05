@@ -340,6 +340,44 @@ type EditDeprecateTimeEvent @entity {
     tileType: TileType
 }
 
+type BounceGateEventStarted @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes!
+    contract: Bytes!
+
+    _eventId: BigInt
+    _endTime: BigInt
+    _equipped: Boolean
+    _lastTimeUpdated: BigInt
+    _priority: BigInt
+    _startTime: BigInt
+    _title: String
+}
+
+type BounceGateEventCancelled @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes!
+    contract: Bytes!
+
+    _eventId: BigInt
+}
+
+type BounceGateEventPriorityAndDurationUpdated @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes!
+    contract: Bytes!
+
+    _eventId: BigInt
+    _newPriority: BigInt
+    _newEndTime: BigInt
+}
+
 type Parcel @entity {
     id: ID!
     equippedInstallations: [InstallationType!]!
@@ -477,4 +515,15 @@ type NFTDisplayStatus @entity {
     contractId: Int
     chainId: Int
     allowed: Boolean
+}
+
+type BounceGateEvent @entity {
+    id: ID!
+    title: String
+    startTime: BigInt
+    endTime: BigInt
+    priority: BigInt
+    equipped: Boolean
+    lastTimeUpdated: BigInt
+    cancelled: Boolean
 }

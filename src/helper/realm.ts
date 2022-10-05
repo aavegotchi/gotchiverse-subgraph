@@ -4,6 +4,9 @@ import {
     ChannelAlchemica,
     EquipInstallation,
     EquipTile,
+    EventCancelled,
+    EventPriorityAndDurationUpdated,
+    EventStarted,
     ExitAlchemica,
     InstallationUpgraded,
     MintParcel,
@@ -15,6 +18,10 @@ import {
 } from "../../generated/RealmDiamond/RealmDiamond";
 import {
     AlchemicaClaimedEvent,
+    BounceGateEvent,
+    BounceGateEventCancelled,
+    BounceGateEventPriorityAndDurationUpdated,
+    BounceGateEventStarted,
     ChannelAlchemicaEvent,
     EquipInstallationEvent,
     EquipTileEvent,
@@ -398,6 +405,74 @@ export const getOrCreateParcelAccessRight = (
         entity = new ParcelAccessRight(id);
         entity.accessRight = accessRight.toI32();
         entity.parcel = realmId.toString();
+    }
+
+    return entity;
+};
+
+export const createBounceGateEventStartedEvent = (
+    event: EventStarted
+): BounceGateEventStarted => {
+    let id =
+        event.params._eventId.toString() + "-" + event.block.number.toString();
+    let entity = new BounceGateEventStarted(id);
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.contract = event.address;
+    entity.transaction = event.transaction.hash;
+
+    entity._eventId = event.params._eventId;
+    entity._endTime = event.params.eventDetails.endTime;
+    entity._equipped = event.params.eventDetails.equipped;
+    entity._lastTimeUpdated = event.params.eventDetails.lastTimeUpdated;
+    entity._priority = event.params.eventDetails.priority;
+    entity._startTime = event.params.eventDetails.startTime;
+    entity._title = event.params.eventDetails.title;
+
+    return entity;
+};
+
+export const createBounceGateEventCancelledEvent = (
+    event: EventCancelled
+): BounceGateEventCancelled => {
+    let id =
+        event.params._eventId.toString() + "-" + event.block.number.toString();
+    let entity = new BounceGateEventCancelled(id);
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.contract = event.address;
+    entity.transaction = event.transaction.hash;
+
+    entity._eventId = event.params._eventId;
+    return entity;
+};
+
+export const createBounceGateEventPriorityAndDurationUpdatedEvent = (
+    event: EventPriorityAndDurationUpdated
+): BounceGateEventPriorityAndDurationUpdated => {
+    let id =
+        event.params._eventId.toString() + "-" + event.block.number.toString();
+    let entity = new BounceGateEventPriorityAndDurationUpdated(id);
+    entity.block = event.block.number;
+    entity.timestamp = event.block.timestamp;
+    entity.contract = event.address;
+    entity.transaction = event.transaction.hash;
+
+    entity._eventId = event.params._eventId;
+    entity._newEndTime = event.params._newEndTime;
+    entity._newPriority = event.params._newPriority;
+
+    return entity;
+};
+
+export const getOrCreateBounceGateEvent = (
+    eventId: BigInt
+): BounceGateEvent => {
+    let id = eventId.toString();
+    let entity = BounceGateEvent.load(id);
+    if (!entity) {
+        entity = new BounceGateEvent(id);
+        entity.cancelled = false;
     }
 
     return entity;

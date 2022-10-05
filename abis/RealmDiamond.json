@@ -422,5 +422,94 @@
                 "type": "uint256"
             }
         ]
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_eventId",
+                "type": "uint256"
+            }
+        ],
+        "name": "EventCancelled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_eventId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint120",
+                "name": "_newPriority",
+                "type": "uint120"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "_newEndTime",
+                "type": "uint64"
+            }
+        ],
+        "name": "EventPriorityAndDurationUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_eventId",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "title",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint64",
+                        "name": "startTime",
+                        "type": "uint64"
+                    },
+                    {
+                        "internalType": "uint64",
+                        "name": "endTime",
+                        "type": "uint64"
+                    },
+                    {
+                        "internalType": "uint120",
+                        "name": "priority",
+                        "type": "uint120"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "equipped",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint64",
+                        "name": "lastTimeUpdated",
+                        "type": "uint64"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct BounceGate",
+                "name": "eventDetails",
+                "type": "tuple"
+            }
+        ],
+        "name": "EventStarted",
+        "type": "event"
     }
 ]
