@@ -63,13 +63,19 @@ export function createMintTileEvent(event: MintTile): MintTileEvent {
         "-" +
         event.params._owner.toHexString() +
         "-" +
-        event.block.number.toString();
-    let eventEntity = new MintTileEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.owner = event.params._owner;
-    eventEntity.tile = event.params._tileType.toString();
+        event.transaction.hash.toHexString();
+    let eventEntity = MintTileEvent.load(id);
+    if (!eventEntity) {
+        eventEntity = new MintTileEvent(id);
+        eventEntity.transaction = event.transaction.hash;
+        eventEntity.block = event.block.number;
+        eventEntity.timestamp = event.block.timestamp;
+        eventEntity.owner = event.params._owner;
+        eventEntity.tile = event.params._tileType.toString();
+        eventEntity.quantity = 1;
+    } else {
+        eventEntity.quantity = eventEntity.quantity + 1;
+    }
     return eventEntity;
 }
 
@@ -81,7 +87,7 @@ export function createMintTilesEvent(event: MintTiles): MintTilesEvent {
         "-" +
         event.params._owner.toHexString() +
         "-" +
-        event.block.number.toString();
+        event.transaction.hash.toHexString();
     let eventEntity = new MintTilesEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;

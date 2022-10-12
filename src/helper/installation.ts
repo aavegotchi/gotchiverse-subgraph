@@ -72,15 +72,21 @@ export function createMintInstallationEvent(
 ): MintInstallationEvent {
     let id =
         event.params._installationId.toString() +
-        "_" +
-        event.block.number.toString();
+        "-" +
+        event.transaction.hash.toHexString();
 
-    let eventEntity = new MintInstallationEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.installationType = event.params._installationType.toString();
-    eventEntity.owner = event.params._owner;
+    let eventEntity = MintInstallationEvent.load(id);
+    if (!eventEntity) {
+        eventEntity = new MintInstallationEvent(id);
+        eventEntity.transaction = event.transaction.hash;
+        eventEntity.block = event.block.number;
+        eventEntity.timestamp = event.block.timestamp;
+        eventEntity.installationType = event.params._installationType.toString();
+        eventEntity.owner = event.params._owner;
+        eventEntity.quantity = 1;
+    } else {
+        eventEntity.quantity = eventEntity.quantity + 1;
+    }
     return eventEntity;
 }
 
@@ -89,10 +95,10 @@ export function createMintInstallationsEvent(
 ): MintInstallationsEvent {
     let id =
         event.params._installationId.toString() +
-        "_" +
+        "-" +
         event.params._amount.toString() +
-        "_" +
-        event.block.number.toString();
+        "-" +
+        event.transaction.hash.toHexString();
     let eventEntity = new MintInstallationsEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -115,7 +121,7 @@ export function createUpgradeInitiatedEvent(
         "-" +
         event.params._coordinateY.toString() +
         "-" +
-        event.block.number.toString();
+        event.transaction.hash.toHexString();
     let eventEntity = UpgradeInitiatedEvent.load(id);
     if (!eventEntity) {
         eventEntity = new UpgradeInitiatedEvent(id);
@@ -140,7 +146,7 @@ export function createAddInstallationType(
     let id =
         event.params._installationId.toString() +
         "-" +
-        event.block.number.toString();
+        event.transaction.hash.toHexString();
     let eventEntity = AddInstallationTypeEvent.load(id);
     if (!eventEntity) {
         eventEntity = new AddInstallationTypeEvent(id);
@@ -173,7 +179,7 @@ export function createDeprecateInstallationEvent(
     let id =
         event.params._installationId.toString() +
         "-" +
-        event.block.number.toString();
+        event.transaction.hash.toHexString();
     let eventEntity = DeprecateInstallationEvent.load(id);
     if (!eventEntity) {
         eventEntity = new DeprecateInstallationEvent(id);
@@ -228,7 +234,7 @@ export function createUpgradeTimeReducedEvent(
         "-" +
         event.params._coordinateY.toString() +
         "-" +
-        event.block.number.toString();
+        event.transaction.hash.toHexString();
     let eventEntity = UpgradeTimeReducedEvent.load(id);
     if (!eventEntity) {
         eventEntity = new UpgradeTimeReducedEvent(id);
@@ -254,7 +260,7 @@ export function createCraftTimeReducedEvent(
         "-" +
         event.params._blocksReduced.toString() +
         "-" +
-        event.block.number.toString();
+        event.transaction.hash.toHexString();
     let eventEntity = CraftTimeReducedEvent.load(id);
     if (!eventEntity) {
         eventEntity = new CraftTimeReducedEvent(id);
@@ -278,7 +284,7 @@ export function createUpgradeFinalizedEvent(
         "-" +
         event.params._coordinateY.toString() +
         "-" +
-        event.block.number.toString();
+        event.transaction.hash.toHexString();
     let eventEntity = new UpgradeFinalizedEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -300,7 +306,7 @@ export function createUpgradeQueuedEvent(
         "-" +
         event.params._queueIndex.toString() +
         "-" +
-        event.block.number.toString();
+        event.transaction.hash.toHexString();
     let eventEntity = new UpgradeQueuedEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
