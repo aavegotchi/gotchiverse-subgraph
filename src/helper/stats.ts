@@ -131,9 +131,6 @@ export function updateChannelAlchemicaStats(
         alchemicaChanneledTotal[i] = alchemicaChanneledTotal[i].plus(
             alchemica[i]
         );
-        alchemicaChanneledTotal[i] = alchemicaChanneledTotal[i].plus(
-            alchemica[i]
-        );
     }
     stats.alchemicaChanneledTotal = alchemicaChanneledTotal;
     return stats;
@@ -156,7 +153,6 @@ export function updateExitedAlchemicaStats(
 ): Stat {
     let alchemicaExitedTotal = stats.alchemicaExitedTotal;
     for (let i = 0; i < alchemica.length; i++) {
-        alchemicaExitedTotal[i] = alchemicaExitedTotal[i].plus(alchemica[i]);
         alchemicaExitedTotal[i] = alchemicaExitedTotal[i].plus(alchemica[i]);
     }
     stats.alchemicaExitedTotal = alchemicaExitedTotal;
