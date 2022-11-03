@@ -311,6 +311,18 @@ type ParcelAccessRightSetEvent @entity {
     actionRight: Int!
 }
 
+type ParcelWhitelistSetEvent @entity {
+    id: ID!
+    block: BigInt!
+    timestamp: BigInt!
+    transaction: Bytes!
+    contract: Bytes!
+
+    realmId: Int!
+    whitelistId: Int!
+    actionRight: Int!
+}
+
 type EditTileTypeEvent @entity {
     id: ID!
     block: BigInt!
@@ -409,6 +421,7 @@ type ParcelAccessRight @entity {
     id: ID!
     parcel: Parcel!
 
+    whitelistId: Int
     accessRight: Int!
     actionRight: Int!
 }

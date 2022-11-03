@@ -1,3 +1,4 @@
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
     AlchemicaClaimed,
     ChannelAlchemica,
@@ -16,7 +17,12 @@ import {
     EventStarted,
     EventCancelled,
     EventPriorityAndDurationUpdated,
+    ParcelWhitelistSet,
 } from "../../generated/RealmDiamond/RealmDiamond";
+import {
+    ParcelAccessRightSetEvent,
+    ParcelWhitelistSetEvent,
+} from "../../generated/schema";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import {
     getOrCreateInstallation,
@@ -504,4 +510,28 @@ export function handleBounceGateEventPriorityAndDurationUpdated(
     entity.endTime = event.params._newEndTime;
     entity.lastTimeUpdated = event.block.timestamp;
     entity.save();
+}
+
+export function handleParcelWhitelistSet(event: ParcelWhitelistSet): void {
+    // add event entity
+    let eventEntity = new ParcelWhitelistSetEvent(
+        event.block.number.toString() + "-" + event.logIndex.toString()
+    );
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+    eventEntity.contract = event.address;
+    eventEntity.transaction = event.transaction.hash;
+    eventEntity.actionRight = event.params._actionRight.toI32();
+    eventEntity.whitelistId = event.params._whitelistId.toI32();
+    eventEntity.realmId = event.params._realmId.toI32();
+    eventEntity.save();
+
+    // update ParcelAccessRight for Whitelist
+    let parEntity = getOrCreateParcelAccessRight(
+        event.params._realmId,
+        BigInt.fromI32(2)
+    );
+    parEntity.actionRight = event.params._actionRight.toI32();
+    parEntity.whitelistId = event.params._whitelistId.toI32();
+    parEntity.save();
 }

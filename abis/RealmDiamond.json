@@ -511,5 +511,30 @@
         ],
         "name": "EventStarted",
         "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_realmId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_actionRight",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_whitelistId",
+                "type": "uint256"
+            }
+        ],
+        "name": "ParcelWhitelistSet",
+        "type": "event"
     }
 ]
