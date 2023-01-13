@@ -528,4 +528,5 @@ type BounceGateEvent @entity {
     equipped: Boolean
     lastTimeUpdated: BigInt
     cancelled: Boolean
+    creator: Bytes
 }
