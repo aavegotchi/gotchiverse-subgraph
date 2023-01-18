@@ -19,11 +19,8 @@ import {
     EventPriorityAndDurationUpdated,
     ParcelWhitelistSet,
 } from "../../generated/RealmDiamond/RealmDiamond";
-import {
-    ParcelAccessRightSetEvent,
-    ParcelWhitelistSetEvent,
-} from "../../generated/schema";
-import { BIGINT_ONE, StatCategory } from "../helper/constants";
+import { ParcelWhitelistSetEvent } from "../../generated/schema";
+import { BIGINT_ONE, REALM_DIAMOND, StatCategory } from "../helper/constants";
 import {
     getOrCreateInstallation,
     getOrCreateInstallationType,
@@ -414,9 +411,8 @@ export function handleTransfer(event: Transfer): void {
 
 export function handleResyncParcel(event: ResyncParcel): void {
     let parcel = getOrCreateParcel(event.params._tokenId);
-    let contract = RealmDiamond.bind(event.address);
+    let contract = RealmDiamond.bind(REALM_DIAMOND);
     let parcelInfo = contract.try_getParcelInfo(event.params._tokenId);
-
     if (!parcelInfo.reverted) {
         let parcelMetadata = parcelInfo.value;
         parcel.parcelId = parcelMetadata.parcelId;
@@ -483,6 +479,8 @@ export function handleBounceGateEventStarted(event: EventStarted): void {
 
     entity.equipped = event.params.eventDetails.equipped;
     entity.lastTimeUpdated = event.block.timestamp;
+
+    entity.creator = event.transaction.from;
     entity.save();
 }
 
