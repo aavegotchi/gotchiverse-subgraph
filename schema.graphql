@@ -352,6 +352,9 @@ type EditDeprecateTimeEvent @entity {
     newDeprecatetime: Int
     tileId: Int
     tileType: TileType
+
+    installationId: Int
+    installationType: InstallationType
 }
 
 type BounceGateEventStarted @entity {
@@ -464,6 +467,7 @@ type InstallationType @entity {
     craftTime: BigInt
     nextLevelId: BigInt
     deprecated: Boolean
+    deprecatedAt: BigInt!
     alchemicaCost: [BigInt!]
     harvestRate: BigInt
     capacity: BigInt
