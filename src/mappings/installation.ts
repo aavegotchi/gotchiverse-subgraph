@@ -302,6 +302,6 @@ export function handleEditDeprecateTime(event: EditDeprecateTime): void {
         event.params._installationId
     );
     installationType.deprecated = true;
-    installationType.deprecatedAt = event.params._newDeprecatetime.toI32();
+    installationType.deprecatedAt = event.params._newDeprecatetime;
     installationType.save();
 }
