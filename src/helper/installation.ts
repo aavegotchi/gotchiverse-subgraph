@@ -34,6 +34,7 @@ export function getOrCreateInstallationType(typeId: BigInt): InstallationType {
     if (!installationType) {
         installationType = new InstallationType(id);
         installationType.amount = BIGINT_ZERO;
+        installationType.deprecatedAt = BIGINT_ZERO;
         installationType = updateInstallationType(installationType);
     }
     return installationType;

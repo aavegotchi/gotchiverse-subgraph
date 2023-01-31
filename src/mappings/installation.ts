@@ -3,6 +3,7 @@ import {
     AddInstallationType,
     CraftTimeReduced,
     DeprecateInstallation,
+    EditDeprecateTime,
     EditInstallationType,
     MintInstallation,
     MintInstallations,
@@ -12,7 +13,7 @@ import {
     UpgradeTimeReduced,
     URI,
 } from "../../generated/InstallationDiamond/InstallationDiamond";
-import { URIEvent } from "../../generated/schema";
+import { EditDeprecateTimeEvent, URIEvent } from "../../generated/schema";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import {
     createAddInstallationType,
@@ -276,4 +277,31 @@ export function handleURI(event: URI): void {
     let installation = getOrCreateInstallationType(event.params._tokenId);
     installation.uri = event.params._value;
     installation.save();
+}
+
+export function handleEditDeprecateTime(event: EditDeprecateTime): void {
+    // create Event entity
+    let id =
+        event.transaction.from.toHexString() +
+        "-" +
+        event.params._installationId.toString() +
+        "-" +
+        event.block.number.toString();
+    let eventEntity = new EditDeprecateTimeEvent(id);
+    eventEntity.transaction = event.transaction.hash;
+    eventEntity.block = event.block.number;
+    eventEntity.timestamp = event.block.timestamp;
+    eventEntity.contract = event.address;
+    eventEntity.installationId = event.params._installationId.toI32();
+    eventEntity.newDeprecatetime = eventEntity.newDeprecatetime;
+    eventEntity.installationType = event.params._installationId.toString();
+    eventEntity.save();
+
+    // update installationType
+    let installationType = getOrCreateInstallationType(
+        event.params._installationId
+    );
+    installationType.deprecated = true;
+    installationType.deprecatedAt = event.params._newDeprecatetime.toI32();
+    installationType.save();
 }
