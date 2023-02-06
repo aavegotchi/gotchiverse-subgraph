@@ -182,7 +182,6 @@ export function handleEditDeprecateTime(event: EditDeprecateTime): void {
 
     // update tileType
     let tileType = getOrCreateTileType(event.params._tileId);
-    tileType.deprecated = true;
     tileType.deprecatedAt = event.params._newDeprecatetime.toI32();
     tileType.save();
 }

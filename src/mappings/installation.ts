@@ -301,7 +301,6 @@ export function handleEditDeprecateTime(event: EditDeprecateTime): void {
     let installationType = getOrCreateInstallationType(
         event.params._installationId
     );
-    installationType.deprecated = true;
     installationType.deprecatedAt = event.params._newDeprecatetime;
     installationType.save();
 }
