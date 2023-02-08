@@ -293,7 +293,7 @@ export function handleEditDeprecateTime(event: EditDeprecateTime): void {
     eventEntity.timestamp = event.block.timestamp;
     eventEntity.contract = event.address;
     eventEntity.installationId = event.params._installationId.toI32();
-    eventEntity.newDeprecatetime = eventEntity.newDeprecatetime;
+    eventEntity.newDeprecatetime = event.params._newDeprecatetime;
     eventEntity.installationType = event.params._installationId.toString();
     eventEntity.save();
 
