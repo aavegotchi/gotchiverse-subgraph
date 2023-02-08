@@ -176,12 +176,12 @@ export function handleEditDeprecateTime(event: EditDeprecateTime): void {
     eventEntity.timestamp = event.block.timestamp;
     eventEntity.contract = event.address;
     eventEntity.tileId = event.params._tileId.toI32();
-    eventEntity.newDeprecatetime = eventEntity.newDeprecatetime;
+    eventEntity.newDeprecatetime = event.params._newDeprecatetime;
     eventEntity.tileType = event.params._tileId.toString();
     eventEntity.save();
 
     // update tileType
     let tileType = getOrCreateTileType(event.params._tileId);
-    tileType.deprecatedAt = event.params._newDeprecatetime.toI32();
+    tileType.deprecatedAt = event.params._newDeprecatetime;
     tileType.save();
 }

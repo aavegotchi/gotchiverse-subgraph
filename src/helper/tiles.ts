@@ -28,6 +28,7 @@ export function getOrCreateTileType(tileId: BigInt): TileType {
         tile.alchemicaCost = data.alchemicaCost;
         tile.craftTime = data.craftTime;
         tile.deprecated = data.deprecated;
+        tile.deprecatedAt = BIGINT_ZERO;
         tile.height = data.height;
         tile.width = data.width;
         tile.name = data.name;
