@@ -387,11 +387,7 @@ export const createParcelAccessRightSetEvent = (
     event: ParcelAccessRightSet
 ): ParcelAccessRightSetEvent => {
     let id =
-        event.params._realmId.toString() +
-        "-" +
-        event.params._realmId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let entity = new ParcelAccessRightSetEvent(id);
     entity.block = event.block.number;
     entity.timestamp = event.block.timestamp;
