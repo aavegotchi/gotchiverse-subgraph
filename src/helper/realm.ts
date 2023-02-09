@@ -401,13 +401,13 @@ export const createParcelAccessRightSetEvent = (
 
 export const getOrCreateParcelAccessRight = (
     realmId: BigInt,
-    accessRight: BigInt
+    actionRight: BigInt
 ): ParcelAccessRight => {
-    let id = realmId.toString() + "-" + accessRight.toString();
+    let id = realmId.toString() + "-" + actionRight.toString();
     let entity = ParcelAccessRight.load(id);
     if (!entity) {
         entity = new ParcelAccessRight(id);
-        entity.accessRight = accessRight.toI32();
+        entity.actionRight = actionRight.toI32();
         entity.parcel = realmId.toString();
     }
 

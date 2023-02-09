@@ -459,9 +459,9 @@ export function handleParcelAccessRightSet(event: ParcelAccessRightSet): void {
     // entity
     let entity = getOrCreateParcelAccessRight(
         event.params._realmId,
-        event.params._accessRight
+        event.params._actionRight
     );
-    entity.actionRight = event.params._actionRight.toI32();
+    entity.accessRight = event.params._accessRight.toI32();
     entity.save();
 }
 
