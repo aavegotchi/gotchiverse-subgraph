@@ -50,6 +50,7 @@ import {
     getOrCreatetypeNFTDisplayStatus,
     removeParcelInstallation,
     removeParcelTile,
+    updateParcelInfo,
 } from "../helper/realm";
 import {
     getStat,
@@ -411,26 +412,7 @@ export function handleTransfer(event: Transfer): void {
 
 export function handleResyncParcel(event: ResyncParcel): void {
     let parcel = getOrCreateParcel(event.params._tokenId);
-    let contract = RealmDiamond.bind(REALM_DIAMOND);
-    let parcelInfo = contract.try_getParcelInfo(event.params._tokenId);
-    if (!parcelInfo.reverted) {
-        let parcelMetadata = parcelInfo.value;
-        parcel.parcelId = parcelMetadata.parcelId;
-        parcel.tokenId = event.params._tokenId;
-        parcel.coordinateX = parcelMetadata.coordinateX;
-        parcel.coordinateY = parcelMetadata.coordinateY;
-        parcel.district = parcelMetadata.district;
-        parcel.parcelHash = parcelMetadata.parcelAddress;
-
-        parcel.size = parcelMetadata.size;
-
-        let boostArray = parcelMetadata.boost;
-        parcel.fudBoost = boostArray[0];
-        parcel.fomoBoost = boostArray[1];
-        parcel.alphaBoost = boostArray[2];
-        parcel.kekBoost = boostArray[3];
-    }
-
+    parcel = updateParcelInfo(parcel);
     parcel.save();
 }
 

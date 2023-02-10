@@ -12,6 +12,7 @@ import {
     MintParcel,
     NFTDisplayStatusUpdated,
     ParcelAccessRightSet,
+    RealmDiamond,
     Transfer,
     UnequipInstallation,
     UnequipTile,
@@ -38,7 +39,7 @@ import {
     UnequipInstallationEvent,
     UnequipTileEvent,
 } from "../../generated/schema";
-import { StatCategory } from "./constants";
+import { REALM_DIAMOND, StatCategory } from "./constants";
 import { getStat } from "./stats";
 
 export const getOrCreateParcel = (realmId: BigInt): Parcel => {
@@ -48,7 +49,34 @@ export const getOrCreateParcel = (realmId: BigInt): Parcel => {
         parcel = new Parcel(id);
         parcel.equippedInstallations = new Array<string>();
         parcel.equippedTiles = new Array<string>();
+        parcel = updateParcelInfo(parcel);
     }
+    return parcel;
+};
+
+export const updateParcelInfo = (parcel: Parcel) => {
+    let parcelId = BigInt.fromString(parcel.id);
+    let contract = RealmDiamond.bind(REALM_DIAMOND);
+    let parcelInfo = contract.try_getParcelInfo(parcelId);
+
+    if (!parcelInfo.reverted) {
+        let parcelMetadata = parcelInfo.value;
+        parcel.parcelId = parcelMetadata.parcelId;
+        parcel.tokenId = parcelId;
+        parcel.coordinateX = parcelMetadata.coordinateX;
+        parcel.coordinateY = parcelMetadata.coordinateY;
+        parcel.district = parcelMetadata.district;
+        parcel.parcelHash = parcelMetadata.parcelAddress;
+
+        parcel.size = parcelMetadata.size;
+
+        let boostArray = parcelMetadata.boost;
+        parcel.fudBoost = boostArray[0];
+        parcel.fomoBoost = boostArray[1];
+        parcel.alphaBoost = boostArray[2];
+        parcel.kekBoost = boostArray[3];
+    }
+
     return parcel;
 };
 
