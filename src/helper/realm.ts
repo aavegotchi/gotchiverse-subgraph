@@ -54,7 +54,7 @@ export const getOrCreateParcel = (realmId: BigInt): Parcel => {
     return parcel;
 };
 
-export const updateParcelInfo = (parcel: Parcel) => {
+export function updateParcelInfo(parcel: Parcel): Parcel {
     let parcelId = BigInt.fromString(parcel.id);
     let contract = RealmDiamond.bind(REALM_DIAMOND);
     let parcelInfo = contract.try_getParcelInfo(parcelId);
@@ -78,7 +78,7 @@ export const updateParcelInfo = (parcel: Parcel) => {
     }
 
     return parcel;
-};
+}
 
 export const getOrCreateGotchi = (gotchiId: BigInt): Gotchi => {
     let id = gotchiId.toString();
