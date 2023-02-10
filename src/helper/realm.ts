@@ -387,11 +387,7 @@ export const createParcelAccessRightSetEvent = (
     event: ParcelAccessRightSet
 ): ParcelAccessRightSetEvent => {
     let id =
-        event.params._realmId.toString() +
-        "-" +
-        event.params._realmId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let entity = new ParcelAccessRightSetEvent(id);
     entity.block = event.block.number;
     entity.timestamp = event.block.timestamp;
@@ -405,13 +401,13 @@ export const createParcelAccessRightSetEvent = (
 
 export const getOrCreateParcelAccessRight = (
     realmId: BigInt,
-    accessRight: BigInt
+    actionRight: BigInt
 ): ParcelAccessRight => {
-    let id = realmId.toString() + "-" + accessRight.toString();
+    let id = realmId.toString() + "-" + actionRight.toString();
     let entity = ParcelAccessRight.load(id);
     if (!entity) {
         entity = new ParcelAccessRight(id);
-        entity.accessRight = accessRight.toI32();
+        entity.actionRight = actionRight.toI32();
         entity.parcel = realmId.toString();
     }
 
