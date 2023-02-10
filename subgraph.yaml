@@ -148,3 +148,5 @@ dataSources:
                 handler: handleUpgradeQueued
               - event: URI(string,indexed uint256)
                 handler: handleURI
+              - event: EditDeprecateTime(uint256,uint256)
+                handler: handleEditDeprecateTime

@@ -2964,5 +2964,24 @@
         ],
         "name": "UpgradeQueued",
         "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_installationId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_newDeprecatetime",
+                "type": "uint256"
+            }
+        ],
+        "name": "EditDeprecateTime",
+        "type": "event"
     }
 ]
