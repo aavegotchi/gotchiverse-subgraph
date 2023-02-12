@@ -527,9 +527,9 @@ export function handleParcelWhitelistSet(event: ParcelWhitelistSet): void {
     // update ParcelAccessRight for Whitelist
     let parEntity = getOrCreateParcelAccessRight(
         event.params._realmId,
-        BigInt.fromI32(2)
+        event.params._actionRight
     );
-    parEntity.actionRight = event.params._actionRight.toI32();
+    parEntity.accessRight = BigInt.fromI32(2);
     parEntity.whitelistId = event.params._whitelistId.toI32();
     parEntity.save();
 }
