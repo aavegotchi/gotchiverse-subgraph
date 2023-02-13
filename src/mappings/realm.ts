@@ -133,6 +133,13 @@ export function handleExitAlchemica(event: ExitAlchemica): void {
     );
     overallStats.save();
 
+    let userStats = getStat(
+        StatCategory.USER,
+        event.transaction.from.toHexString()
+    );
+    userStats = updateExitedAlchemicaStats(userStats, event.params._alchemica);
+    userStats.save();
+
     let gotchiStats = getStat(
         StatCategory.GOTCHI,
         event.params._gotchiId.toString()

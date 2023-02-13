@@ -141,9 +141,9 @@ export const createExitAlchemicaEvent = (
     event: ExitAlchemica
 ): ExitAlchemicaEvent => {
     let id =
-        event.params._gotchiId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() +
+        "/" +
+        event.logIndex.toString();
     let eventEntity = new ExitAlchemicaEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;

@@ -119,7 +119,7 @@ describe("handleChannelAlchemica", () => {
         assert.fieldEquals(
             "ChannelAlchemicaEvent",
             id,
-            "block",
+            "timestamp",
             mockEvent.block.timestamp.toString()
         );
 
