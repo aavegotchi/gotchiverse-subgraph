@@ -93,11 +93,7 @@ export const createChannelAlchemicaEvent = (
     event: ChannelAlchemica
 ): ChannelAlchemicaEvent => {
     let id =
-        event.params._gotchiId.toString() +
-        "-" +
-        event.params._realmId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new ChannelAlchemicaEvent(id);
     eventEntity.gotchi = event.params._gotchiId.toString();
     eventEntity.parcel = event.params._realmId.toString();
