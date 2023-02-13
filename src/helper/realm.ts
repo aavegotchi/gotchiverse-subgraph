@@ -114,14 +114,7 @@ export const createChannelAlchemicaEvent = (
 export const createAlchemicaClaimedEvent = (
     event: AlchemicaClaimed
 ): AlchemicaClaimedEvent => {
-    let id =
-        event.params._realmId.toString() +
-        "-" +
-        event.params._alchemicaType.toString() +
-        "-" +
-        event.params._gotchiId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+    let id = event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new AlchemicaClaimedEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;

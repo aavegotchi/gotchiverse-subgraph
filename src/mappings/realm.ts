@@ -190,6 +190,17 @@ export function handleAlchemicaClaimed(event: AlchemicaClaimed): void {
         event.params._amount
     );
     gotchiStats.save();
+
+    let parcelStats = getStat(
+        StatCategory.PARCEL,
+        event.params._realmId.toString()
+    );
+    parcelStats = updateAlchemicaClaimedStats(
+        parcelStats,
+        event.params._alchemicaType.toI32(),
+        event.params._amount
+    );
+    parcelStats.save();
 }
 
 export function handleEquipInstallation(event: EquipInstallation): void {
