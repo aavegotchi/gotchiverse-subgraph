@@ -299,9 +299,7 @@ export const createMintParcelEvent = (event: MintParcel): MintParcelEvent => {
 
 export const createParcelTransferEvent = (event: Transfer): TransferEvent => {
     let id =
-        event.params._tokenId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let entity = new TransferEvent(id);
     entity.block = event.block.number;
     entity.timestamp = event.block.timestamp;
