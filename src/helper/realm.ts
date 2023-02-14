@@ -236,13 +236,7 @@ export const createInstallationUpgradedEvent = (
     event: InstallationUpgraded
 ): InstallationUpgradedEvent => {
     let id =
-        event.params._realmId.toString() +
-        "-" +
-        event.params._prevInstallationId.toString() +
-        "-" +
-        event.params._nextInstallationId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new InstallationUpgradedEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;

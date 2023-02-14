@@ -303,6 +303,13 @@ export function handleInstallationUpgraded(event: InstallationUpgraded): void {
     overallStats = updateInstallationUpgradedStats(overallStats);
     overallStats.save();
 
+    let userStats = getStat(
+        StatCategory.USER,
+        event.transaction.from.toHexString()
+    );
+    userStats = updateInstallationUpgradedStats(userStats);
+    userStats.save();
+
     let parcelStats = getStat(
         StatCategory.PARCEL,
         event.params._realmId.toString()
