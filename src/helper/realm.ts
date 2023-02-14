@@ -114,7 +114,8 @@ export const createChannelAlchemicaEvent = (
 export const createAlchemicaClaimedEvent = (
     event: AlchemicaClaimed
 ): AlchemicaClaimedEvent => {
-    let id = event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
+    let id =
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new AlchemicaClaimedEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -134,9 +135,7 @@ export const createExitAlchemicaEvent = (
     event: ExitAlchemica
 ): ExitAlchemicaEvent => {
     let id =
-        event.transaction.hash.toHexString() +
-        "/" +
-        event.logIndex.toString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new ExitAlchemicaEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -151,15 +150,7 @@ export const createEquipInstallationEvent = (
     event: EquipInstallation
 ): EquipInstallationEvent => {
     let id =
-        event.params._realmId.toString() +
-        "-" +
-        event.params._installationId.toString() +
-        "-" +
-        event.params._x.toString() +
-        "-" +
-        event.params._y.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new EquipInstallationEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
