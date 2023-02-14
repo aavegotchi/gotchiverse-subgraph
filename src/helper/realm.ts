@@ -285,9 +285,7 @@ export const removeParcelTile = (parcel: Parcel, tileId: BigInt): Parcel => {
 
 export const createMintParcelEvent = (event: MintParcel): MintParcelEvent => {
     let id =
-        event.params._tokenId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let entity = new MintParcelEvent(id);
     entity.owner = event.params._owner;
     entity.tokenId = event.params._tokenId;
