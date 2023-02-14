@@ -184,15 +184,7 @@ export const createUnequipInstallationEvent = (
 
 export const createEquipTileEvent = (event: EquipTile): EquipTileEvent => {
     let id =
-        event.params._realmId.toString() +
-        "-" +
-        event.params._tileId.toString() +
-        "-" +
-        event.params._x.toString() +
-        "-" +
-        event.params._y.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new EquipTileEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
