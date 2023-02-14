@@ -168,15 +168,7 @@ export const createUnequipInstallationEvent = (
     event: UnequipInstallation
 ): UnequipInstallationEvent => {
     let id =
-        event.params._realmId.toString() +
-        "-" +
-        event.params._installationId.toString() +
-        "-" +
-        event.params._x.toString() +
-        "-" +
-        event.params._y.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new UnequipInstallationEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
