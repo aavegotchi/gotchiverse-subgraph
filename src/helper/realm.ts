@@ -341,11 +341,7 @@ export const createNFTDisplayStatusUpdatedEvent = (
     event: NFTDisplayStatusUpdated
 ): NFTDisplayStatusUpdatedEvent => {
     let id =
-        event.params._token.toHexString() +
-        "-" +
-        event.params._chainId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let entity = new NFTDisplayStatusUpdatedEvent(id);
     entity.block = event.block.number;
     entity.timestamp = event.block.timestamp;
