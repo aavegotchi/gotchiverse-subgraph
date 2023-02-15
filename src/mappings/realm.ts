@@ -520,7 +520,7 @@ export function handleBounceGateEventPriorityAndDurationUpdated(
 export function handleParcelWhitelistSet(event: ParcelWhitelistSet): void {
     // add event entity
     let eventEntity = new ParcelWhitelistSetEvent(
-        event.block.number.toString() + "-" + event.logIndex.toString()
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString()
     );
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;
