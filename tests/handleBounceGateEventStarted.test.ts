@@ -4,16 +4,12 @@ import {
     assert,
     beforeAll,
     clearStore,
-    createMockedFunction,
     describe,
     newMockEvent,
     test,
 } from "matchstick-as";
-import {
-    EventStarted,
-    ParcelAccessRightSet,
-} from "../generated/RealmDiamond/RealmDiamond";
-import { BIGINT_ONE, REALM_DIAMOND } from "../src/helper/constants";
+import { EventStarted } from "../generated/RealmDiamond/RealmDiamond";
+import { BIGINT_ONE } from "../src/helper/constants";
 import { handleBounceGateEventStarted } from "../src/mappings/realm";
 
 let mockEvent = newMockEvent();
