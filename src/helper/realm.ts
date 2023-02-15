@@ -410,7 +410,7 @@ export const createBounceGateEventCancelledEvent = (
     event: EventCancelled
 ): BounceGateEventCancelled => {
     let id =
-        event.params._eventId.toString() + "-" + event.block.number.toString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let entity = new BounceGateEventCancelled(id);
     entity.block = event.block.number;
     entity.timestamp = event.block.timestamp;

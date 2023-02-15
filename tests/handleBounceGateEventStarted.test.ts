@@ -1,4 +1,4 @@
-import { BigInt, ethereum } from "@graphprotocol/graph-ts";
+import { ethereum } from "@graphprotocol/graph-ts";
 import {
     afterAll,
     assert,
