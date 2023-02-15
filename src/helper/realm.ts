@@ -425,7 +425,7 @@ export const createBounceGateEventPriorityAndDurationUpdatedEvent = (
     event: EventPriorityAndDurationUpdated
 ): BounceGateEventPriorityAndDurationUpdated => {
     let id =
-        event.params._eventId.toString() + "-" + event.block.number.toString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let entity = new BounceGateEventPriorityAndDurationUpdated(id);
     entity.block = event.block.number;
     entity.timestamp = event.block.timestamp;
