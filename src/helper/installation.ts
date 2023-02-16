@@ -148,7 +148,8 @@ export function createAddInstallationType(
 export function createEditInstallationType(
     event: EditInstallationType
 ): EditInstallationTypeEvent {
-    let id = event.transaction.hash.toHexString();
+    let id =
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = EditInstallationTypeEvent.load(id);
     if (!eventEntity) {
         eventEntity = new EditInstallationTypeEvent(id);
