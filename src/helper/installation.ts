@@ -165,9 +165,7 @@ export function createDeprecateInstallationEvent(
     event: DeprecateInstallation
 ): DeprecateInstallationEvent {
     let id =
-        event.params._installationId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = DeprecateInstallationEvent.load(id);
     if (!eventEntity) {
         eventEntity = new DeprecateInstallationEvent(id);
