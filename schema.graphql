@@ -247,8 +247,6 @@ type CraftTimeReducedEvent @entity {
     timestamp: BigInt!
     transaction: Bytes!
 
-    x: BigInt!
-    y: BigInt!
     blocksReduced: BigInt!
 }
 
