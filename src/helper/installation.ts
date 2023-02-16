@@ -110,15 +110,7 @@ export function createUpgradeInitiatedEvent(
     event: UpgradeInitiated
 ): UpgradeInitiatedEvent {
     let id =
-        event.params.installationId.toString() +
-        "-" +
-        event.params._realmId.toString() +
-        "-" +
-        event.params._coordinateX.toString() +
-        "-" +
-        event.params._coordinateY.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = UpgradeInitiatedEvent.load(id);
     if (!eventEntity) {
         eventEntity = new UpgradeInitiatedEvent(id);

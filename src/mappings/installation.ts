@@ -141,6 +141,16 @@ export function handleUpgradeInitiated(event: UpgradeInitiated): void {
         BIGINT_ONE
     );
     userStats.save();
+
+    let parcelStats = getStat(
+        StatCategory.PARCEL,
+        event.params._realmId.toString()
+    );
+    parcelStats = updateAlchemicaSpendOnUpgrades(parcelStats, type);
+    parcelStats.installationsUpgradedTotal = parcelStats.installationsUpgradedTotal.plus(
+        BIGINT_ONE
+    );
+    parcelStats.save();
 }
 
 export function handleAddInstallationType(event: AddInstallationType): void {
