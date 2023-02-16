@@ -269,11 +269,7 @@ export function handleUpgradeQueued(event: UpgradeQueued): void {
 export function handleURI(event: URI): void {
     // create event
     let id =
-        event.transaction.from.toHexString() +
-        "-" +
-        event.params._tokenId.toString() +
-        "-" +
-        event.block.number.toString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new URIEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -292,11 +288,7 @@ export function handleURI(event: URI): void {
 export function handleEditDeprecateTime(event: EditDeprecateTime): void {
     // create Event entity
     let id =
-        event.transaction.from.toHexString() +
-        "-" +
-        event.params._installationId.toString() +
-        "-" +
-        event.block.number.toString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new EditDeprecateTimeEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;

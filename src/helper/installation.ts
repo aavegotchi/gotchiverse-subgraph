@@ -212,15 +212,7 @@ export function createUpgradeTimeReducedEvent(
     event: UpgradeTimeReduced
 ): UpgradeTimeReducedEvent {
     let id =
-        event.params._realmId.toString() +
-        "-" +
-        event.params._queueId.toString() +
-        "-" +
-        event.params._coordinateX.toString() +
-        "-" +
-        event.params._coordinateY.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = UpgradeTimeReducedEvent.load(id);
     if (!eventEntity) {
         eventEntity = new UpgradeTimeReducedEvent(id);
@@ -240,13 +232,7 @@ export function createCraftTimeReducedEvent(
     event: CraftTimeReduced
 ): CraftTimeReducedEvent {
     let id =
-        event.transaction.from.toHexString() +
-        "-" +
-        event.params._queueId.toString() +
-        "-" +
-        event.params._blocksReduced.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = CraftTimeReducedEvent.load(id);
     if (!eventEntity) {
         eventEntity = new CraftTimeReducedEvent(id);
@@ -262,15 +248,7 @@ export function createUpgradeFinalizedEvent(
     event: UpgradeFinalized
 ): UpgradeFinalizedEvent {
     let id =
-        event.params._realmId.toString() +
-        "-" +
-        event.params._newInstallationId.toString() +
-        "-" +
-        event.params._coordinateX.toString() +
-        "-" +
-        event.params._coordinateY.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new UpgradeFinalizedEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -286,13 +264,7 @@ export function createUpgradeQueuedEvent(
     event: UpgradeQueued
 ): UpgradeQueuedEvent {
     let id =
-        event.params._realmId.toString() +
-        "-" +
-        event.params._owner.toHexString() +
-        "-" +
-        event.params._queueIndex.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new UpgradeQueuedEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
