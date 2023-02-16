@@ -133,9 +133,7 @@ export function createAddInstallationType(
     event: AddInstallationType
 ): AddInstallationTypeEvent {
     let id =
-        event.params._installationId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = AddInstallationTypeEvent.load(id);
     if (!eventEntity) {
         eventEntity = new AddInstallationTypeEvent(id);
