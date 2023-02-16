@@ -9,15 +9,15 @@ import {
     newMockEvent,
     test,
 } from "matchstick-as";
-import { ResyncParcel } from "../generated/RealmDiamond/RealmDiamond";
-import { BIGINT_ONE, REALM_DIAMOND } from "../src/helper/constants";
-import { handleResyncParcel } from "../src/mappings/realm";
+import { MintParcel } from "../../generated/RealmDiamond/RealmDiamond";
+import { BIGINT_ONE, REALM_DIAMOND } from "../../src/helper/constants";
+import { handleMintParcel } from "../../src/mappings/realm";
 
 let mockEvent = newMockEvent();
-describe("handleResyncParcel", () => {
+describe("handleMintParcel", () => {
     beforeAll(() => {
         // prepare event
-        let event = new ResyncParcel(
+        let event = new MintParcel(
             mockEvent.address,
             mockEvent.logIndex,
             mockEvent.transactionLogIndex,
@@ -28,6 +28,12 @@ describe("handleResyncParcel", () => {
             null
         );
 
+        event.parameters.push(
+            new ethereum.EventParam(
+                "_owner",
+                ethereum.Value.fromAddress(mockEvent.transaction.from)
+            )
+        );
         event.parameters.push(
             new ethereum.EventParam(
                 "_tokenId",
@@ -59,22 +65,52 @@ describe("handleResyncParcel", () => {
             .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
             .returns([ethereum.Value.fromTuple(tuple)]);
 
-        handleResyncParcel(event);
+        handleMintParcel(event);
     });
 
-    test("it should create and update parcel entity", () => {
-        assert.fieldEquals("Parcel", "1", "id", "1");
-        assert.fieldEquals("Parcel", "1", "parcelId", "A");
-        assert.fieldEquals("Parcel", "1", "tokenId", "1");
-        assert.fieldEquals("Parcel", "1", "coordinateX", "1");
-        assert.fieldEquals("Parcel", "1", "coordinateY", "1");
-        assert.fieldEquals("Parcel", "1", "district", "1");
-        assert.fieldEquals("Parcel", "1", "parcelHash", "B");
-        assert.fieldEquals("Parcel", "1", "size", "1");
-        assert.fieldEquals("Parcel", "1", "fudBoost", "1");
-        assert.fieldEquals("Parcel", "1", "fomoBoost", "1");
-        assert.fieldEquals("Parcel", "1", "alphaBoost", "1");
-        assert.fieldEquals("Parcel", "1", "kekBoost", "1");
+    test("it should create an event entity", () => {
+        let id =
+            mockEvent.transaction.hash.toHexString() +
+            "/" +
+            mockEvent.logIndex.toString();
+        assert.fieldEquals("MintParcelEvent", id, "id", id);
+
+        assert.fieldEquals(
+            "MintParcelEvent",
+            id,
+            "block",
+            mockEvent.block.number.toString()
+        );
+        assert.fieldEquals(
+            "MintParcelEvent",
+            id,
+            "timestamp",
+            mockEvent.block.timestamp.toString()
+        );
+
+        assert.fieldEquals(
+            "MintParcelEvent",
+            id,
+            "transaction",
+            mockEvent.transaction.hash.toHexString()
+        );
+
+        assert.fieldEquals(
+            "MintParcelEvent",
+            id,
+            "owner",
+            mockEvent.transaction.from.toHexString()
+        );
+        assert.fieldEquals("MintParcelEvent", id, "tokenId", "1");
+    });
+
+    test("it should create parcel entity with owner", () => {
+        assert.fieldEquals(
+            "Parcel",
+            "1",
+            "owner",
+            mockEvent.transaction.from.toHexString()
+        );
     });
 
     afterAll(() => {

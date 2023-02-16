@@ -8,9 +8,9 @@ import {
     newMockEvent,
     test,
 } from "matchstick-as";
-import { EventPriorityAndDurationUpdated } from "../generated/RealmDiamond/RealmDiamond";
-import { BIGINT_ONE } from "../src/helper/constants";
-import { handleBounceGateEventPriorityAndDurationUpdated } from "../src/mappings/realm";
+import { EventPriorityAndDurationUpdated } from "../../generated/RealmDiamond/RealmDiamond";
+import { BIGINT_ONE } from "../../src/helper/constants";
+import { handleBounceGateEventPriorityAndDurationUpdated } from "../../src/mappings/realm";
 
 let mockEvent = newMockEvent();
 describe("handleBounceGateEventPriorityAndDurationUpdated", () => {

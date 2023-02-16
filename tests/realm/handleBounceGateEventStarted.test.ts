@@ -8,9 +8,9 @@ import {
     newMockEvent,
     test,
 } from "matchstick-as";
-import { EventStarted } from "../generated/RealmDiamond/RealmDiamond";
-import { BIGINT_ONE } from "../src/helper/constants";
-import { handleBounceGateEventStarted } from "../src/mappings/realm";
+import { EventStarted } from "../../generated/RealmDiamond/RealmDiamond";
+import { BIGINT_ONE } from "../../src/helper/constants";
+import { handleBounceGateEventStarted } from "../../src/mappings/realm";
 
 let mockEvent = newMockEvent();
 describe("handleBounceGateEventStarted", () => {

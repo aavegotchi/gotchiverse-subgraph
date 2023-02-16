@@ -9,9 +9,9 @@ import {
     newMockEvent,
     test,
 } from "matchstick-as";
-import { AlchemicaClaimed } from "../generated/RealmDiamond/RealmDiamond";
-import { BIGINT_ONE, REALM_DIAMOND } from "../src/helper/constants";
-import { handleAlchemicaClaimed } from "../src/mappings/realm";
+import { AlchemicaClaimed } from "../../generated/RealmDiamond/RealmDiamond";
+import { BIGINT_ONE, REALM_DIAMOND } from "../../src/helper/constants";
+import { handleAlchemicaClaimed } from "../../src/mappings/realm";
 
 let mockEvent = newMockEvent();
 describe("handleAlchemicaClaimed", () => {

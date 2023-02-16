@@ -1,4 +1,4 @@
-import { ethereum } from "@graphprotocol/graph-ts";
+import { BigInt, ethereum } from "@graphprotocol/graph-ts";
 import {
     afterAll,
     assert,
@@ -9,15 +9,14 @@ import {
     newMockEvent,
     test,
 } from "matchstick-as";
-import { MintParcel } from "../generated/RealmDiamond/RealmDiamond";
-import { BIGINT_ONE, REALM_DIAMOND } from "../src/helper/constants";
-import { handleMintParcel } from "../src/mappings/realm";
+import { ParcelWhitelistSet } from "../../generated/RealmDiamond/RealmDiamond";
+import { BIGINT_ONE, REALM_DIAMOND } from "../../src/helper/constants";
+import { handleParcelWhitelistSet } from "../../src/mappings/realm";
 
 let mockEvent = newMockEvent();
-describe("handleMintParcel", () => {
+describe("handleParcelWhitelistSet", () => {
     beforeAll(() => {
-        // prepare event
-        let event = new MintParcel(
+        let event = new ParcelWhitelistSet(
             mockEvent.address,
             mockEvent.logIndex,
             mockEvent.transactionLogIndex,
@@ -28,21 +27,29 @@ describe("handleMintParcel", () => {
             null
         );
 
+        event.parameters = new Array();
+
         event.parameters.push(
             new ethereum.EventParam(
-                "_owner",
-                ethereum.Value.fromAddress(mockEvent.transaction.from)
+                "_realmId",
+                ethereum.Value.fromSignedBigInt(BIGINT_ONE)
             )
         );
         event.parameters.push(
             new ethereum.EventParam(
-                "_tokenId",
-                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+                "_actionRight",
+                ethereum.Value.fromSignedBigInt(BIGINT_ONE)
+            )
+        );
+        event.parameters.push(
+            new ethereum.EventParam(
+                "_whitelistId",
+                ethereum.Value.fromSignedBigInt(BigInt.fromI32(2))
             )
         );
 
         // mock getParcelInfo
-        let tuple: ethereum.Tuple = changetype<ethereum.Tuple>([
+        let tuple = changetype<ethereum.Tuple>([
             ethereum.Value.fromString("A"),
             ethereum.Value.fromString("B"),
             ethereum.Value.fromAddress(REALM_DIAMOND),
@@ -65,52 +72,46 @@ describe("handleMintParcel", () => {
             .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
             .returns([ethereum.Value.fromTuple(tuple)]);
 
-        handleMintParcel(event);
+        handleParcelWhitelistSet(event);
     });
 
-    test("it should create an event entity", () => {
+    test("it should store an event entity", () => {
         let id =
             mockEvent.transaction.hash.toHexString() +
             "/" +
             mockEvent.logIndex.toString();
-        assert.fieldEquals("MintParcelEvent", id, "id", id);
 
+        assert.fieldEquals("ParcelWhitelistSetEvent", id, "id", id);
         assert.fieldEquals(
-            "MintParcelEvent",
+            "ParcelWhitelistSetEvent",
             id,
             "block",
             mockEvent.block.number.toString()
         );
         assert.fieldEquals(
-            "MintParcelEvent",
+            "ParcelWhitelistSetEvent",
             id,
             "timestamp",
             mockEvent.block.timestamp.toString()
         );
 
         assert.fieldEquals(
-            "MintParcelEvent",
+            "ParcelWhitelistSetEvent",
             id,
             "transaction",
             mockEvent.transaction.hash.toHexString()
         );
-
-        assert.fieldEquals(
-            "MintParcelEvent",
-            id,
-            "owner",
-            mockEvent.transaction.from.toHexString()
-        );
-        assert.fieldEquals("MintParcelEvent", id, "tokenId", "1");
+        assert.fieldEquals("ParcelWhitelistSetEvent", id, "realmId", "1");
+        assert.fieldEquals("ParcelWhitelistSetEvent", id, "actionRight", "1");
+        assert.fieldEquals("ParcelWhitelistSetEvent", id, "whitelistId", "2");
     });
 
-    test("it should create parcel entity with owner", () => {
-        assert.fieldEquals(
-            "Parcel",
-            "1",
-            "owner",
-            mockEvent.transaction.from.toHexString()
-        );
+    test("it should create an entity with id of realm id and action right", () => {
+        let id = "1-1";
+        assert.fieldEquals("ParcelAccessRight", id, "parcel", "1");
+        assert.fieldEquals("ParcelAccessRight", id, "actionRight", "1");
+        assert.fieldEquals("ParcelAccessRight", id, "accessRight", "2");
+        assert.fieldEquals("ParcelAccessRight", id, "whitelistId", "2");
     });
 
     afterAll(() => {

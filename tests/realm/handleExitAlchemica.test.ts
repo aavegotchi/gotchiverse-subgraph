@@ -8,9 +8,9 @@ import {
     newMockEvent,
     test,
 } from "matchstick-as";
-import { ExitAlchemica } from "../generated/RealmDiamond/RealmDiamond";
-import { BIGINT_ONE } from "../src/helper/constants";
-import { handleExitAlchemica } from "../src/mappings/realm";
+import { ExitAlchemica } from "../../generated/RealmDiamond/RealmDiamond";
+import { BIGINT_ONE } from "../../src/helper/constants";
+import { handleExitAlchemica } from "../../src/mappings/realm";
 
 let mockEvent = newMockEvent();
 describe("handleExitAlchemica", () => {

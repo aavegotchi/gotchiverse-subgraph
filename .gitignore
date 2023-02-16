@@ -4,4 +4,8 @@ node_modules/
 yarn-error.log
 .vscode/
 data/
+tests/realm/.bin
+tests/installation/.bin
 tests/.bin
+tests/tile/.bin
+matchstick.yaml

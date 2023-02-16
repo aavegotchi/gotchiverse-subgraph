@@ -9,11 +9,11 @@ import {
     newMockEvent,
     test,
 } from "matchstick-as";
-import { UnequipInstallation } from "../generated/RealmDiamond/RealmDiamond";
-import { Installation } from "../generated/schema";
-import { BIGINT_ONE, REALM_DIAMOND } from "../src/helper/constants";
-import { getOrCreateParcel } from "../src/helper/realm";
-import { handleUnequipInstallation } from "../src/mappings/realm";
+import { UnequipInstallation } from "../../generated/RealmDiamond/RealmDiamond";
+import { Installation } from "../../generated/schema";
+import { BIGINT_ONE, REALM_DIAMOND } from "../../src/helper/constants";
+import { getOrCreateParcel } from "../../src/helper/realm";
+import { handleUnequipInstallation } from "../../src/mappings/realm";
 
 let mockEvent = newMockEvent();
 describe("handleUnequipInstallation", () => {

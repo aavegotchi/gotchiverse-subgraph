@@ -9,9 +9,9 @@ import {
     newMockEvent,
     test,
 } from "matchstick-as";
-import { Transfer } from "../generated/RealmDiamond/RealmDiamond";
-import { BIGINT_ONE, REALM_DIAMOND } from "../src/helper/constants";
-import { handleTransfer } from "../src/mappings/realm";
+import { Transfer } from "../../generated/RealmDiamond/RealmDiamond";
+import { BIGINT_ONE, REALM_DIAMOND } from "../../src/helper/constants";
+import { handleTransfer } from "../../src/mappings/realm";
 
 let mockEvent = newMockEvent();
 describe("handleTransfer", () => {

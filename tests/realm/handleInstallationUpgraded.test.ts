@@ -9,15 +9,15 @@ import {
     newMockEvent,
     test,
 } from "matchstick-as";
-import { InstallationUpgraded } from "../generated/RealmDiamond/RealmDiamond";
-import { Installation } from "../generated/schema";
+import { InstallationUpgraded } from "../../generated/RealmDiamond/RealmDiamond";
+import { Installation } from "../../generated/schema";
 import {
     BIGINT_ONE,
     INSTALLATION_DIAMOND,
     REALM_DIAMOND,
-} from "../src/helper/constants";
-import { getOrCreateParcel } from "../src/helper/realm";
-import { handleInstallationUpgraded } from "../src/mappings/realm";
+} from "../../src/helper/constants";
+import { getOrCreateParcel } from "../../src/helper/realm";
+import { handleInstallationUpgraded } from "../../src/mappings/realm";
 
 let mockEvent = newMockEvent();
 describe("handleInstallationUpgraded", () => {

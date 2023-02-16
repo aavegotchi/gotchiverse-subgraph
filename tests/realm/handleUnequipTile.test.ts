@@ -1,4 +1,4 @@
-import { ethereum } from "@graphprotocol/graph-ts";
+import { ethereum, store } from "@graphprotocol/graph-ts";
 import {
     afterAll,
     assert,
@@ -9,19 +9,21 @@ import {
     newMockEvent,
     test,
 } from "matchstick-as";
-import { EquipTile } from "../generated/RealmDiamond/RealmDiamond";
+import { UnequipTile } from "../../generated/RealmDiamond/RealmDiamond";
+import { Tile } from "../../generated/schema";
 import {
     BIGINT_ONE,
     REALM_DIAMOND,
     TILE_DIAMOND,
-} from "../src/helper/constants";
-import { handleEquipTile } from "../src/mappings/realm";
+} from "../../src/helper/constants";
+import { getOrCreateParcel } from "../../src/helper/realm";
+import { handleUnequipTile } from "../../src/mappings/realm";
 
 let mockEvent = newMockEvent();
-describe("handleEquipTile", () => {
+describe("handleUnequipTile", () => {
     beforeAll(() => {
         // prepare event
-        let event = new EquipTile(
+        let event = new UnequipTile(
             mockEvent.address,
             mockEvent.logIndex,
             mockEvent.transactionLogIndex,
@@ -107,7 +109,23 @@ describe("handleEquipTile", () => {
             .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
             .returns([ethereum.Value.fromTuple(tupleTile)]);
 
-        handleEquipTile(event);
+        // prepare testdata
+        let tile = new Tile("1-1-1-1");
+        tile.equipped = true;
+        tile.x = BIGINT_ONE;
+        tile.y = BIGINT_ONE;
+        tile.parcel = "1";
+        tile.type = "1";
+        tile.owner = mockEvent.transaction.from;
+        store.set("Tile", "1-1-1-1", tile);
+
+        let parcel = getOrCreateParcel(BIGINT_ONE);
+        let equippedTiles = parcel.equippedTiles;
+        equippedTiles.push("1");
+        parcel.equippedTiles = equippedTiles;
+        store.set("Parcel", "1", parcel);
+
+        handleUnequipTile(event);
     });
 
     test("it should create an event entity", () => {
@@ -115,53 +133,59 @@ describe("handleEquipTile", () => {
             mockEvent.transaction.hash.toHexString() +
             "/" +
             mockEvent.logIndex.toString();
-        assert.fieldEquals("EquipTileEvent", id, "id", id);
+        assert.fieldEquals("UnequipTileEvent", id, "id", id);
         assert.fieldEquals(
-            "EquipTileEvent",
+            "UnequipTileEvent",
             id,
             "block",
             mockEvent.block.number.toString()
         );
         assert.fieldEquals(
-            "EquipTileEvent",
+            "UnequipTileEvent",
             id,
             "timestamp",
             mockEvent.block.timestamp.toString()
         );
 
         assert.fieldEquals(
-            "EquipTileEvent",
+            "UnequipTileEvent",
             id,
             "transaction",
             mockEvent.transaction.hash.toHexString()
         );
 
-        assert.fieldEquals("EquipTileEvent", id, "tile", "1");
-        assert.fieldEquals("EquipTileEvent", id, "tileId", "1");
+        assert.fieldEquals("UnequipTileEvent", id, "tile", "1");
+        assert.fieldEquals("UnequipTileEvent", id, "tileId", "1");
 
-        assert.fieldEquals("EquipTileEvent", id, "realmId", "1");
-        assert.fieldEquals("EquipTileEvent", id, "parcel", "1");
+        assert.fieldEquals("UnequipTileEvent", id, "realmId", "1");
+        assert.fieldEquals("UnequipTileEvent", id, "parcel", "1");
 
-        assert.fieldEquals("EquipTileEvent", id, "x", "1");
-        assert.fieldEquals("EquipTileEvent", id, "y", "1");
+        assert.fieldEquals("UnequipTileEvent", id, "x", "1");
+        assert.fieldEquals("UnequipTileEvent", id, "y", "1");
     });
 
-    test("it should add the tileId to the equippedtiles array of parcel entity", () => {
-        assert.fieldEquals("Parcel", "1", "equippedTiles", "[1]");
+    test("it should remove the tileId from the equippedTiles array of parcel entity", () => {
+        assert.fieldEquals("Parcel", "1", "equippedTiles", "[]");
     });
 
-    test("it should create entity of equipped tiles instance", () => {
+    test("it should set equipped attribute of tile instance to false", () => {
         assert.fieldEquals("Tile", "1-1-1-1", "id", "1-1-1-1");
         assert.fieldEquals("Tile", "1-1-1-1", "x", "1");
         assert.fieldEquals("Tile", "1-1-1-1", "y", "1");
         assert.fieldEquals("Tile", "1-1-1-1", "type", "1");
         assert.fieldEquals("Tile", "1-1-1-1", "parcel", "1");
-        assert.fieldEquals("Tile", "1-1-1-1", "equipped", "true");
+        assert.fieldEquals("Tile", "1-1-1-1", "equipped", "false");
+        assert.fieldEquals(
+            "Tile",
+            "1-1-1-1",
+            "owner",
+            mockEvent.transaction.from.toHexString()
+        );
     });
 
     test("it should update equippend tiles attributes of global stats", () => {
-        assert.fieldEquals("Stat", "overall", "tilesEquippedCurrent", "1");
-        assert.fieldEquals("Stat", "overall", "tilesEquippedTotal", "1");
+        assert.fieldEquals("Stat", "overall", "tilesEquippedCurrent", "-1");
+        assert.fieldEquals("Stat", "overall", "tilesEquippedTotal", "0");
     });
 
     test("it should update equippend tiles attributes of user stats", () => {
@@ -169,20 +193,20 @@ describe("handleEquipTile", () => {
             "Stat",
             "user-" + mockEvent.transaction.from.toHexString(),
             "tilesEquippedCurrent",
-            "1"
+            "-1"
         );
 
         assert.fieldEquals(
             "Stat",
             "user-" + mockEvent.transaction.from.toHexString(),
             "tilesEquippedTotal",
-            "1"
+            "0"
         );
     });
 
     test("it should update equippend tiles attributes of parcel stats", () => {
-        assert.fieldEquals("Stat", "parcel-1", "tilesEquippedCurrent", "1");
-        assert.fieldEquals("Stat", "parcel-1", "tilesEquippedTotal", "1");
+        assert.fieldEquals("Stat", "parcel-1", "tilesEquippedCurrent", "-1");
+        assert.fieldEquals("Stat", "parcel-1", "tilesEquippedTotal", "0");
     });
 
     afterAll(() => {

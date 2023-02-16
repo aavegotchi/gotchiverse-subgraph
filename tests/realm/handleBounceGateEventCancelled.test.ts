@@ -8,9 +8,9 @@ import {
     newMockEvent,
     test,
 } from "matchstick-as";
-import { EventCancelled } from "../generated/RealmDiamond/RealmDiamond";
-import { BIGINT_ONE } from "../src/helper/constants";
-import { handleBounceGateEventCancelled } from "../src/mappings/realm";
+import { EventCancelled } from "../../generated/RealmDiamond/RealmDiamond";
+import { BIGINT_ONE } from "../../src/helper/constants";
+import { handleBounceGateEventCancelled } from "../../src/mappings/realm";
 
 let mockEvent = newMockEvent();
 describe("handleBounceGateEventCancelled", () => {

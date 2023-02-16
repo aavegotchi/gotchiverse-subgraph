@@ -8,9 +8,9 @@ import {
     newMockEvent,
     test,
 } from "matchstick-as";
-import { NFTDisplayStatusUpdated } from "../generated/RealmDiamond/RealmDiamond";
-import { BIGINT_ONE, REALM_DIAMOND } from "../src/helper/constants";
-import { handleNFTDisplayStatusUpdated } from "../src/mappings/realm";
+import { NFTDisplayStatusUpdated } from "../../generated/RealmDiamond/RealmDiamond";
+import { BIGINT_ONE, REALM_DIAMOND } from "../../src/helper/constants";
+import { handleNFTDisplayStatusUpdated } from "../../src/mappings/realm";
 
 let mockEvent = newMockEvent();
 describe("handleNFTDisplayStatusUpdated", () => {

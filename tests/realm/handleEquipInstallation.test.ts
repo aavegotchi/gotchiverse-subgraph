@@ -9,9 +9,9 @@ import {
     newMockEvent,
     test,
 } from "matchstick-as";
-import { EquipInstallation } from "../generated/RealmDiamond/RealmDiamond";
-import { BIGINT_ONE, REALM_DIAMOND } from "../src/helper/constants";
-import { handleEquipInstallation } from "../src/mappings/realm";
+import { EquipInstallation } from "../../generated/RealmDiamond/RealmDiamond";
+import { BIGINT_ONE, REALM_DIAMOND } from "../../src/helper/constants";
+import { handleEquipInstallation } from "../../src/mappings/realm";
 
 let mockEvent = newMockEvent();
 describe("handleEquipInstallation", () => {
