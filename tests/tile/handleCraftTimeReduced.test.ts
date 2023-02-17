@@ -10,18 +10,7 @@ import {
     test,
 } from "matchstick-as";
 import { CraftTimeReduced } from "../../generated/InstallationDiamond/InstallationDiamond";
-import {
-    BIGINT_EIGHT,
-    BIGINT_FIVE,
-    BIGINT_FOUR,
-    BIGINT_ONE,
-    BIGINT_SEVEN,
-    BIGINT_SIX,
-    BIGINT_TEN,
-    BIGINT_THREE,
-    BIGINT_TWO,
-    TILE_DIAMOND,
-} from "../../src/helper/constants";
+import { BIGINT_TEN, BIGINT_THREE } from "../../src/helper/constants";
 import { handleCraftTimeReduced } from "../../src/mappings/tile";
 
 let mockEvent = newMockEvent();
