@@ -10,7 +10,19 @@ import {
     test,
 } from "matchstick-as";
 import { URI } from "../../generated/InstallationDiamond/InstallationDiamond";
-import { BIGINT_ONE, INSTALLATION_DIAMOND } from "../../src/helper/constants";
+import {
+    BIGINT_EIGHT,
+    BIGINT_FIVE,
+    BIGINT_FOUR,
+    BIGINT_NINE,
+    BIGINT_ONE,
+    BIGINT_SEVEN,
+    BIGINT_SIX,
+    BIGINT_TEN,
+    BIGINT_THREE,
+    BIGINT_TWO,
+    INSTALLATION_DIAMOND,
+} from "../../src/helper/constants";
 import { handleURI } from "../../src/mappings/installation";
 
 let mockEvent = newMockEvent();
@@ -45,25 +57,25 @@ describe("handleURI", () => {
         // mock getInstallationType
         let tuple = changetype<ethereum.Tuple>([
             ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_TWO),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_THREE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_FOUR),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_FIVE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_SIX),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_SEVEN),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_EIGHT),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_NINE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_TEN),
             ethereum.Value.fromBoolean(true),
             ethereum.Value.fromUnsignedBigIntArray([
                 BIGINT_ONE,
-                BIGINT_ONE,
-                BIGINT_ONE,
-                BIGINT_ONE,
+                BIGINT_TWO,
+                BIGINT_THREE,
+                BIGINT_FOUR,
             ]),
             ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE]),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_TWO),
+            ethereum.Value.fromUnsignedBigIntArray([BIGINT_THREE]),
             ethereum.Value.fromString("A"),
         ]);
         createMockedFunction(
@@ -102,34 +114,124 @@ describe("handleURI", () => {
             mockEvent.transaction.hash.toHexString()
         );
         assert.fieldEquals("URIEvent", id, "value", "newuri");
-        assert.fieldEquals("URIEvent", id, "tokenId", "1");
+        assert.fieldEquals("URIEvent", id, "tokenId", BIGINT_ONE.toString());
     });
 
     test("it should update uri of InstallationType entity", () => {
-        assert.fieldEquals("InstallationType", "1", "width", "1");
-        assert.fieldEquals("InstallationType", "1", "installationType", "1");
-        assert.fieldEquals("InstallationType", "1", "height", "1");
-        assert.fieldEquals("InstallationType", "1", "level", "1");
-        assert.fieldEquals("InstallationType", "1", "alchemicaType", "1");
-        assert.fieldEquals("InstallationType", "1", "spillRadius", "1");
-        assert.fieldEquals("InstallationType", "1", "spillRate", "1");
-        assert.fieldEquals("InstallationType", "1", "upgradeQueueBoost", "1");
-        assert.fieldEquals("InstallationType", "1", "craftTime", "1");
-        assert.fieldEquals("InstallationType", "1", "nextLevelId", "1");
-        assert.fieldEquals("InstallationType", "1", "deprecated", "true");
         assert.fieldEquals(
             "InstallationType",
-            "1",
-            "alchemicaCost",
-            "[1, 1, 1, 1]"
+            BIGINT_ONE.toString(),
+            "width",
+            BIGINT_ONE.toString()
         );
-        assert.fieldEquals("InstallationType", "1", "harvestRate", "1");
-        assert.fieldEquals("InstallationType", "1", "capacity", "1");
-        assert.fieldEquals("InstallationType", "1", "prerequisites", "[1]");
-        assert.fieldEquals("InstallationType", "1", "amountPrerequisites", "1");
-        assert.fieldEquals("InstallationType", "1", "name", "A");
-        assert.fieldEquals("InstallationType", "1", "amount", "0");
-        assert.fieldEquals("InstallationType", "1", "uri", "newuri");
+        assert.fieldEquals(
+            "InstallationType",
+            BIGINT_ONE.toString(),
+            "installationType",
+            BIGINT_THREE.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            BIGINT_ONE.toString(),
+            "height",
+            BIGINT_TWO.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            BIGINT_ONE.toString(),
+            "level",
+            BIGINT_FOUR.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            BIGINT_ONE.toString(),
+            "alchemicaType",
+            BIGINT_FIVE.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            BIGINT_ONE.toString(),
+            "spillRadius",
+            BIGINT_SIX.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            BIGINT_ONE.toString(),
+            "spillRate",
+            BIGINT_SEVEN.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            BIGINT_ONE.toString(),
+            "upgradeQueueBoost",
+            BIGINT_EIGHT.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            BIGINT_ONE.toString(),
+            "craftTime",
+            BIGINT_NINE.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            BIGINT_ONE.toString(),
+            "nextLevelId",
+            BIGINT_TEN.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            BIGINT_ONE.toString(),
+            "deprecated",
+            "true"
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            BIGINT_ONE.toString(),
+            "alchemicaCost",
+            "[1, 2, 3, 4]"
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            BIGINT_ONE.toString(),
+            "harvestRate",
+            BIGINT_ONE.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            BIGINT_ONE.toString(),
+            "capacity",
+            BIGINT_TWO.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            BIGINT_ONE.toString(),
+            "prerequisites",
+            "[3]"
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            BIGINT_ONE.toString(),
+            "amountPrerequisites",
+            BIGINT_ONE.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            BIGINT_ONE.toString(),
+            "name",
+            "A"
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            BIGINT_ONE.toString(),
+            "amount",
+            "0"
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            BIGINT_ONE.toString(),
+            "uri",
+            "newuri"
+        );
     });
 
     afterAll(() => {

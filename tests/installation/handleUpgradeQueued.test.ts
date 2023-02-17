@@ -75,15 +75,30 @@ describe("handleUpgradeQueued", () => {
             "transaction",
             mockEvent.transaction.hash.toHexString()
         );
-        assert.fieldEquals("UpgradeQueuedEvent", id, "realmId", "1");
+        assert.fieldEquals(
+            "UpgradeQueuedEvent",
+            id,
+            "realmId",
+            BIGINT_ONE.toString()
+        );
         assert.fieldEquals(
             "UpgradeQueuedEvent",
             id,
             "owner",
             mockEvent.transaction.from.toHexString()
         );
-        assert.fieldEquals("UpgradeQueuedEvent", id, "queueIndex", "1");
-        assert.fieldEquals("UpgradeQueuedEvent", id, "parcel", "1");
+        assert.fieldEquals(
+            "UpgradeQueuedEvent",
+            id,
+            "queueIndex",
+            BIGINT_ONE.toString()
+        );
+        assert.fieldEquals(
+            "UpgradeQueuedEvent",
+            id,
+            "parcel",
+            BIGINT_ONE.toString()
+        );
     });
 
     afterAll(() => {

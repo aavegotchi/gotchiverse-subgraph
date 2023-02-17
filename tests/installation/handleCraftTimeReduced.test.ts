@@ -10,10 +10,24 @@ import {
     test,
 } from "matchstick-as";
 import { CraftTimeReduced } from "../../generated/InstallationDiamond/InstallationDiamond";
-import { BIGINT_ONE, INSTALLATION_DIAMOND } from "../../src/helper/constants";
+import {
+    BIGINT_EIGHT,
+    BIGINT_FIVE,
+    BIGINT_FOUR,
+    BIGINT_NINE,
+    BIGINT_ONE,
+    BIGINT_SEVEN,
+    BIGINT_SIX,
+    BIGINT_TEN,
+    BIGINT_THREE,
+    BIGINT_TWO,
+    INSTALLATION_DIAMOND,
+} from "../../src/helper/constants";
 import { handleCraftTimeReduced } from "../../src/mappings/installation";
 
 let mockEvent = newMockEvent();
+let queueId = BIGINT_EIGHT;
+let blocksReduced = BIGINT_FIVE;
 describe("handleCraftTimeReduced", () => {
     beforeAll(() => {
         // prepare event
@@ -31,39 +45,39 @@ describe("handleCraftTimeReduced", () => {
         event.parameters.push(
             new ethereum.EventParam(
                 "_queueId",
-                ethereum.Value.fromSignedBigInt(BIGINT_ONE)
+                ethereum.Value.fromSignedBigInt(queueId)
             )
         );
 
         event.parameters.push(
             new ethereum.EventParam(
                 "_blocksReduced",
-                ethereum.Value.fromSignedBigInt(BIGINT_ONE)
+                ethereum.Value.fromSignedBigInt(blocksReduced)
             )
         );
 
         // mock getInstallationType
         let tuple = changetype<ethereum.Tuple>([
             ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromBoolean(false),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_TWO),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_THREE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_FOUR),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_FIVE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_SIX),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_SEVEN),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_EIGHT),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_NINE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_TEN),
+            ethereum.Value.fromBoolean(true),
             ethereum.Value.fromUnsignedBigIntArray([
                 BIGINT_ONE,
-                BIGINT_ONE,
-                BIGINT_ONE,
-                BIGINT_ONE,
+                BIGINT_TWO,
+                BIGINT_THREE,
+                BIGINT_FOUR,
             ]),
             ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE]),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_TWO),
+            ethereum.Value.fromUnsignedBigIntArray([BIGINT_THREE]),
             ethereum.Value.fromString("A"),
         ]);
         createMockedFunction(
@@ -101,17 +115,27 @@ describe("handleCraftTimeReduced", () => {
             "transaction",
             mockEvent.transaction.hash.toHexString()
         );
-        assert.fieldEquals("CraftTimeReducedEvent", id, "blocksReduced", "1");
+        assert.fieldEquals(
+            "CraftTimeReducedEvent",
+            id,
+            "blocksReduced",
+            blocksReduced.toString()
+        );
     });
 
     test("it should update overall stats", () => {
-        let gltrSpend = BIGINT_ONE.times(
+        let gltrSpend = blocksReduced.times(
             BigInt.fromString("1000000000000000000")
         );
 
         let initGltr = BigInt.fromString("250630180000000000000000000");
 
-        assert.fieldEquals("Stat", "overall", "craftTimeReduced", "1");
+        assert.fieldEquals(
+            "Stat",
+            "overall",
+            "craftTimeReduced",
+            BIGINT_FIVE.toString()
+        );
         assert.fieldEquals(
             "Stat",
             "overall",
@@ -127,7 +151,7 @@ describe("handleCraftTimeReduced", () => {
     });
 
     test("it should update user stats", () => {
-        let gltrSpend = BIGINT_ONE.times(
+        let gltrSpend = blocksReduced.times(
             BigInt.fromString("1000000000000000000")
         );
 
@@ -137,7 +161,7 @@ describe("handleCraftTimeReduced", () => {
             "Stat",
             "user-" + mockEvent.transaction.from.toHexString(),
             "craftTimeReduced",
-            "1"
+            BIGINT_FIVE.toString()
         );
         assert.fieldEquals(
             "Stat",

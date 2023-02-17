@@ -10,10 +10,25 @@ import {
     test,
 } from "matchstick-as";
 import { MintInstallations } from "../../generated/InstallationDiamond/InstallationDiamond";
-import { BIGINT_ONE, INSTALLATION_DIAMOND } from "../../src/helper/constants";
+import {
+    BIGINT_EIGHT,
+    BIGINT_FIVE,
+    BIGINT_FOUR,
+    BIGINT_NINE,
+    BIGINT_ONE,
+    BIGINT_SEVEN,
+    BIGINT_SIX,
+    BIGINT_TEN,
+    BIGINT_THREE,
+    BIGINT_TWO,
+    INSTALLATION_DIAMOND,
+} from "../../src/helper/constants";
 import { handleMintInstallations } from "../../src/mappings/installation";
 
 let mockEvent = newMockEvent();
+let installationId = BIGINT_SEVEN;
+let owner = mockEvent.transaction.from;
+let amount = BIGINT_SIX;
 describe("handleMintInstallations", () => {
     beforeAll(() => {
         // prepare event
@@ -29,48 +44,45 @@ describe("handleMintInstallations", () => {
         );
 
         event.parameters.push(
-            new ethereum.EventParam(
-                "_owner",
-                ethereum.Value.fromAddress(mockEvent.transaction.from)
-            )
+            new ethereum.EventParam("_owner", ethereum.Value.fromAddress(owner))
         );
 
         event.parameters.push(
             new ethereum.EventParam(
                 "_installationId",
-                ethereum.Value.fromSignedBigInt(BIGINT_ONE)
+                ethereum.Value.fromSignedBigInt(installationId)
             )
         );
 
         event.parameters.push(
             new ethereum.EventParam(
                 "_amount",
-                ethereum.Value.fromSignedBigInt(BIGINT_ONE)
+                ethereum.Value.fromSignedBigInt(amount)
             )
         );
 
         // mock getInstallationType
         let tuple = changetype<ethereum.Tuple>([
             ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_TWO),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_THREE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_FOUR),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_FIVE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_SIX),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_SEVEN),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_EIGHT),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_NINE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_TEN),
             ethereum.Value.fromBoolean(true),
             ethereum.Value.fromUnsignedBigIntArray([
                 BIGINT_ONE,
-                BIGINT_ONE,
-                BIGINT_ONE,
-                BIGINT_ONE,
+                BIGINT_TWO,
+                BIGINT_THREE,
+                BIGINT_FOUR,
             ]),
             ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE]),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_TWO),
+            ethereum.Value.fromUnsignedBigIntArray([BIGINT_THREE]),
             ethereum.Value.fromString("A"),
         ]);
         createMockedFunction(
@@ -78,7 +90,7 @@ describe("handleMintInstallations", () => {
             "getInstallationType",
             "getInstallationType(uint256):((uint8,uint8,uint16,uint8,uint8,uint32,uint16,uint8,uint32,uint32,bool,uint256[4],uint256,uint256,uint256[],string))"
         )
-            .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
+            .withArgs([ethereum.Value.fromUnsignedBigInt(installationId)])
             .returns([ethereum.Value.fromTuple(tuple)]);
 
         handleMintInstallations(event);
@@ -114,7 +126,7 @@ describe("handleMintInstallations", () => {
             "MintInstallationsEvent",
             id,
             "installationType",
-            "1"
+            BIGINT_SEVEN.toString()
         );
         assert.fieldEquals(
             "MintInstallationsEvent",
@@ -122,37 +134,132 @@ describe("handleMintInstallations", () => {
             "owner",
             mockEvent.transaction.from.toHexString()
         );
-        assert.fieldEquals("MintInstallationsEvent", id, "amount", "1");
+        assert.fieldEquals(
+            "MintInstallationsEvent",
+            id,
+            "amount",
+            amount.toString()
+        );
     });
 
     test("it should update InstallationType entity", () => {
-        assert.fieldEquals("InstallationType", "1", "width", "1");
-        assert.fieldEquals("InstallationType", "1", "installationType", "1");
-        assert.fieldEquals("InstallationType", "1", "height", "1");
-        assert.fieldEquals("InstallationType", "1", "level", "1");
-        assert.fieldEquals("InstallationType", "1", "alchemicaType", "1");
-        assert.fieldEquals("InstallationType", "1", "spillRadius", "1");
-        assert.fieldEquals("InstallationType", "1", "spillRate", "1");
-        assert.fieldEquals("InstallationType", "1", "upgradeQueueBoost", "1");
-        assert.fieldEquals("InstallationType", "1", "craftTime", "1");
-        assert.fieldEquals("InstallationType", "1", "nextLevelId", "1");
-        assert.fieldEquals("InstallationType", "1", "deprecated", "true");
         assert.fieldEquals(
             "InstallationType",
-            "1",
-            "alchemicaCost",
-            "[1, 1, 1, 1]"
+            installationId.toString(),
+            "width",
+            BIGINT_ONE.toString()
         );
-        assert.fieldEquals("InstallationType", "1", "harvestRate", "1");
-        assert.fieldEquals("InstallationType", "1", "capacity", "1");
-        assert.fieldEquals("InstallationType", "1", "prerequisites", "[1]");
-        assert.fieldEquals("InstallationType", "1", "amountPrerequisites", "1");
-        assert.fieldEquals("InstallationType", "1", "name", "A");
-        assert.fieldEquals("InstallationType", "1", "amount", "1");
+        assert.fieldEquals(
+            "InstallationType",
+            installationId.toString(),
+            "installationType",
+            BIGINT_THREE.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            installationId.toString(),
+            "height",
+            BIGINT_TWO.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            installationId.toString(),
+            "level",
+            BIGINT_FOUR.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            installationId.toString(),
+            "alchemicaType",
+            BIGINT_FIVE.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            installationId.toString(),
+            "spillRadius",
+            BIGINT_SIX.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            installationId.toString(),
+            "spillRate",
+            BIGINT_SEVEN.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            installationId.toString(),
+            "upgradeQueueBoost",
+            BIGINT_EIGHT.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            installationId.toString(),
+            "craftTime",
+            BIGINT_NINE.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            installationId.toString(),
+            "nextLevelId",
+            "10"
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            installationId.toString(),
+            "deprecated",
+            "true"
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            installationId.toString(),
+            "alchemicaCost",
+            "[1, 2, 3, 4]"
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            installationId.toString(),
+            "harvestRate",
+            BIGINT_ONE.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            installationId.toString(),
+            "capacity",
+            BIGINT_TWO.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            installationId.toString(),
+            "prerequisites",
+            "[3]"
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            installationId.toString(),
+            "amountPrerequisites",
+            BIGINT_ONE.toString()
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            installationId.toString(),
+            "name",
+            "A"
+        );
+        assert.fieldEquals(
+            "InstallationType",
+            installationId.toString(),
+            "amount",
+            amount.toString()
+        );
     });
 
     test("it should update installationsMintedTotal of overall stats", () => {
-        assert.fieldEquals("Stat", "overall", "installationsMintedTotal", "1");
+        assert.fieldEquals(
+            "Stat",
+            "overall",
+            "installationsMintedTotal",
+            amount.toString()
+        );
     });
 
     test("it should update installationsMintedTotal of user stats", () => {
@@ -160,7 +267,7 @@ describe("handleMintInstallations", () => {
             "Stat",
             "user-" + mockEvent.transaction.from.toHexString(),
             "installationsMintedTotal",
-            "1"
+            amount.toString()
         );
     });
 

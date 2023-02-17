@@ -10,7 +10,19 @@ import {
     test,
 } from "matchstick-as";
 import { UpgradeTimeReduced } from "../../generated/InstallationDiamond/InstallationDiamond";
-import { BIGINT_ONE, INSTALLATION_DIAMOND } from "../../src/helper/constants";
+import {
+    BIGINT_EIGHT,
+    BIGINT_FIVE,
+    BIGINT_FOUR,
+    BIGINT_NINE,
+    BIGINT_ONE,
+    BIGINT_SEVEN,
+    BIGINT_SIX,
+    BIGINT_TEN,
+    BIGINT_THREE,
+    BIGINT_TWO,
+    INSTALLATION_DIAMOND,
+} from "../../src/helper/constants";
 import { handleUpgradeTimeReduced } from "../../src/mappings/installation";
 
 let mockEvent = newMockEvent();
@@ -66,25 +78,25 @@ describe("handleUpgradeTimeReduced", () => {
         // mock getInstallationType
         let tuple = changetype<ethereum.Tuple>([
             ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromBoolean(false),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_TWO),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_THREE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_FOUR),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_FIVE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_SIX),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_SEVEN),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_EIGHT),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_NINE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_TEN),
+            ethereum.Value.fromBoolean(true),
             ethereum.Value.fromUnsignedBigIntArray([
                 BIGINT_ONE,
-                BIGINT_ONE,
-                BIGINT_ONE,
-                BIGINT_ONE,
+                BIGINT_TWO,
+                BIGINT_THREE,
+                BIGINT_FOUR,
             ]),
             ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE]),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_TWO),
+            ethereum.Value.fromUnsignedBigIntArray([BIGINT_THREE]),
             ethereum.Value.fromString("A"),
         ]);
         createMockedFunction(
@@ -122,11 +134,36 @@ describe("handleUpgradeTimeReduced", () => {
             "transaction",
             mockEvent.transaction.hash.toHexString()
         );
-        assert.fieldEquals("UpgradeTimeReducedEvent", id, "parcel", "1");
-        assert.fieldEquals("UpgradeTimeReducedEvent", id, "x", "1");
-        assert.fieldEquals("UpgradeTimeReducedEvent", id, "y", "1");
-        assert.fieldEquals("UpgradeTimeReducedEvent", id, "blocksReduced", "1");
-        assert.fieldEquals("UpgradeTimeReducedEvent", id, "realmId", "1");
+        assert.fieldEquals(
+            "UpgradeTimeReducedEvent",
+            id,
+            "parcel",
+            BIGINT_ONE.toString()
+        );
+        assert.fieldEquals(
+            "UpgradeTimeReducedEvent",
+            id,
+            "x",
+            BIGINT_ONE.toString()
+        );
+        assert.fieldEquals(
+            "UpgradeTimeReducedEvent",
+            id,
+            "y",
+            BIGINT_ONE.toString()
+        );
+        assert.fieldEquals(
+            "UpgradeTimeReducedEvent",
+            id,
+            "blocksReduced",
+            BIGINT_ONE.toString()
+        );
+        assert.fieldEquals(
+            "UpgradeTimeReducedEvent",
+            id,
+            "realmId",
+            BIGINT_ONE.toString()
+        );
     });
 
     test("it should update overall stats", () => {
@@ -136,7 +173,12 @@ describe("handleUpgradeTimeReduced", () => {
 
         let initGltr = BigInt.fromString("250630180000000000000000000");
 
-        assert.fieldEquals("Stat", "overall", "upgradeTimeReduced", "1");
+        assert.fieldEquals(
+            "Stat",
+            "overall",
+            "upgradeTimeReduced",
+            BIGINT_ONE.toString()
+        );
         assert.fieldEquals(
             "Stat",
             "overall",
@@ -158,7 +200,12 @@ describe("handleUpgradeTimeReduced", () => {
 
         let initGltr = BigInt.fromString("250630180000000000000000000");
 
-        assert.fieldEquals("Stat", "parcel-1", "upgradeTimeReduced", "1");
+        assert.fieldEquals(
+            "Stat",
+            "parcel-1",
+            "upgradeTimeReduced",
+            BIGINT_ONE.toString()
+        );
         assert.fieldEquals(
             "Stat",
             "parcel-1",
@@ -184,7 +231,7 @@ describe("handleUpgradeTimeReduced", () => {
             "Stat",
             "user-" + mockEvent.transaction.from.toHexString(),
             "upgradeTimeReduced",
-            "1"
+            BIGINT_ONE.toString()
         );
         assert.fieldEquals(
             "Stat",

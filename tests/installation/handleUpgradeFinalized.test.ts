@@ -83,10 +83,30 @@ describe("handleUpgradeFinalized", () => {
             "transaction",
             mockEvent.transaction.hash.toHexString()
         );
-        assert.fieldEquals("UpgradeFinalizedEvent", id, "parcel", "1");
-        assert.fieldEquals("UpgradeFinalizedEvent", id, "x", "1");
-        assert.fieldEquals("UpgradeFinalizedEvent", id, "y", "1");
-        assert.fieldEquals("UpgradeFinalizedEvent", id, "installation", "1");
+        assert.fieldEquals(
+            "UpgradeFinalizedEvent",
+            id,
+            "parcel",
+            BIGINT_ONE.toString()
+        );
+        assert.fieldEquals(
+            "UpgradeFinalizedEvent",
+            id,
+            "x",
+            BIGINT_ONE.toString()
+        );
+        assert.fieldEquals(
+            "UpgradeFinalizedEvent",
+            id,
+            "y",
+            BIGINT_ONE.toString()
+        );
+        assert.fieldEquals(
+            "UpgradeFinalizedEvent",
+            id,
+            "installation",
+            BIGINT_ONE.toString()
+        );
     });
 
     afterAll(() => {

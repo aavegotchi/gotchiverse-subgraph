@@ -10,7 +10,17 @@ import {
     test,
 } from "matchstick-as";
 import { MintTile } from "../../generated/TileDiamond/TileDiamond";
-import { BIGINT_ONE, TILE_DIAMOND } from "../../src/helper/constants";
+import {
+    BIGINT_EIGHT,
+    BIGINT_FIVE,
+    BIGINT_FOUR,
+    BIGINT_ONE,
+    BIGINT_SEVEN,
+    BIGINT_SIX,
+    BIGINT_THREE,
+    BIGINT_TWO,
+    TILE_DIAMOND,
+} from "../../src/helper/constants";
 import { handleMintTile } from "../../src/mappings/tile";
 
 let mockEvent = newMockEvent();
@@ -52,15 +62,15 @@ describe("handleMintTile", () => {
         // mock getTileType
         let tuple = changetype<ethereum.Tuple>([
             ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_TWO),
             ethereum.Value.fromBoolean(true),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_THREE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_FOUR),
             ethereum.Value.fromUnsignedBigIntArray([
-                BIGINT_ONE,
-                BIGINT_ONE,
-                BIGINT_ONE,
-                BIGINT_ONE,
+                BIGINT_FIVE,
+                BIGINT_SIX,
+                BIGINT_SEVEN,
+                BIGINT_EIGHT,
             ]),
             ethereum.Value.fromString("A"),
         ]);
