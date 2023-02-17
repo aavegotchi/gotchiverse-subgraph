@@ -10,10 +10,21 @@ import {
     test,
 } from "matchstick-as";
 import { ParcelAccessRightSet } from "../../generated/RealmDiamond/RealmDiamond";
-import { BIGINT_ONE, REALM_DIAMOND } from "../../src/helper/constants";
+import {
+    BIGINT_EIGHT,
+    BIGINT_FIVE,
+    BIGINT_FOUR,
+    BIGINT_ONE,
+    BIGINT_SEVEN,
+    BIGINT_SIX,
+    BIGINT_THREE,
+    BIGINT_TWO,
+    REALM_DIAMOND,
+} from "../../src/helper/constants";
 import { handleParcelAccessRightSet } from "../../src/mappings/realm";
 
 let event: ParcelAccessRightSet;
+let realmId = BIGINT_ONE;
 describe("handleParcelAccessRightSet", () => {
     beforeAll(() => {
         let mockEvent = newMockEvent();
@@ -33,7 +44,7 @@ describe("handleParcelAccessRightSet", () => {
         event.parameters.push(
             new ethereum.EventParam(
                 "_realmId",
-                ethereum.Value.fromSignedBigInt(BIGINT_ONE)
+                ethereum.Value.fromSignedBigInt(realmId)
             )
         );
         event.parameters.push(
@@ -50,20 +61,19 @@ describe("handleParcelAccessRightSet", () => {
         );
 
         // mock getParcelInfo
-
-        let tuple = changetype<ethereum.Tuple>([
+        let tuple: ethereum.Tuple = changetype<ethereum.Tuple>([
             ethereum.Value.fromString("A"),
             ethereum.Value.fromString("B"),
             ethereum.Value.fromAddress(REALM_DIAMOND),
             ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_TWO),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_THREE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_FOUR),
             ethereum.Value.fromUnsignedBigIntArray([
-                BIGINT_ONE,
-                BIGINT_ONE,
-                BIGINT_ONE,
-                BIGINT_ONE,
+                BIGINT_FIVE,
+                BIGINT_SIX,
+                BIGINT_SEVEN,
+                BIGINT_EIGHT,
             ]),
         ]);
         createMockedFunction(
@@ -71,7 +81,7 @@ describe("handleParcelAccessRightSet", () => {
             "getParcelInfo",
             "getParcelInfo(uint256):((string,string,address,uint256,uint256,uint256,uint256,uint256[4]))"
         )
-            .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
+            .withArgs([ethereum.Value.fromUnsignedBigInt(realmId)])
             .returns([ethereum.Value.fromTuple(tuple)]);
 
         handleParcelAccessRightSet(event);

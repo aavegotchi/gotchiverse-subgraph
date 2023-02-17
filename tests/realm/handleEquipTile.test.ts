@@ -11,13 +11,21 @@ import {
 } from "matchstick-as";
 import { EquipTile } from "../../generated/RealmDiamond/RealmDiamond";
 import {
+    BIGINT_EIGHT,
+    BIGINT_FIVE,
+    BIGINT_FOUR,
     BIGINT_ONE,
+    BIGINT_SEVEN,
+    BIGINT_SIX,
+    BIGINT_THREE,
+    BIGINT_TWO,
     REALM_DIAMOND,
     TILE_DIAMOND,
 } from "../../src/helper/constants";
 import { handleEquipTile } from "../../src/mappings/realm";
 
 let mockEvent = newMockEvent();
+let realmId = BIGINT_ONE;
 describe("handleEquipTile", () => {
     beforeAll(() => {
         // prepare event
@@ -35,7 +43,7 @@ describe("handleEquipTile", () => {
         event.parameters.push(
             new ethereum.EventParam(
                 "_realmId",
-                ethereum.Value.fromSignedBigInt(BIGINT_ONE)
+                ethereum.Value.fromSignedBigInt(realmId)
             )
         );
 
@@ -66,14 +74,14 @@ describe("handleEquipTile", () => {
             ethereum.Value.fromString("B"),
             ethereum.Value.fromAddress(REALM_DIAMOND),
             ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_TWO),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_THREE),
+            ethereum.Value.fromUnsignedBigInt(BIGINT_FOUR),
             ethereum.Value.fromUnsignedBigIntArray([
-                BIGINT_ONE,
-                BIGINT_ONE,
-                BIGINT_ONE,
-                BIGINT_ONE,
+                BIGINT_FIVE,
+                BIGINT_SIX,
+                BIGINT_SEVEN,
+                BIGINT_EIGHT,
             ]),
         ]);
         createMockedFunction(
@@ -81,7 +89,7 @@ describe("handleEquipTile", () => {
             "getParcelInfo",
             "getParcelInfo(uint256):((string,string,address,uint256,uint256,uint256,uint256,uint256[4]))"
         )
-            .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
+            .withArgs([ethereum.Value.fromUnsignedBigInt(realmId)])
             .returns([ethereum.Value.fromTuple(tuple)]);
 
         // mock getTileType
