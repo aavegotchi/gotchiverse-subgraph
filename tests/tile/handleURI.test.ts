@@ -14,6 +14,7 @@ import {
     BIGINT_EIGHT,
     BIGINT_FIVE,
     BIGINT_FOUR,
+    BIGINT_NINE,
     BIGINT_ONE,
     BIGINT_SEVEN,
     BIGINT_SIX,
@@ -24,6 +25,7 @@ import {
 import { handleURI } from "../../src/mappings/tile";
 
 let mockEvent = newMockEvent();
+let tileId = BIGINT_NINE;
 describe("handleURI", () => {
     beforeAll(() => {
         // prepare event
@@ -48,7 +50,7 @@ describe("handleURI", () => {
         event.parameters.push(
             new ethereum.EventParam(
                 "_tokenId",
-                ethereum.Value.fromSignedBigInt(BIGINT_ONE)
+                ethereum.Value.fromSignedBigInt(tileId)
             )
         );
 
@@ -72,7 +74,7 @@ describe("handleURI", () => {
             "getTileType",
             "getTileType(uint256):((uint8,uint8,bool,uint16,uint32,uint256[4],string))"
         )
-            .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
+            .withArgs([ethereum.Value.fromUnsignedBigInt(tileId)])
             .returns([ethereum.Value.fromTuple(tuple)]);
 
         handleURI(event);
@@ -103,19 +105,24 @@ describe("handleURI", () => {
             mockEvent.transaction.hash.toHexString()
         );
         assert.fieldEquals("URIEvent", id, "value", "newuri");
-        assert.fieldEquals("URIEvent", id, "tokenId", "1");
+        assert.fieldEquals("URIEvent", id, "tokenId", "9");
     });
 
     test("it should update uri of TileType entity", () => {
-        assert.fieldEquals("TileType", "1", "width", "1");
-        assert.fieldEquals("TileType", "1", "tileType", "1");
-        assert.fieldEquals("TileType", "1", "height", "1");
-        assert.fieldEquals("TileType", "1", "craftTime", "1");
-        assert.fieldEquals("TileType", "1", "deprecated", "true");
-        assert.fieldEquals("TileType", "1", "alchemicaCost", "[1, 1, 1, 1]");
-        assert.fieldEquals("TileType", "1", "name", "A");
-        assert.fieldEquals("TileType", "1", "amount", "0");
-        assert.fieldEquals("TileType", "1", "uri", "newuri");
+        assert.fieldEquals("TileType", tileId.toString(), "width", "1");
+        assert.fieldEquals("TileType", tileId.toString(), "tileType", "3");
+        assert.fieldEquals("TileType", tileId.toString(), "height", "2");
+        assert.fieldEquals("TileType", tileId.toString(), "craftTime", "4");
+        assert.fieldEquals("TileType", tileId.toString(), "deprecated", "true");
+        assert.fieldEquals(
+            "TileType",
+            tileId.toString(),
+            "alchemicaCost",
+            "[5, 6, 7, 8]"
+        );
+        assert.fieldEquals("TileType", tileId.toString(), "name", "A");
+        assert.fieldEquals("TileType", tileId.toString(), "amount", "0");
+        assert.fieldEquals("TileType", tileId.toString(), "uri", "newuri");
     });
 
     afterAll(() => {

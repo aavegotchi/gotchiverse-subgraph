@@ -24,6 +24,7 @@ import {
 import { handleMintTiles } from "../../src/mappings/tile";
 
 let mockEvent = newMockEvent();
+let tileId = BIGINT_SEVEN;
 describe("handleMintTiles", () => {
     beforeAll(() => {
         // prepare event
@@ -47,8 +48,8 @@ describe("handleMintTiles", () => {
 
         event.parameters.push(
             new ethereum.EventParam(
-                "_installationId",
-                ethereum.Value.fromSignedBigInt(BIGINT_ONE)
+                "_tileId",
+                ethereum.Value.fromSignedBigInt(tileId)
             )
         );
 
@@ -79,7 +80,7 @@ describe("handleMintTiles", () => {
             "getTileType",
             "getTileType(uint256):((uint8,uint8,bool,uint16,uint32,uint256[4],string))"
         )
-            .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
+            .withArgs([ethereum.Value.fromUnsignedBigInt(tileId)])
             .returns([ethereum.Value.fromTuple(tuple)]);
 
         handleMintTiles(event);
@@ -87,7 +88,7 @@ describe("handleMintTiles", () => {
 
     test("it should create an event entity", () => {
         let id =
-            "1-1-" +
+            "7-1-" +
             mockEvent.transaction.from.toHexString() +
             "-" +
             mockEvent.transaction.hash.toHexString();
@@ -112,7 +113,7 @@ describe("handleMintTiles", () => {
             mockEvent.transaction.hash.toHexString()
         );
 
-        assert.fieldEquals("MintTilesEvent", id, "tile", "1");
+        assert.fieldEquals("MintTilesEvent", id, "tile", tileId.toString());
         assert.fieldEquals(
             "MintTilesEvent",
             id,
@@ -123,15 +124,20 @@ describe("handleMintTiles", () => {
     });
 
     test("it should update TileType entity", () => {
-        assert.fieldEquals("TileType", "1", "width", "1");
-        assert.fieldEquals("TileType", "1", "tileType", "1");
-        assert.fieldEquals("TileType", "1", "height", "1");
-        assert.fieldEquals("TileType", "1", "craftTime", "1");
-        assert.fieldEquals("TileType", "1", "deprecated", "true");
-        assert.fieldEquals("TileType", "1", "deprecatedAt", "0");
-        assert.fieldEquals("TileType", "1", "alchemicaCost", "[1, 1, 1, 1]");
-        assert.fieldEquals("TileType", "1", "name", "A");
-        assert.fieldEquals("TileType", "1", "amount", "1");
+        assert.fieldEquals("TileType", tileId.toString(), "width", "1");
+        assert.fieldEquals("TileType", tileId.toString(), "tileType", "3");
+        assert.fieldEquals("TileType", tileId.toString(), "height", "2");
+        assert.fieldEquals("TileType", tileId.toString(), "craftTime", "4");
+        assert.fieldEquals("TileType", tileId.toString(), "deprecated", "true");
+        assert.fieldEquals("TileType", tileId.toString(), "deprecatedAt", "0");
+        assert.fieldEquals(
+            "TileType",
+            tileId.toString(),
+            "alchemicaCost",
+            "[5, 6, 7, 8]"
+        );
+        assert.fieldEquals("TileType", tileId.toString(), "name", "A");
+        assert.fieldEquals("TileType", tileId.toString(), "amount", "1");
     });
 
     test("it should update tilesMinted of overall stats", () => {
@@ -140,13 +146,13 @@ describe("handleMintTiles", () => {
             "Stat",
             "overall",
             "alchemicaSpendOnTiles",
-            "[1, 1, 1, 1]"
+            "[5, 6, 7, 8]"
         );
         assert.fieldEquals(
             "Stat",
             "overall",
             "alchemicaSpendTotal",
-            "[1, 1, 1, 1]"
+            "[5, 6, 7, 8]"
         );
     });
 
@@ -161,13 +167,13 @@ describe("handleMintTiles", () => {
             "Stat",
             "user-" + mockEvent.transaction.from.toHexString(),
             "alchemicaSpendOnTiles",
-            "[1, 1, 1, 1]"
+            "[5, 6, 7, 8]"
         );
         assert.fieldEquals(
             "Stat",
             "user-" + mockEvent.transaction.from.toHexString(),
             "alchemicaSpendTotal",
-            "[1, 1, 1, 1]"
+            "[5, 6, 7, 8]"
         );
     });
 
