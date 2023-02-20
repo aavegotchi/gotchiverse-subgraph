@@ -226,6 +226,15 @@ describe("handleDeprecateInstallation", () => {
         );
     });
 
+    test("it should set deprecatedAt field to timestamp of block", () => {
+        assert.fieldEquals(
+            "InstallationType",
+            installationId.toString(),
+            "deprecatedAt",
+            mockEvent.block.timestamp.toString()
+        );
+    });
+
     afterAll(() => {
         clearStore();
     });

@@ -180,6 +180,7 @@ export function handleDeprecateInstallation(
 
     let installationTypeId = event.params._installationId;
     let installationType = getOrCreateInstallationType(installationTypeId);
+    installationType.deprecatedAt = event.block.timestamp;
     installationType.deprecated = true;
     installationType.save();
 }
