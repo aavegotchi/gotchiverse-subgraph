@@ -93,11 +93,7 @@ export const createChannelAlchemicaEvent = (
     event: ChannelAlchemica
 ): ChannelAlchemicaEvent => {
     let id =
-        event.params._gotchiId.toString() +
-        "-" +
-        event.params._realmId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new ChannelAlchemicaEvent(id);
     eventEntity.gotchi = event.params._gotchiId.toString();
     eventEntity.parcel = event.params._realmId.toString();
@@ -119,13 +115,7 @@ export const createAlchemicaClaimedEvent = (
     event: AlchemicaClaimed
 ): AlchemicaClaimedEvent => {
     let id =
-        event.params._realmId.toString() +
-        "-" +
-        event.params._alchemicaType.toString() +
-        "-" +
-        event.params._gotchiId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new AlchemicaClaimedEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -145,9 +135,7 @@ export const createExitAlchemicaEvent = (
     event: ExitAlchemica
 ): ExitAlchemicaEvent => {
     let id =
-        event.params._gotchiId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new ExitAlchemicaEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -162,15 +150,7 @@ export const createEquipInstallationEvent = (
     event: EquipInstallation
 ): EquipInstallationEvent => {
     let id =
-        event.params._realmId.toString() +
-        "-" +
-        event.params._installationId.toString() +
-        "-" +
-        event.params._x.toString() +
-        "-" +
-        event.params._y.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new EquipInstallationEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -188,15 +168,7 @@ export const createUnequipInstallationEvent = (
     event: UnequipInstallation
 ): UnequipInstallationEvent => {
     let id =
-        event.params._realmId.toString() +
-        "-" +
-        event.params._installationId.toString() +
-        "-" +
-        event.params._x.toString() +
-        "-" +
-        event.params._y.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new UnequipInstallationEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -212,15 +184,7 @@ export const createUnequipInstallationEvent = (
 
 export const createEquipTileEvent = (event: EquipTile): EquipTileEvent => {
     let id =
-        event.params._realmId.toString() +
-        "-" +
-        event.params._tileId.toString() +
-        "-" +
-        event.params._x.toString() +
-        "-" +
-        event.params._y.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new EquipTileEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -238,15 +202,7 @@ export const createUnequipTileEvent = (
     event: UnequipTile
 ): UnequipTileEvent => {
     let id =
-        event.params._realmId.toString() +
-        "-" +
-        event.params._tileId.toString() +
-        "-" +
-        event.params._x.toString() +
-        "-" +
-        event.params._y.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new UnequipTileEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -264,13 +220,7 @@ export const createInstallationUpgradedEvent = (
     event: InstallationUpgraded
 ): InstallationUpgradedEvent => {
     let id =
-        event.params._realmId.toString() +
-        "-" +
-        event.params._prevInstallationId.toString() +
-        "-" +
-        event.params._nextInstallationId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new InstallationUpgradedEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -335,9 +285,7 @@ export const removeParcelTile = (parcel: Parcel, tileId: BigInt): Parcel => {
 
 export const createMintParcelEvent = (event: MintParcel): MintParcelEvent => {
     let id =
-        event.params._tokenId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let entity = new MintParcelEvent(id);
     entity.owner = event.params._owner;
     entity.tokenId = event.params._tokenId;
@@ -351,9 +299,7 @@ export const createMintParcelEvent = (event: MintParcel): MintParcelEvent => {
 
 export const createParcelTransferEvent = (event: Transfer): TransferEvent => {
     let id =
-        event.params._tokenId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let entity = new TransferEvent(id);
     entity.block = event.block.number;
     entity.timestamp = event.block.timestamp;
@@ -395,11 +341,7 @@ export const createNFTDisplayStatusUpdatedEvent = (
     event: NFTDisplayStatusUpdated
 ): NFTDisplayStatusUpdatedEvent => {
     let id =
-        event.params._token.toHexString() +
-        "-" +
-        event.params._chainId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let entity = new NFTDisplayStatusUpdatedEvent(id);
     entity.block = event.block.number;
     entity.timestamp = event.block.timestamp;
@@ -446,7 +388,7 @@ export const createBounceGateEventStartedEvent = (
     event: EventStarted
 ): BounceGateEventStarted => {
     let id =
-        event.params._eventId.toString() + "-" + event.block.number.toString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let entity = new BounceGateEventStarted(id);
     entity.block = event.block.number;
     entity.timestamp = event.block.timestamp;
@@ -468,7 +410,7 @@ export const createBounceGateEventCancelledEvent = (
     event: EventCancelled
 ): BounceGateEventCancelled => {
     let id =
-        event.params._eventId.toString() + "-" + event.block.number.toString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let entity = new BounceGateEventCancelled(id);
     entity.block = event.block.number;
     entity.timestamp = event.block.timestamp;
@@ -483,7 +425,7 @@ export const createBounceGateEventPriorityAndDurationUpdatedEvent = (
     event: EventPriorityAndDurationUpdated
 ): BounceGateEventPriorityAndDurationUpdated => {
     let id =
-        event.params._eventId.toString() + "-" + event.block.number.toString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let entity = new BounceGateEventPriorityAndDurationUpdated(id);
     entity.block = event.block.number;
     entity.timestamp = event.block.timestamp;

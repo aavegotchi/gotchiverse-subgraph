@@ -133,6 +133,13 @@ export function handleExitAlchemica(event: ExitAlchemica): void {
     );
     overallStats.save();
 
+    let userStats = getStat(
+        StatCategory.USER,
+        event.transaction.from.toHexString()
+    );
+    userStats = updateExitedAlchemicaStats(userStats, event.params._alchemica);
+    userStats.save();
+
     let gotchiStats = getStat(
         StatCategory.GOTCHI,
         event.params._gotchiId.toString()
@@ -183,6 +190,17 @@ export function handleAlchemicaClaimed(event: AlchemicaClaimed): void {
         event.params._amount
     );
     gotchiStats.save();
+
+    let parcelStats = getStat(
+        StatCategory.PARCEL,
+        event.params._realmId.toString()
+    );
+    parcelStats = updateAlchemicaClaimedStats(
+        parcelStats,
+        event.params._alchemicaType.toI32(),
+        event.params._amount
+    );
+    parcelStats.save();
 }
 
 export function handleEquipInstallation(event: EquipInstallation): void {
@@ -284,6 +302,13 @@ export function handleInstallationUpgraded(event: InstallationUpgraded): void {
     let overallStats = getStat(StatCategory.OVERALL);
     overallStats = updateInstallationUpgradedStats(overallStats);
     overallStats.save();
+
+    let userStats = getStat(
+        StatCategory.USER,
+        event.transaction.from.toHexString()
+    );
+    userStats = updateInstallationUpgradedStats(userStats);
+    userStats.save();
 
     let parcelStats = getStat(
         StatCategory.PARCEL,
@@ -495,7 +520,7 @@ export function handleBounceGateEventPriorityAndDurationUpdated(
 export function handleParcelWhitelistSet(event: ParcelWhitelistSet): void {
     // add event entity
     let eventEntity = new ParcelWhitelistSetEvent(
-        event.block.number.toString() + "-" + event.logIndex.toString()
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString()
     );
     eventEntity.block = event.block.number;
     eventEntity.timestamp = event.block.timestamp;

@@ -141,6 +141,16 @@ export function handleUpgradeInitiated(event: UpgradeInitiated): void {
         BIGINT_ONE
     );
     userStats.save();
+
+    let parcelStats = getStat(
+        StatCategory.PARCEL,
+        event.params._realmId.toString()
+    );
+    parcelStats = updateAlchemicaSpendOnUpgrades(parcelStats, type);
+    parcelStats.installationsUpgradedTotal = parcelStats.installationsUpgradedTotal.plus(
+        BIGINT_ONE
+    );
+    parcelStats.save();
 }
 
 export function handleAddInstallationType(event: AddInstallationType): void {
@@ -170,6 +180,7 @@ export function handleDeprecateInstallation(
 
     let installationTypeId = event.params._installationId;
     let installationType = getOrCreateInstallationType(installationTypeId);
+    installationType.deprecatedAt = event.block.timestamp;
     installationType.deprecated = true;
     installationType.save();
 }
@@ -259,11 +270,7 @@ export function handleUpgradeQueued(event: UpgradeQueued): void {
 export function handleURI(event: URI): void {
     // create event
     let id =
-        event.transaction.from.toHexString() +
-        "-" +
-        event.params._tokenId.toString() +
-        "-" +
-        event.block.number.toString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new URIEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
@@ -282,11 +289,7 @@ export function handleURI(event: URI): void {
 export function handleEditDeprecateTime(event: EditDeprecateTime): void {
     // create Event entity
     let id =
-        event.transaction.from.toHexString() +
-        "-" +
-        event.params._installationId.toString() +
-        "-" +
-        event.block.number.toString();
+        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
     let eventEntity = new EditDeprecateTimeEvent(id);
     eventEntity.transaction = event.transaction.hash;
     eventEntity.block = event.block.number;
