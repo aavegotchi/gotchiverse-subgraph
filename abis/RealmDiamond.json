@@ -536,5 +536,27 @@
         ],
         "name": "ParcelWhitelistSet",
         "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "name": "_round",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "name": "_alchemicas",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "SurveyParcel",
+        "type": "event"
     }
 ]
