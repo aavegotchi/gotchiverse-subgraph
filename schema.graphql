@@ -416,6 +416,9 @@ type Parcel @entity {
     size: BigInt
 
     accessRights: [ParcelAccessRight!]! @derivedFrom(field: "parcel")
+
+    remainingAlchemica: [BigInt!]!
+    surveyRound: Int
 }
 
 type ParcelAccessRight @entity {
