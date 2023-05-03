@@ -13,6 +13,7 @@ import {
     NFTDisplayStatusUpdated,
     ParcelAccessRightSet,
     RealmDiamond,
+    SurveyParcel,
     Transfer,
     UnequipInstallation,
     UnequipTile,
@@ -39,7 +40,7 @@ import {
     UnequipInstallationEvent,
     UnequipTileEvent,
 } from "../../generated/schema";
-import { REALM_DIAMOND, StatCategory } from "./constants";
+import { BIGINT_ZERO, REALM_DIAMOND, StatCategory } from "./constants";
 import { getStat } from "./stats";
 
 export const getOrCreateParcel = (realmId: BigInt): Parcel => {
@@ -49,6 +50,8 @@ export const getOrCreateParcel = (realmId: BigInt): Parcel => {
         parcel = new Parcel(id);
         parcel.equippedInstallations = new Array<string>();
         parcel.equippedTiles = new Array<string>();
+        parcel.alchemicaToHarvest = [BIGINT_ZERO, BIGINT_ZERO, BIGINT_ZERO];
+        parcel.surveyRound = 0;
         parcel = updateParcelInfo(parcel);
     }
     return parcel;

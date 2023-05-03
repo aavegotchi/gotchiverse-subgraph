@@ -18,6 +18,7 @@ import {
     EventCancelled,
     EventPriorityAndDurationUpdated,
     ParcelWhitelistSet,
+    SurveyParcel,
 } from "../../generated/RealmDiamond/RealmDiamond";
 import { ParcelWhitelistSetEvent } from "../../generated/schema";
 import { BIGINT_ONE, REALM_DIAMOND, StatCategory } from "../helper/constants";
@@ -158,6 +159,14 @@ export function handleAlchemicaClaimed(event: AlchemicaClaimed): void {
     // set last claim alchemica
     let parcel = getOrCreateParcel(event.params._realmId);
     parcel.lastClaimedAlchemica = event.block.timestamp;
+
+    let alchemicas = parcel.alchemicaToHarvest;
+    let entry = alchemicas[event.params._alchemicaType.toI32()];
+    alchemicas[event.params._alchemicaType.toI32()] = entry.minus(
+        event.params._amount
+    );
+    parcel.alchemicaToHarvest = alchemicas;
+
     parcel.save();
 
     // stats
@@ -539,4 +548,17 @@ export function handleParcelWhitelistSet(event: ParcelWhitelistSet): void {
     parEntity.accessRight = 2;
     parEntity.whitelistId = event.params._whitelistId.toI32();
     parEntity.save();
+}
+
+export function handleSurveyParcel(event: SurveyParcel): void {
+    let entity = getOrCreateParcel(event.params._tokenId);
+
+    let alchemica = entity.alchemicaToHarvest;
+    for (let i = 0; i < event.params._alchemicas.length; i++) {
+        alchemica[i] = alchemica[i].plus(event.params._alchemicas[i]);
+    }
+
+    entity.surveyRound = entity.surveyRound + 1;
+    entity.alchemicaToHarvest = alchemica;
+    entity.save();
 }
