@@ -64,6 +64,8 @@ dataSources:
                 handler: handleBounceGateEventPriorityAndDurationUpdated
               - event: ParcelWhitelistSet(uint256,uint256,uint256)
                 handler: handleParcelWhitelistSet
+              - event: SurveyParcel(uint256,uint256,uint256[])
+                handler: handleSurveyParcel
           file: ./src/mappings/realm.ts
     - kind: ethereum/contract
       name: TileDiamond
