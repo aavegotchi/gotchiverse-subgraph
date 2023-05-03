@@ -50,7 +50,12 @@ export const getOrCreateParcel = (realmId: BigInt): Parcel => {
         parcel = new Parcel(id);
         parcel.equippedInstallations = new Array<string>();
         parcel.equippedTiles = new Array<string>();
-        parcel.remainingAlchemica = [BIGINT_ZERO, BIGINT_ZERO, BIGINT_ZERO];
+        parcel.remainingAlchemica = [
+            BIGINT_ZERO,
+            BIGINT_ZERO,
+            BIGINT_ZERO,
+            BIGINT_ZERO,
+        ];
         parcel.surveyRound = 0;
         parcel = updateParcelInfo(parcel);
     }
