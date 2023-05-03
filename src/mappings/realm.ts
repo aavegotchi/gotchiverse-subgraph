@@ -160,12 +160,12 @@ export function handleAlchemicaClaimed(event: AlchemicaClaimed): void {
     let parcel = getOrCreateParcel(event.params._realmId);
     parcel.lastClaimedAlchemica = event.block.timestamp;
 
-    let alchemicas = parcel.alchemicaToHarvest;
+    let alchemicas = parcel.remainingAlchemica;
     let entry = alchemicas[event.params._alchemicaType.toI32()];
     alchemicas[event.params._alchemicaType.toI32()] = entry.minus(
         event.params._amount
     );
-    parcel.alchemicaToHarvest = alchemicas;
+    parcel.remainingAlchemica = alchemicas;
 
     parcel.save();
 
@@ -553,12 +553,12 @@ export function handleParcelWhitelistSet(event: ParcelWhitelistSet): void {
 export function handleSurveyParcel(event: SurveyParcel): void {
     let entity = getOrCreateParcel(event.params._tokenId);
 
-    let alchemica = entity.alchemicaToHarvest;
+    let alchemica = entity.remainingAlchemica;
     for (let i = 0; i < event.params._alchemicas.length; i++) {
         alchemica[i] = alchemica[i].plus(event.params._alchemicas[i]);
     }
 
     entity.surveyRound = entity.surveyRound + 1;
-    entity.alchemicaToHarvest = alchemica;
+    entity.remainingAlchemica = alchemica;
     entity.save();
 }

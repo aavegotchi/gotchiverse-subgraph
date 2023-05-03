@@ -417,7 +417,7 @@ type Parcel @entity {
 
     accessRights: [ParcelAccessRight!]! @derivedFrom(field: "parcel")
 
-    alchemicaToHarvest: [BigInt!]!
+    remainingAlchemica: [BigInt!]!
     surveyRound: Int
 }
 
