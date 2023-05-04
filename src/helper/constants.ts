@@ -21,11 +21,11 @@ export const BIGINT_EIGHT = BigInt.fromI32(8);
 export const BIGINT_NINE = BigInt.fromI32(9);
 export const BIGINT_TEN = BigInt.fromI32(10);
 export const REALM_DIAMOND = Address.fromString(
-    "0x1d0360bac7299c86ec8e99d0c1c9a95fefaf2a11"
+    "0x726F201A9aB38cD56D60ee392165F1434C4F193D"
 );
 export const TILE_DIAMOND = Address.fromString(
-    "0x9216c31d8146bCB3eA5a9162Dc1702e8AEDCa355"
+    "0xDd8947D7F6705136e5A12971231D134E80DFC15d"
 );
 export const INSTALLATION_DIAMOND = Address.fromString(
-    "0x19f870bD94A34b3adAa9CaA439d333DA18d6812A"
+    "0x663aeA831087487d2944ce44836F419A35Ee005A"
 );
