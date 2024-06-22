@@ -9,11 +9,11 @@ schema:
 dataSources:
     - kind: ethereum/contract
       name: RealmDiamond
-      network: mumbai
+      network: polygon-amoy
       source:
-          address: "0x726F201A9aB38cD56D60ee392165F1434C4F193D"
+          address: "0x5a4faEb79951bAAa0866B72fD6517E693c8E4620"
           abi: RealmDiamond
-          startBlock: 20667840
+          startBlock: 5349600
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.6
@@ -64,14 +64,16 @@ dataSources:
                 handler: handleBounceGateEventPriorityAndDurationUpdated
               - event: ParcelWhitelistSet(uint256,uint256,uint256)
                 handler: handleParcelWhitelistSet
+              - event: SurveyParcel(uint256,uint256,uint256[])
+                handler: handleSurveyParcel
           file: ./src/mappings/realm.ts
     - kind: ethereum/contract
       name: TileDiamond
-      network: mumbai
+      network: polygon-amoy
       source:
-          address: "0xDd8947D7F6705136e5A12971231D134E80DFC15d"
+          address: "0xCa6F4Ef19a1Beb9BeF12f64b395087E5680bcB22"
           abi: TileDiamond
-          startBlock: 26930279
+          startBlock: 5349700
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.6
@@ -102,11 +104,11 @@ dataSources:
           file: ./src/mappings/tile.ts
     - kind: ethereum/contract
       name: InstallationDiamond
-      network: mumbai
+      network: polygon-amoy
       source:
-          address: "0x663aeA831087487d2944ce44836F419A35Ee005A"
+          address: "0x514b7c55FB3DFf3533B58D85CD25Ba04bb30612D"
           abi: InstallationDiamond
-          startBlock: 26930257
+          startBlock: 5349600
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.6

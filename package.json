@@ -6,6 +6,8 @@
     "scripts": {
         "codegen": "graph codegen",
         "build": "graph build",
+        "codegen:testnet": "graph codegen subgraph.testnet.yaml",
+        "build:testnet": "graph build subgraph.testnet.yaml",
         "create-local": "graph create --node http://localhost:8020/ aavegotchi/gotchiverse-matic",
         "remove-local": "graph remove --node http://localhost:8020/ aavegotchi/gotchiverse-matic",
         "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 aavegotchi/gotchiverse-matic",
@@ -19,8 +21,8 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@graphprotocol/graph-cli": "0.30.2",
-        "@graphprotocol/graph-ts": "0.27.0",
+        "@graphprotocol/graph-cli": "0.60.0",
+        "@graphprotocol/graph-ts": "0.31.0",
         "apollo-fetch": "^0.7.0",
         "matchstick-as": "^0.5.0"
     }
