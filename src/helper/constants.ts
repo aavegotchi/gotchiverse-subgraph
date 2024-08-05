@@ -20,6 +20,7 @@ export const BIGINT_SEVEN = BigInt.fromI32(7);
 export const BIGINT_EIGHT = BigInt.fromI32(8);
 export const BIGINT_NINE = BigInt.fromI32(9);
 export const BIGINT_TEN = BigInt.fromI32(10);
+// Matic
 export const REALM_DIAMOND = Address.fromString(
     "0x1d0360bac7299c86ec8e99d0c1c9a95fefaf2a11"
 );
@@ -29,3 +30,13 @@ export const TILE_DIAMOND = Address.fromString(
 export const INSTALLATION_DIAMOND = Address.fromString(
     "0x19f870bD94A34b3adAa9CaA439d333DA18d6812A"
 );
+// Amoy
+// export const REALM_DIAMOND = Address.fromString(
+//     "0x5a4faEb79951bAAa0866B72fD6517E693c8E4620"
+// );
+// export const TILE_DIAMOND = Address.fromString(
+//     "0xCa6F4Ef19a1Beb9BeF12f64b395087E5680bcB22"
+// );
+// export const INSTALLATION_DIAMOND = Address.fromString(
+//     "0x514b7c55FB3DFf3533B58D85CD25Ba04bb30612D"
+// );
