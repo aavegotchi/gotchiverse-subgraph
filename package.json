@@ -6,10 +6,6 @@
     "scripts": {
         "codegen": "graph codegen",
         "build": "graph build",
-        "build:polter": "graph build subgraph-polter.yaml",
-        "build:geist": "graph build subgraph-geist.yaml",
-        "build:amoy": "graph build subgraph-amoy.yaml",
-        "build:matic": "graph build subgraph-matic.yaml",
         "deploy": "dotenv -e .env graph deploy gotchiverse-subgraph --version-label $VERSION_LABEL --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key $DEPLOY_KEY --ipfs https://ipfs.satsuma.xyz",
         "prepare:polygon": "mustache config/polygon.json subgraph.template.yaml > subgraph.yaml",
         "prepare:amoy": "mustache config/amoy.json subgraph.template.yaml > subgraph.yaml",

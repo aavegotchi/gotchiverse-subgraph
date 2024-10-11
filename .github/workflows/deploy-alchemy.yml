@@ -29,14 +29,14 @@ jobs:
       - name: Install Dependencies
         run: yarn --frozen-lockfile
 
-      - name: Codegen
-        run: yarn codegen:${{ steps.extract-network.outputs.NETWORK }}
-
       - name: Prepare
         run: yarn prepare:${{ steps.extract-network.outputs.NETWORK }}
 
+      - name: Codegen
+        run: yarn codegen
+
       - name: Build
-        run: yarn build:${{ steps.extract-network.outputs.NETWORK }}
+        run: yarn build
 
       - name: Deploy to Alchemy
         env:
