@@ -8,7 +8,7 @@ dataSources:
       source:
           address: "{{realmDiamondAddress}}"
           abi: RealmDiamond
-          startBlock: "{{realmStartBlock}}"
+          startBlock: { { realmStartBlock } }
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.6
@@ -36,7 +36,7 @@ dataSources:
       source:
           address: "{{tileDiamondAddress}}"
           abi: TileDiamond
-          startBlock: "{{tileStartBlock}}"
+          startBlock: { { tileStartBlock } }
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.6
@@ -63,7 +63,7 @@ dataSources:
       source:
           address: "{{installationDiamondAddress}}"
           abi: InstallationDiamond
-          startBlock: "{{installationStartBlock}}"
+          startBlock: { { installationStartBlock } }
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.6
