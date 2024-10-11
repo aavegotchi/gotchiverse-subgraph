@@ -4,11 +4,11 @@ schema:
 dataSources:
     - kind: ethereum/contract
       name: RealmDiamond
-      network: { { network } }
+      network: "{{network}}"
       source:
           address: "{{realmDiamondAddress}}"
           abi: RealmDiamond
-          startBlock: { { realmStartBlock } }
+          startBlock: "{{realmStartBlock}}"
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.6
@@ -32,11 +32,11 @@ dataSources:
 
     - kind: ethereum/contract
       name: TileDiamond
-      network: { { network } }
+      network: "{{network}}"
       source:
           address: "{{tileDiamondAddress}}"
           abi: TileDiamond
-          startBlock: { { tileStartBlock } }
+          startBlock: "{{tileStartBlock}}"
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.6
@@ -59,11 +59,11 @@ dataSources:
 
     - kind: ethereum/contract
       name: InstallationDiamond
-      network: { { network } }
+      network: "{{network}}"
       source:
           address: "{{installationDiamondAddress}}"
           abi: InstallationDiamond
-          startBlock: { { installationStartBlock } }
+          startBlock: "{{installationStartBlock}}"
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.6
