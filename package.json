@@ -6,8 +6,17 @@
     "scripts": {
         "codegen": "graph codegen",
         "build": "graph build",
-        "codegen:testnet": "graph codegen subgraph.testnet.yaml",
-        "build:testnet": "graph build subgraph.testnet.yaml",
+        "build:polter": "graph build subgraph-polter.yaml",
+        "build:geist": "graph build subgraph-geist.yaml",
+        "build:amoy": "graph build subgraph-amoy.yaml",
+        "build:matic": "graph build subgraph-matic.yaml",
+        "deploy": "dotenv -e .env graph deploy gotchiverse-subgraph --version-label $VERSION_LABEL --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key $DEPLOY_KEY --ipfs https://ipfs.satsuma.xyz",
+        "prepare:polygon": "mustache config/polygon.json subgraph.template.yaml > subgraph.yaml",
+        "prepare:amoy": "mustache config/amoy.json subgraph.template.yaml > subgraph.yaml",
+        "codegen:polter": "graph codegen subgraph-polter.yaml",
+        "codegen:amoy": "graph codegen subgraph-amoy.yaml",
+        "codegen:geist": "graph codegen subgraph-geist.yaml",
+        "codegen:matic": "graph codegen subgraph-matic.yaml",
         "create-local": "graph create --node http://localhost:8020/ aavegotchi/gotchiverse-matic",
         "remove-local": "graph remove --node http://localhost:8020/ aavegotchi/gotchiverse-matic",
         "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 aavegotchi/gotchiverse-matic",
@@ -24,6 +33,7 @@
         "@graphprotocol/graph-cli": "0.60.0",
         "@graphprotocol/graph-ts": "0.31.0",
         "apollo-fetch": "^0.7.0",
-        "matchstick-as": "^0.5.0"
+        "matchstick-as": "^0.5.0",
+        "mustache": "^4.2.0"
     }
 }
