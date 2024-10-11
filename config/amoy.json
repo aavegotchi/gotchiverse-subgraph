@@ -1,5 +1,9 @@
 {
     "network": "polygon-amoy",
-    "address": "0x5a4faEb79951bAAa0866B72fD6517E693c8E4620",
-    "startBlock": 5349600
+    "realmDiamondAddress": "0x5a4faEb79951bAAa0866B72fD6517E693c8E4620",
+    "realmStartBlock": 5349600,
+    "tileDiamondAddress": "0xCa6F4Ef19a1Beb9BeF12f64b395087E5680bcB22",
+    "tileStartBlock": 5349700,
+    "installationDiamondAddress": "0x514b7c55FB3DFf3533B58D85CD25Ba04bb30612D",
+    "installationStartBlock": 5349600
 }
