@@ -27,7 +27,40 @@ dataSources:
       eventHandlers:
         - event: AlchemicaClaimed(indexed uint256,indexed uint256,indexed uint256,uint256,uint256,uint256)
           handler: handleAlchemicaClaimed
-        # ... (other event handlers)
+        - event: ChannelAlchemica(indexed uint256,indexed uint256,uint256[4],uint256,uint256)
+          handler: handleChannelAlchemica
+        - event: ExitAlchemica(indexed uint256,uint256[])
+          handler: handleExitAlchemica
+        - event: EquipInstallation(uint256,uint256,uint256,uint256)
+          handler: handleEquipInstallation
+        - event: InstallationUpgraded(uint256,uint256,uint256,uint256,uint256)
+          handler: handleInstallationUpgraded
+        - event: UnequipInstallation(uint256,uint256,uint256,uint256)
+          handler: handleUnequipInstallation
+        - event: EquipTile(uint256,uint256,uint256,uint256)
+          handler: handleEquipTile
+        - event: UnequipTile(uint256,uint256,uint256,uint256)
+          handler: handleUnequipTile
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: MintParcel(indexed address,indexed uint256)
+          handler: handleMintParcel
+        - event: ResyncParcel(uint256)
+          handler: handleResyncParcel
+        - event: NFTDisplayStatusUpdated(address,uint256,bool)
+          handler: handleNFTDisplayStatusUpdated
+        - event: ParcelAccessRightSet(uint256,uint256,uint256)
+          handler: handleParcelAccessRightSet
+        - event: EventStarted(indexed uint256,(string,uint64,uint64,uint120,bool,uint64))
+          handler: handleBounceGateEventStarted
+        - event: EventCancelled(indexed uint256)
+          handler: handleBounceGateEventCancelled
+        - event: EventPriorityAndDurationUpdated(indexed uint256,uint120,uint64)
+          handler: handleBounceGateEventPriorityAndDurationUpdated
+        - event: ParcelWhitelistSet(uint256,uint256,uint256)
+          handler: handleParcelWhitelistSet
+        - event: SurveyParcel(uint256,uint256,uint256[])
+          handler: handleSurveyParcel
       file: ./src/mappings/realm.ts
 
   - kind: ethereum/contract
@@ -54,7 +87,16 @@ dataSources:
       eventHandlers:
         - event: MintTile(indexed address,indexed uint256,uint256)
           handler: handleMintTile
-        # ... (other event handlers)
+        - event: MintTiles(indexed address,indexed uint256,uint16)
+          handler: handleMintTiles
+        - event: CraftTimeReduced(indexed uint256,uint256)
+          handler: handleCraftTimeReduced
+        - event: URI(string,indexed uint256)
+          handler: handleURI
+        - event: EditTileType(indexed uint256,(uint8,uint8,bool,uint16,uint32,uint256[4],string))
+          handler: handleEditTileType
+        - event: EditDeprecateTime(uint256,uint256)
+          handler: handleEditDeprecateTime
       file: ./src/mappings/tile.ts
 
   - kind: ethereum/contract
@@ -85,4 +127,25 @@ dataSources:
       eventHandlers:
         - event: MintInstallation(indexed address,indexed uint256,uint256)
           handler: handleMintInstallation
-        # ... (other event handlers)
+        - event: MintInstallations(indexed address,indexed uint256,uint16)
+          handler: handleMintInstallations
+        - event: UpgradeInitiated(indexed uint256,uint256,uint256,uint256,uint256,uint256)
+          handler: handleUpgradeInitiated
+        - event: AddInstallationType(uint256)
+          handler: handleAddInstallationType
+        - event: EditInstallationType(uint256)
+          handler: handleEditInstallationType
+        - event: DeprecateInstallation(uint256)
+          handler: handleDeprecateInstallation
+        - event: CraftTimeReduced(indexed uint256,uint256)
+          handler: handleCraftTimeReduced
+        - event: UpgradeTimeReduced(indexed uint256,indexed uint256,uint256,uint256,uint40)
+          handler: handleUpgradeTimeReduced
+        - event: UpgradeFinalized(indexed uint256,uint256,uint256,uint256)
+          handler: handleUpgradeFinalized
+        - event: UpgradeQueued(indexed address,indexed uint256,indexed uint256)
+          handler: handleUpgradeQueued
+        - event: URI(string,indexed uint256)
+          handler: handleURI
+        - event: EditDeprecateTime(uint256,uint256)
+          handler: handleEditDeprecateTime
