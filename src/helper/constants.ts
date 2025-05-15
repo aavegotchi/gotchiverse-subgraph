@@ -21,15 +21,15 @@ export const BIGINT_EIGHT = BigInt.fromI32(8);
 export const BIGINT_NINE = BigInt.fromI32(9);
 export const BIGINT_TEN = BigInt.fromI32(10);
 // Matic
-export const REALM_DIAMOND = Address.fromString(
-    "0x1d0360bac7299c86ec8e99d0c1c9a95fefaf2a11"
-);
-export const TILE_DIAMOND = Address.fromString(
-    "0x9216c31d8146bCB3eA5a9162Dc1702e8AEDCa355"
-);
-export const INSTALLATION_DIAMOND = Address.fromString(
-    "0x19f870bD94A34b3adAa9CaA439d333DA18d6812A"
-);
+// export const REALM_DIAMOND = Address.fromString(
+//     "0x1d0360bac7299c86ec8e99d0c1c9a95fefaf2a11"
+// );
+// export const TILE_DIAMOND = Address.fromString(
+//     "0x9216c31d8146bCB3eA5a9162Dc1702e8AEDCa355"
+// );
+// export const INSTALLATION_DIAMOND = Address.fromString(
+//     "0x19f870bD94A34b3adAa9CaA439d333DA18d6812A"
+// );
 // Amoy
 // export const REALM_DIAMOND = Address.fromString(
 //     "0x5a4faEb79951bAAa0866B72fD6517E693c8E4620"
@@ -40,3 +40,14 @@ export const INSTALLATION_DIAMOND = Address.fromString(
 // export const INSTALLATION_DIAMOND = Address.fromString(
 //     "0x514b7c55FB3DFf3533B58D85CD25Ba04bb30612D"
 // );
+
+// Base Sepolia
+export const REALM_DIAMOND = Address.fromString(
+    "0xb674fD8E82967d53Bd4513c25DB61943504884aA"
+);
+export const TILE_DIAMOND = Address.fromString(
+    "0xead385D9BABc904B2531a4b2AB5c6Af2c70014C3"
+);
+export const INSTALLATION_DIAMOND = Address.fromString(
+    "0x4773f06Fb66735F1350A2dB582660CBf6C0FF64B"
+);
