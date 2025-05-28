@@ -88,23 +88,52 @@ export function updateParcelInfo(
         parcel.kekBoost = boostArray[3];
 
         if (resync) {
+            log.info("Resyncing parcel data for parcel ID: {}", [parcel.id]);
+
             parcel.surveyRound = parcelMetadata.surveyRound.toI32();
+            log.info("Updated surveyRound to: {}", [
+                parcel.surveyRound.toString(),
+            ]);
+
             parcel.remainingAlchemica = parcelMetadata.alchemicaRemaining;
+            log.info("Updated remainingAlchemica to: [{}, {}, {}, {}]", [
+                parcel.remainingAlchemica[0].toString(),
+                parcel.remainingAlchemica[1].toString(),
+                parcel.remainingAlchemica[2].toString(),
+                parcel.remainingAlchemica[3].toString(),
+            ]);
 
             // Extract installation IDs from the structured array
             parcel.equippedInstallations = parcelMetadata.equippedInstallations.map<
                 string
             >(item => item.installationId.toString());
+            log.info("Updated equippedInstallations count: {}, IDs: [{}]", [
+                parcel.equippedInstallations.length.toString(),
+                parcel.equippedInstallations.join(", "),
+            ]);
 
             // Extract tile IDs from the structured array
             parcel.equippedTiles = parcelMetadata.equippedTiles.map<string>(
                 item => item.tileId.toString()
             );
+            log.info("Updated equippedTiles count: {}, IDs: [{}]", [
+                parcel.equippedTiles.length.toString(),
+                parcel.equippedTiles.join(", "),
+            ]);
 
             parcel.lastChanneledAlchemica =
                 parcelMetadata.lastChanneledAlchemica;
+            log.info("Updated lastChanneledAlchemica to: {}", [
+                parcel.lastChanneledAlchemica.toString(),
+            ]);
+
             parcel.lastClaimedAlchemica = parcelMetadata.lastClaimedAlchemica;
+            log.info("Updated lastClaimedAlchemica to: {}", [
+                parcel.lastClaimedAlchemica.toString(),
+            ]);
+
             parcel.owner = parcelMetadata.owner;
+            log.info("Updated owner to: {}", [parcel.owner.toHexString()]);
         }
     }
 
