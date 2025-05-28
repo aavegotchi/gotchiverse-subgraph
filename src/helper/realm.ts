@@ -62,7 +62,10 @@ export const getOrCreateParcel = (realmId: BigInt): Parcel => {
     return parcel;
 };
 
-export function updateParcelInfo(parcel: Parcel): Parcel {
+export function updateParcelInfo(
+    parcel: Parcel,
+    resync: boolean = false
+): Parcel {
     let parcelId = BigInt.fromString(parcel.id);
     let contract = RealmDiamond.bind(REALM_DIAMOND);
     let parcelInfo = contract.try_getParcelInfo(parcelId);
@@ -83,6 +86,26 @@ export function updateParcelInfo(parcel: Parcel): Parcel {
         parcel.fomoBoost = boostArray[1];
         parcel.alphaBoost = boostArray[2];
         parcel.kekBoost = boostArray[3];
+
+        if (resync) {
+            parcel.surveyRound = parcelMetadata.surveyRound.toI32();
+            parcel.remainingAlchemica = parcelMetadata.alchemicaRemaining;
+
+            // Extract installation IDs from the structured array
+            parcel.equippedInstallations = parcelMetadata.equippedInstallations.map<
+                string
+            >(item => item.installationId.toString());
+
+            // Extract tile IDs from the structured array
+            parcel.equippedTiles = parcelMetadata.equippedTiles.map<string>(
+                item => item.tileId.toString()
+            );
+
+            parcel.lastChanneledAlchemica =
+                parcelMetadata.lastChanneledAlchemica;
+            parcel.lastClaimedAlchemica = parcelMetadata.lastClaimedAlchemica;
+            parcel.owner = parcelMetadata.owner;
+        }
     }
 
     return parcel;

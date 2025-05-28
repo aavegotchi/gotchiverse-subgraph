@@ -21,7 +21,12 @@ import {
     SurveyParcel,
 } from "../../generated/RealmDiamond/RealmDiamond";
 import { ParcelWhitelistSetEvent } from "../../generated/schema";
-import { BIGINT_ONE, REALM_DIAMOND, StatCategory } from "../helper/constants";
+import {
+    BIGINT_ONE,
+    NETWORK_CONSTANTS,
+    REALM_DIAMOND,
+    StatCategory,
+} from "../helper/constants";
 import {
     getOrCreateInstallation,
     getOrCreateInstallationType,
@@ -446,7 +451,20 @@ export function handleTransfer(event: Transfer): void {
 
 export function handleResyncParcel(event: ResyncParcel): void {
     let parcel = getOrCreateParcel(event.params._tokenId);
-    parcel = updateParcelInfo(parcel);
+
+    const baseSepoliaNetwork = NETWORK_CONSTANTS.get("base-sepolia");
+    const baseSepoliaRealmDiamond = baseSepoliaNetwork
+        ? baseSepoliaNetwork.get("REALM_DIAMOND")
+        : null;
+    const realmDiamondAddress = baseSepoliaRealmDiamond
+        ? baseSepoliaRealmDiamond.toString().toLowerCase()
+        : null;
+
+    parcel = updateParcelInfo(
+        parcel,
+        event.address.toHexString().toLowerCase() === realmDiamondAddress
+    );
+
     parcel.save();
 }
 

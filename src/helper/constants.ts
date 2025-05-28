@@ -22,7 +22,7 @@ export const BIGINT_NINE = BigInt.fromI32(9);
 export const BIGINT_TEN = BigInt.fromI32(10);
 
 // Network specific constants mapping (address strings to maintain readability)
-const NETWORK_CONSTANTS = new Map<string, Map<string, string>>();
+export const NETWORK_CONSTANTS = new Map<string, Map<string, string>>();
 
 // Polygon Mainnet
 NETWORK_CONSTANTS.set(
@@ -52,11 +52,11 @@ NETWORK_CONSTANTS.set(
 NETWORK_CONSTANTS.set(
     "base-sepolia",
     new Map<string, string>()
-        .set("REALM_DIAMOND", "0xb674fD8E82967d53Bd4513c25DB61943504884aA")
-        .set("TILE_DIAMOND", "0xead385D9BABc904B2531a4b2AB5c6Af2c70014C3")
+        .set("REALM_DIAMOND", "0xe81088003fe432769946A258F29Ae1F50c591F22")
+        .set("TILE_DIAMOND", "0x38EaF559Ae5D884aD1b43d125B0b22b5073c15e4")
         .set(
             "INSTALLATION_DIAMOND",
-            "0x4773f06Fb66735F1350A2dB582660CBf6C0FF64B"
+            "0xB2d52bE3Ab11006685843a59Ec7d17BfF2c554a1"
         )
 );
 
