@@ -1,4 +1,4 @@
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { BigInt, dataSource, log } from "@graphprotocol/graph-ts";
 import {
     AlchemicaClaimed,
     ChannelAlchemica,
@@ -452,30 +452,10 @@ export function handleTransfer(event: Transfer): void {
 export function handleResyncParcel(event: ResyncParcel): void {
     let parcel = getOrCreateParcel(event.params._tokenId);
 
-    const baseSepoliaNetwork = NETWORK_CONSTANTS.get("base-sepolia");
-    const baseSepoliaRealmDiamond = baseSepoliaNetwork
-        ? baseSepoliaNetwork.get("REALM_DIAMOND")
-        : null;
-    const realmDiamondAddress = baseSepoliaRealmDiamond
-        ? baseSepoliaRealmDiamond.toString().toLowerCase()
-        : null;
+    const currentNetwork = dataSource.network();
+    const isBaseSepolia = currentNetwork === "base-sepolia";
 
-    log.info(
-        "ResyncParcel Debug - Event address: {}, Expected realm diamond: {}, Match: {}",
-        [
-            event.address.toHexString().toLowerCase(),
-            realmDiamondAddress ? realmDiamondAddress : "null",
-            (
-                event.address.toHexString().toLowerCase() ===
-                realmDiamondAddress
-            ).toString(),
-        ]
-    );
-
-    parcel = updateParcelInfo(
-        parcel,
-        event.address.toHexString().toLowerCase() === realmDiamondAddress
-    );
+    parcel = updateParcelInfo(parcel, isBaseSepolia);
 
     parcel.save();
 }
