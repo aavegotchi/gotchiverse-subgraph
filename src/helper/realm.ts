@@ -123,22 +123,27 @@ export function updateParcelInfo(
 
             parcel.lastChanneledAlchemica =
                 parcelMetadata.lastChanneledAlchemica;
-            log.info("Updated lastChanneledAlchemica to: {}", [
-                parcel.lastChanneledAlchemica
-                    ? parcel.lastChanneledAlchemica.toString()
+            log.info("Contract returned lastChanneledAlchemica: {}, type: {}", [
+                parcelMetadata.lastChanneledAlchemica
+                    ? parcelMetadata.lastChanneledAlchemica.toString()
                     : "null",
+                parcelMetadata.lastChanneledAlchemica ? "BigInt" : "null",
             ]);
 
             parcel.lastClaimedAlchemica = parcelMetadata.lastClaimedAlchemica;
-            log.info("Updated lastClaimedAlchemica to: {}", [
-                parcel.lastClaimedAlchemica
-                    ? parcel.lastClaimedAlchemica.toString()
+            log.info("Contract returned lastClaimedAlchemica: {}, type: {}", [
+                parcelMetadata.lastClaimedAlchemica
+                    ? parcelMetadata.lastClaimedAlchemica.toString()
                     : "null",
+                parcelMetadata.lastClaimedAlchemica ? "BigInt" : "null",
             ]);
 
             parcel.owner = parcelMetadata.owner;
-            log.info("Updated owner to: {}", [
-                parcel.owner ? parcel.owner.toHexString() : "null",
+            log.info("Contract returned owner: {}, type: {}", [
+                parcelMetadata.owner
+                    ? parcelMetadata.owner.toHexString()
+                    : "null",
+                parcelMetadata.owner ? "Bytes" : "null",
             ]);
         }
     }
