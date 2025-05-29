@@ -88,21 +88,41 @@ export function updateParcelInfo(
         parcel.kekBoost = boostArray[3];
 
         if (resync) {
-            log.info("Resyncing parcel data for parcel ID: {}", [parcel.id]);
-
             parcel.surveyRound = parcelMetadata.surveyRound.toI32();
 
             parcel.remainingAlchemica = parcelMetadata.alchemicaRemaining;
 
-            // Extract installation IDs from the structured array
-            parcel.equippedInstallations = parcelMetadata.equippedInstallations.map<
-                string
-            >(item => item.installationId.toString());
+            // Extract installation IDs from the structured array, handling balance
+            let installationIds = new Array<string>();
+            for (
+                let i = 0;
+                i < parcelMetadata.equippedInstallations.length;
+                i++
+            ) {
+                let item = parcelMetadata.equippedInstallations[i];
+                let installationId = item.installationId.toString();
+                let balance = item.balance.toI32();
 
-            // Extract tile IDs from the structured array
-            parcel.equippedTiles = parcelMetadata.equippedTiles.map<string>(
-                item => item.tileId.toString()
-            );
+                // Add the same installationId multiple times if balance > 1
+                for (let j = 0; j < balance; j++) {
+                    installationIds.push(installationId);
+                }
+            }
+            parcel.equippedInstallations = installationIds;
+
+            // Extract tile IDs from the structured array, handling balance
+            let tileIds = new Array<string>();
+            for (let i = 0; i < parcelMetadata.equippedTiles.length; i++) {
+                let item = parcelMetadata.equippedTiles[i];
+                let tileId = item.tileId.toString();
+                let balance = item.balance.toI32();
+
+                // Add the same tileId multiple times if balance > 1
+                for (let j = 0; j < balance; j++) {
+                    tileIds.push(tileId);
+                }
+            }
+            parcel.equippedTiles = tileIds;
 
             parcel.lastChanneledAlchemica =
                 parcelMetadata.lastChanneledAlchemica;
