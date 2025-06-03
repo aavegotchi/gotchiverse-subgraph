@@ -617,5 +617,74 @@
         ],
         "name": "SurveyParcel",
         "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "struct ParcelEquippedData[]",
+                "name": "_parcelEquippedData",
+                "type": "tuple[]",
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "realmId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "struct ParcelEquippedDataInstallations[]",
+                        "name": "installations",
+                        "type": "tuple[]",
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "installationType",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "x",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "y",
+                                "type": "uint256"
+                            }
+                        ]
+                    },
+                    {
+                        "internalType": "struct ParcelEquippedDataTiles[]",
+                        "name": "tiles",
+                        "type": "tuple[]",
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "tileType",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "x",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "y",
+                                "type": "uint256"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "name": "MigrateResyncParcel",
+        "type": "event"
     }
 ]

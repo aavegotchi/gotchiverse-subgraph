@@ -19,6 +19,7 @@ import {
     EventPriorityAndDurationUpdated,
     ParcelWhitelistSet,
     SurveyParcel,
+    MigrateResyncParcel,
 } from "../../generated/RealmDiamond/RealmDiamond";
 import { ParcelWhitelistSetEvent } from "../../generated/schema";
 import {
@@ -571,4 +572,86 @@ export function handleSurveyParcel(event: SurveyParcel): void {
     entity.surveyRound = entity.surveyRound + 1;
     entity.remainingAlchemica = alchemica;
     entity.save();
+}
+
+// This is used for migration data to set installations and tiles entities
+export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
+    const parcels = event.params._parcelEquippedData;
+
+    for (let i = 0; i < parcels.length; i++) {
+        const parcelData = parcels[i];
+        const realmId = parcelData.realmId;
+
+        // Get or create the parcel
+        let parcel = getOrCreateParcel(realmId);
+
+        // Handle installations
+        for (let j = 0; j < parcelData.installations.length; j++) {
+            const installationData = parcelData.installations[j];
+
+            // Create/update installation entity
+            let installation = getOrCreateInstallation(
+                installationData.installationType,
+                realmId,
+                installationData.x,
+                installationData.y,
+                parcelData.owner
+            );
+            installation.equipped = true;
+            installation.save();
+
+            // Update installation type
+            let installationType = getOrCreateInstallationType(
+                installationData.installationType
+            );
+
+            installationType.save();
+        }
+
+        // Handle tiles
+        for (let k = 0; k < parcelData.tiles.length; k++) {
+            const tileData = parcelData.tiles[k];
+
+            // Create/update tile type
+            let tileType = getOrCreateTileType(tileData.tileType);
+            tileType.save();
+
+            // Create/update tile entity
+            let tile = getOrCreateTile(
+                parcel,
+                tileType,
+                tileData.x,
+                tileData.y
+            );
+
+            tile.equipped = true;
+            tile.owner = parcelData.owner;
+            tile.save();
+        }
+
+        // Update statistics
+        // let parcelStats = getStat(StatCategory.PARCEL, realmId.toString());
+        // parcelStats.countParcelInstallations = parcelStats.countParcelInstallations.plus(
+        //     BigInt.fromI32(parcelData.installations.length)
+        // );
+        // parcelStats = updateInstallationEquippedStats(parcelStats);
+        // parcelStats = updateTileEquippedStats(parcelStats);
+        // parcelStats.save();
+    }
+
+    // Update overall statistics
+    // let overallStats = getStat(StatCategory.OVERALL);
+    // for (let i = 0; i < parcels.length; i++) {
+    //     const parcelData = parcels[i];
+    //     overallStats.countParcelInstallations = overallStats.countParcelInstallations.plus(
+    //         BigInt.fromI32(parcelData.installations.length)
+    //     );
+    //     for (let j = 0; j < parcelData.installations.length; j++) {
+    //         overallStats = updateInstallationEquippedStats(overallStats);
+    //     }
+    //     for (let k = 0; k < parcelData.tiles.length; k++) {
+    //         overallStats = updateTileEquippedStats(overallStats);
+    //     }
+    // }
+    // overallStats.save();
 }

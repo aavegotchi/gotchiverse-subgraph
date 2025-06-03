@@ -42,6 +42,10 @@ import {
 } from "../../generated/schema";
 import { BIGINT_ZERO, REALM_DIAMOND, StatCategory } from "./constants";
 import { getStat } from "./stats";
+import {
+    getOrCreateInstallation,
+    getOrCreateInstallationType,
+} from "./installation";
 
 export const getOrCreateParcel = (realmId: BigInt): Parcel => {
     let id = realmId.toString();
@@ -64,7 +68,7 @@ export const getOrCreateParcel = (realmId: BigInt): Parcel => {
 
 export function updateParcelInfo(
     parcel: Parcel,
-    resync: boolean = false
+    isBase: boolean = false
 ): Parcel {
     let parcelId = BigInt.fromString(parcel.id);
     let contract = RealmDiamond.bind(REALM_DIAMOND);
@@ -87,7 +91,7 @@ export function updateParcelInfo(
         parcel.alphaBoost = boostArray[2];
         parcel.kekBoost = boostArray[3];
 
-        if (resync) {
+        if (isBase) {
             parcel.surveyRound = parcelMetadata.surveyRound.toI32();
 
             parcel.remainingAlchemica = parcelMetadata.alchemicaRemaining;
@@ -102,6 +106,15 @@ export function updateParcelInfo(
                 let item = parcelMetadata.equippedInstallations[i];
                 let installationId = item.installationId.toString();
                 let balance = item.balance.toI32();
+
+                // These are needed to set migrated installations types and
+                // getOrCreateInstallation(
+                //     item.installationId,
+                //     parcelId,
+                //     item.coordinateX,
+                //     item.coordinateY,
+                //     parcelMetadata.owner
+                // );
 
                 // Add the same installationId multiple times if balance > 1
                 for (let j = 0; j < balance; j++) {
