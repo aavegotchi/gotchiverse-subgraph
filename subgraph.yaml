@@ -6,9 +6,9 @@ dataSources:
     name: RealmDiamond
     network: "base-sepolia"
     source:
-      address: "0xe81088003fe432769946A258F29Ae1F50c591F22"
+      address: "0x37D140074B2f771bEa7ef23288EB87064e45bF8D"
       abi: RealmDiamond
-      startBlock: 26278630
+      startBlock: 26672392
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -70,9 +70,9 @@ dataSources:
     name: TileDiamond
     network: "base-sepolia"
     source:
-      address: "0x38EaF559Ae5D884aD1b43d125B0b22b5073c15e4"
+      address: "0x96B19Fa954d961fAD4b665e3259C72466ca4C1dA"
       abi: TileDiamond
-      startBlock: 26278780
+      startBlock: 26672561
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -106,9 +106,9 @@ dataSources:
     name: InstallationDiamond
     network: "base-sepolia"
     source:
-      address: "0xB2d52bE3Ab11006685843a59Ec7d17BfF2c554a1"
+      address: "0x5Aefdc5283B24EEa7b50FFBBf7FB8A2bD4537609"
       abi: InstallationDiamond
-      startBlock: 26278719
+      startBlock: 26672465
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
