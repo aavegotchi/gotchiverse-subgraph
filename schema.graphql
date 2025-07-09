@@ -419,6 +419,7 @@ type Parcel @entity {
 
     remainingAlchemica: [BigInt!]!
     totalAlchemicaChanneled: [BigInt!]!
+    totalAlchemicaClaimed: [BigInt!]!
     surveyRound: Int
 }
 

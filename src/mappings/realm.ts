@@ -216,6 +216,13 @@ export function handleAlchemicaClaimed(event: AlchemicaClaimed): void {
     );
     parcel.remainingAlchemica = alchemicas;
 
+    // Update the total claimed alchemica for this parcel
+    let totalClaimed = parcel.totalAlchemicaClaimed;
+    totalClaimed[event.params._alchemicaType.toI32()] = totalClaimed[
+        event.params._alchemicaType.toI32()
+    ].plus(event.params._amount);
+    parcel.totalAlchemicaClaimed = totalClaimed;
+
     parcel.save();
 
     // Update stats at different levels

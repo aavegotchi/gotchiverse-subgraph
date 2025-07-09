@@ -62,6 +62,12 @@ export const getOrCreateParcel = (realmId: BigInt): Parcel => {
             BIGINT_ZERO,
             BIGINT_ZERO,
         ];
+        parcel.totalAlchemicaClaimed = [
+            BIGINT_ZERO,
+            BIGINT_ZERO,
+            BIGINT_ZERO,
+            BIGINT_ZERO,
+        ];
         parcel.surveyRound = 0;
         parcel = updateParcelInfo(parcel);
     }
