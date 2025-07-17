@@ -1,4 +1,3 @@
-import { BigInt } from "@graphprotocol/graph-ts";
 import {
     AlchemicaClaimed,
     ChannelAlchemica,
@@ -21,7 +20,7 @@ import {
     SurveyParcel,
 } from "../../generated/RealmDiamond/RealmDiamond";
 import { ParcelWhitelistSetEvent } from "../../generated/schema";
-import { BIGINT_ONE, REALM_DIAMOND, StatCategory } from "../helper/constants";
+import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import {
     getOrCreateInstallation,
     getOrCreateInstallationType,
@@ -66,41 +65,60 @@ import {
 } from "../helper/stats";
 import { getOrCreateTile, getOrCreateTileType } from "../helper/tiles";
 
+/**
+ * Handles a ChannelAlchemica event triggered when a Gotchi channels alchemica from a parcel
+ *
+ * When a Gotchi channels alchemica:
+ * 1. The event is recorded in a ChannelAlchemicaEvent entity
+ * 2. The last channeled timestamp is updated for both Gotchi and Parcel
+ * 3. The total channeled alchemica for the parcel is incremented
+ * 4. Stats are updated at four levels: Gotchi, Parcel, User, and Overall
+ *
+ * The _alchemica parameter contains an array of the amounts channeled for each alchemica type
+ */
 export function handleChannelAlchemica(event: ChannelAlchemica): void {
-    // create and persist event
+    // Create and persist event record in the database
     let eventEntity = createChannelAlchemicaEvent(event);
     eventEntity.save();
 
-    // update gotchi and parcel entities
+    // Update timestamp of last channeling for the Gotchi (character)
     let gotchi = getOrCreateGotchi(event.params._gotchiId);
     gotchi.lastChanneledAlchemica = event.block.timestamp;
     gotchi.save();
 
+    // Update timestamp of last channeling for the Parcel (land plot)
     let parcel = getOrCreateParcel(event.params._realmId);
     parcel.lastChanneledAlchemica = event.block.timestamp;
+
     parcel.save();
 
-    // update stats
+    // Update statistics at different levels
+
+    // 1. Gotchi-level statistics
     let gotchiStats = getStat(StatCategory.GOTCHI, eventEntity.gotchi);
     gotchiStats.countChannelAlchemicaEvents = gotchiStats.countChannelAlchemicaEvents.plus(
         BIGINT_ONE
     );
+    // Add channeled alchemica amounts to the Gotchi's total stats
     gotchiStats = updateChannelAlchemicaStats(
         gotchiStats,
         event.params._alchemica
     );
     gotchiStats.save();
 
+    // 2. Parcel-level statistics
     let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel);
     parcelStats.countChannelAlchemicaEvents = parcelStats.countChannelAlchemicaEvents.plus(
         BIGINT_ONE
     );
+    // Add channeled alchemica amounts to the Parcel's total stats
     parcelStats = updateChannelAlchemicaStats(
         parcelStats,
         event.params._alchemica
     );
     parcelStats.save();
 
+    // 3. User-level statistics (the player who initiated the transaction)
     let userStats = getStat(
         StatCategory.USER,
         event.transaction.from.toHexString()
@@ -108,13 +126,16 @@ export function handleChannelAlchemica(event: ChannelAlchemica): void {
     userStats.countChannelAlchemicaEvents = userStats.countChannelAlchemicaEvents.plus(
         BIGINT_ONE
     );
+    // Add channeled alchemica amounts to the User's total stats
     userStats = updateChannelAlchemicaStats(userStats, event.params._alchemica);
     userStats.save();
 
+    // 4. Global statistics across the entire system
     let overallStats = getStat(StatCategory.OVERALL);
     overallStats.countChannelAlchemicaEvents = overallStats.countChannelAlchemicaEvents.plus(
         BIGINT_ONE
     );
+    // Add channeled alchemica amounts to the overall system stats
     overallStats = updateChannelAlchemicaStats(
         overallStats,
         event.params._alchemica
@@ -122,11 +143,20 @@ export function handleChannelAlchemica(event: ChannelAlchemica): void {
     overallStats.save();
 }
 
+/**
+ * Handles an ExitAlchemica event triggered when alchemica is withdrawn from the system
+ *
+ * When alchemica is exited:
+ * 1. The event is recorded in an ExitAlchemicaEvent entity
+ * 2. Stats are updated at three levels: Overall, User, and Gotchi
+ */
 export function handleExitAlchemica(event: ExitAlchemica): void {
     let eventEntity = createExitAlchemicaEvent(event);
     eventEntity.save();
 
-    // stats
+    // Update stats at different levels
+
+    // 1. Global statistics
     let overallStats = getStat(StatCategory.OVERALL);
     overallStats = updateExitedAlchemicaStats(
         overallStats,
@@ -134,6 +164,7 @@ export function handleExitAlchemica(event: ExitAlchemica): void {
     );
     overallStats.save();
 
+    // 2. User-level statistics
     let userStats = getStat(
         StatCategory.USER,
         event.transaction.from.toHexString()
@@ -141,6 +172,7 @@ export function handleExitAlchemica(event: ExitAlchemica): void {
     userStats = updateExitedAlchemicaStats(userStats, event.params._alchemica);
     userStats.save();
 
+    // 3. Gotchi-level statistics
     let gotchiStats = getStat(
         StatCategory.GOTCHI,
         event.params._gotchiId.toString()
@@ -152,14 +184,24 @@ export function handleExitAlchemica(event: ExitAlchemica): void {
     gotchiStats.save();
 }
 
+/**
+ * Handles an AlchemicaClaimed event triggered when channeled alchemica is claimed
+ *
+ * When alchemica is claimed:
+ * 1. The event is recorded in an AlchemicaClaimedEvent entity
+ * 2. The parcel's lastClaimedAlchemica timestamp is updated
+ * 3. The claimed alchemica amount is subtracted from the parcel's remaining alchemica
+ * 4. Stats are updated at four levels: Overall, User, Gotchi, and Parcel
+ */
 export function handleAlchemicaClaimed(event: AlchemicaClaimed): void {
     let eventEntity = createAlchemicaClaimedEvent(event);
     eventEntity.save();
 
-    // set last claim alchemica
+    // Update parcel's last claimed timestamp and reduce remaining alchemica
     let parcel = getOrCreateParcel(event.params._realmId);
     parcel.lastClaimedAlchemica = event.block.timestamp;
 
+    // Subtract the claimed amount from the parcel's remaining alchemica of the specific type
     let alchemicas = parcel.remainingAlchemica;
     let entry = alchemicas[event.params._alchemicaType.toI32()];
     alchemicas[event.params._alchemicaType.toI32()] = entry.minus(
@@ -167,9 +209,18 @@ export function handleAlchemicaClaimed(event: AlchemicaClaimed): void {
     );
     parcel.remainingAlchemica = alchemicas;
 
+    // Update the total claimed alchemica for this parcel
+    let totalClaimed = parcel.totalAlchemicaClaimed;
+    totalClaimed[event.params._alchemicaType.toI32()] = totalClaimed[
+        event.params._alchemicaType.toI32()
+    ].plus(event.params._amount);
+    parcel.totalAlchemicaClaimed = totalClaimed;
+
     parcel.save();
 
-    // stats
+    // Update stats at different levels
+
+    // 1. Global statistics
     let overallStats = getStat(StatCategory.OVERALL);
     overallStats = updateAlchemicaClaimedStats(
         overallStats,
@@ -178,6 +229,7 @@ export function handleAlchemicaClaimed(event: AlchemicaClaimed): void {
     );
     overallStats.save();
 
+    // 2. User-level statistics
     let userStats = getStat(
         StatCategory.USER,
         event.transaction.from.toHexString()
@@ -189,6 +241,7 @@ export function handleAlchemicaClaimed(event: AlchemicaClaimed): void {
     );
     userStats.save();
 
+    // 3. Gotchi-level statistics
     let gotchiStats = getStat(
         StatCategory.GOTCHI,
         event.params._gotchiId.toString()
@@ -200,6 +253,7 @@ export function handleAlchemicaClaimed(event: AlchemicaClaimed): void {
     );
     gotchiStats.save();
 
+    // 4. Parcel-level statistics
     let parcelStats = getStat(
         StatCategory.PARCEL,
         event.params._realmId.toString()
@@ -550,9 +604,17 @@ export function handleParcelWhitelistSet(event: ParcelWhitelistSet): void {
     parEntity.save();
 }
 
+/**
+ * Handles a SurveyParcel event triggered when a parcel is surveyed to discover alchemica
+ *
+ * When a parcel is surveyed:
+ * 1. The new alchemica amounts are added to the parcel's remaining alchemica
+ * 2. The parcel's survey round counter is incremented
+ */
 export function handleSurveyParcel(event: SurveyParcel): void {
     let entity = getOrCreateParcel(event.params._tokenId);
 
+    // Add newly discovered alchemica to the parcel's remaining alchemica
     let alchemica = entity.remainingAlchemica;
     for (let i = 0; i < event.params._alchemicas.length; i++) {
         alchemica[i] = alchemica[i].plus(event.params._alchemicas[i]);

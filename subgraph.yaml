@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: RealmDiamond
-    network: "{{network}}"
+    network: "matic"
     source:
-      address: "{{realmDiamondAddress}}"
+      address: "0x1d0360bac7299c86ec8e99d0c1c9a95fefaf2a11"
       abi: RealmDiamond
-      startBlock: {{realmStartBlock}}
+      startBlock: 20667840
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -65,11 +65,11 @@ dataSources:
 
   - kind: ethereum/contract
     name: TileDiamond
-    network: "{{network}}"
+    network: "matic"
     source:
-      address: "{{tileDiamondAddress}}"
+      address: "0x9216c31d8146bCB3eA5a9162Dc1702e8AEDCa355"
       abi: TileDiamond
-      startBlock: {{tileStartBlock}}
+      startBlock: 27231106
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -101,11 +101,11 @@ dataSources:
 
   - kind: ethereum/contract
     name: InstallationDiamond
-    network: "{{network}}"
+    network: "matic"
     source:
-      address: "{{installationDiamondAddress}}"
+      address: "0x19f870bD94A34b3adAa9CaA439d333DA18d6812A"
       abi: InstallationDiamond
-      startBlock: {{installationStartBlock}}
+      startBlock: 26540482
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
