@@ -418,7 +418,6 @@ type Parcel @entity {
     accessRights: [ParcelAccessRight!]! @derivedFrom(field: "parcel")
 
     remainingAlchemica: [BigInt!]!
-    totalAlchemicaChanneled: [BigInt!]!
     totalAlchemicaClaimed: [BigInt!]!
     surveyRound: Int
 }

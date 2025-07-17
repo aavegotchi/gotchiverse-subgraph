@@ -90,13 +90,6 @@ export function handleChannelAlchemica(event: ChannelAlchemica): void {
     let parcel = getOrCreateParcel(event.params._realmId);
     parcel.lastChanneledAlchemica = event.block.timestamp;
 
-    // Update the total channeled alchemica for this parcel
-    let totalChanneled = parcel.totalAlchemicaChanneled;
-    for (let i = 0; i < event.params._alchemica.length; i++) {
-        totalChanneled[i] = totalChanneled[i].plus(event.params._alchemica[i]);
-    }
-    parcel.totalAlchemicaChanneled = totalChanneled;
-
     parcel.save();
 
     // Update statistics at different levels

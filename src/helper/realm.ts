@@ -56,12 +56,6 @@ export const getOrCreateParcel = (realmId: BigInt): Parcel => {
             BIGINT_ZERO,
             BIGINT_ZERO,
         ];
-        parcel.totalAlchemicaChanneled = [
-            BIGINT_ZERO,
-            BIGINT_ZERO,
-            BIGINT_ZERO,
-            BIGINT_ZERO,
-        ];
         parcel.totalAlchemicaClaimed = [
             BIGINT_ZERO,
             BIGINT_ZERO,
