@@ -6,7 +6,7 @@ dataSources:
     name: RealmDiamond
     network: "base-sepolia"
     source:
-      address: "0x37D140074B2f771bEa7ef23288EB87064e45bF8D"
+      address: "0x331f97b45Cd0AA642Ce57ABFb93d26D32D0E8115"
       abi: RealmDiamond
       startBlock: 26672392
     mapping:
@@ -70,7 +70,7 @@ dataSources:
     name: TileDiamond
     network: "base-sepolia"
     source:
-      address: "0x96B19Fa954d961fAD4b665e3259C72466ca4C1dA"
+      address: "0x51972061e0c77dEb8244314c8a96a4C30164fE16"
       abi: TileDiamond
       startBlock: 26672561
     mapping:
@@ -106,7 +106,7 @@ dataSources:
     name: InstallationDiamond
     network: "base-sepolia"
     source:
-      address: "0x5Aefdc5283B24EEa7b50FFBBf7FB8A2bD4537609"
+      address: "0x112E410957977C46C1E9206FcE92CC88Ef2D3A73"
       abi: InstallationDiamond
       startBlock: 26672465
     mapping:
