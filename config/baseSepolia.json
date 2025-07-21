@@ -1,9 +1,9 @@
 {
     "network": "base-sepolia",
-    "realmDiamondAddress": "0x331f97b45Cd0AA642Ce57ABFb93d26D32D0E8115",
+    "realmDiamondAddress": "0xF5Bc2D611C89C8C331F5969Abcc55E0C440EF43D",
     "realmStartBlock": 26672392,
-    "tileDiamondAddress": "0x51972061e0c77dEb8244314c8a96a4C30164fE16",
+    "tileDiamondAddress": "0xAf5B09c81a7D709d7fbC0E6d0a8a413bA671537d",
     "tileStartBlock": 26672561,
-    "installationDiamondAddress": "0x112E410957977C46C1E9206FcE92CC88Ef2D3A73",
+    "installationDiamondAddress": "0xBf1a271e3Fc33b6978BD3f356a9f8424C7Eda473",
     "installationStartBlock": 26672465
 }
