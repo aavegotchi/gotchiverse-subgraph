@@ -592,9 +592,39 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
         // Get or create the parcel
         let parcel = getOrCreateParcel(realmId);
 
-        // Handle installations
+        // STEP 1: Unequip all previously equipped installations
+        let previousInstallations = parcel.equippedInstallations;
+        for (let p = 0; p < previousInstallations.length; p++) {
+            let installationTypeId = BigInt.fromString(
+                previousInstallations[p]
+            );
+
+            // We need to find and unequip installations of this type on this parcel
+            // Since we don't have coordinates, we'll search by parcel and type
+            // This is a limitation - we'd need to track installation IDs differently for perfect cleanup
+            parcel = removeParcelInstallation(parcel, installationTypeId);
+        }
+
+        // STEP 2: Unequip all previously equipped tiles
+        let previousTiles = parcel.equippedTiles;
+        for (let q = 0; q < previousTiles.length; q++) {
+            let tileTypeId = BigInt.fromString(previousTiles[q]);
+            parcel = removeParcelTile(parcel, tileTypeId);
+        }
+
+        // Clear the equipped arrays to start fresh
+        parcel.equippedInstallations = new Array<string>();
+        parcel.equippedTiles = new Array<string>();
+
+        // STEP 3: Equip installations from the new event
         for (let j = 0; j < parcelData.installations.length; j++) {
             const installationData = parcelData.installations[j];
+
+            // Add to parcel's equipped list
+            parcel = createParcelInstallation(
+                parcel,
+                installationData.installationType
+            );
 
             // Create/update installation entity
             let installation = getOrCreateInstallation(
@@ -611,13 +641,15 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
             let installationType = getOrCreateInstallationType(
                 installationData.installationType
             );
-
             installationType.save();
         }
 
-        // Handle tiles
+        // STEP 4: Equip tiles from the new event
         for (let k = 0; k < parcelData.tiles.length; k++) {
             const tileData = parcelData.tiles[k];
+
+            // Add to parcel's equipped list
+            parcel = createParcelTile(parcel, tileData.tileType);
 
             // Create/update tile type
             let tileType = getOrCreateTileType(tileData.tileType);
@@ -630,35 +662,12 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
                 tileData.x,
                 tileData.y
             );
-
             tile.equipped = true;
             tile.owner = parcelData.owner;
             tile.save();
         }
 
-        // Update statistics
-        // let parcelStats = getStat(StatCategory.PARCEL, realmId.toString());
-        // parcelStats.countParcelInstallations = parcelStats.countParcelInstallations.plus(
-        //     BigInt.fromI32(parcelData.installations.length)
-        // );
-        // parcelStats = updateInstallationEquippedStats(parcelStats);
-        // parcelStats = updateTileEquippedStats(parcelStats);
-        // parcelStats.save();
+        // Save the updated parcel
+        parcel.save();
     }
-
-    // Update overall statistics
-    // let overallStats = getStat(StatCategory.OVERALL);
-    // for (let i = 0; i < parcels.length; i++) {
-    //     const parcelData = parcels[i];
-    //     overallStats.countParcelInstallations = overallStats.countParcelInstallations.plus(
-    //         BigInt.fromI32(parcelData.installations.length)
-    //     );
-    //     for (let j = 0; j < parcelData.installations.length; j++) {
-    //         overallStats = updateInstallationEquippedStats(overallStats);
-    //     }
-    //     for (let k = 0; k < parcelData.tiles.length; k++) {
-    //         overallStats = updateTileEquippedStats(overallStats);
-    //     }
-    // }
-    // overallStats.save();
 }
