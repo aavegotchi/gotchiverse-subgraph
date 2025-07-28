@@ -42,10 +42,6 @@ import {
 } from "../../generated/schema";
 import { BIGINT_ZERO, REALM_DIAMOND, StatCategory } from "./constants";
 import { getStat } from "./stats";
-import {
-    getOrCreateInstallation,
-    getOrCreateInstallationType,
-} from "./installation";
 
 export const getOrCreateParcel = (realmId: BigInt): Parcel => {
     let id = realmId.toString();
@@ -55,6 +51,12 @@ export const getOrCreateParcel = (realmId: BigInt): Parcel => {
         parcel.equippedInstallations = new Array<string>();
         parcel.equippedTiles = new Array<string>();
         parcel.remainingAlchemica = [
+            BIGINT_ZERO,
+            BIGINT_ZERO,
+            BIGINT_ZERO,
+            BIGINT_ZERO,
+        ];
+        parcel.totalAlchemicaClaimed = [
             BIGINT_ZERO,
             BIGINT_ZERO,
             BIGINT_ZERO,
