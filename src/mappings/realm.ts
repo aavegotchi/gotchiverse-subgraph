@@ -589,6 +589,12 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
         const parcelData = parcels[i];
         const realmId = parcelData.realmId;
 
+        log.info("Processing parcel {} with {} installations and {} tiles", [
+            realmId.toString(),
+            parcelData.installations.length.toString(),
+            parcelData.tiles.length.toString(),
+        ]);
+
         // Get or create the parcel
         let parcel = getOrCreateParcel(realmId);
 
@@ -620,6 +626,13 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
         for (let j = 0; j < parcelData.installations.length; j++) {
             const installationData = parcelData.installations[j];
 
+            log.info("Adding installation type {} at ({}, {}) to parcel {}", [
+                installationData.installationType.toString(),
+                installationData.x.toString(),
+                installationData.y.toString(),
+                realmId.toString(),
+            ]);
+
             // Add to parcel's equipped list
             parcel = createParcelInstallation(
                 parcel,
@@ -648,6 +661,13 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
         for (let k = 0; k < parcelData.tiles.length; k++) {
             const tileData = parcelData.tiles[k];
 
+            log.info("Adding tile type {} at ({}, {}) to parcel {}", [
+                tileData.tileType.toString(),
+                tileData.x.toString(),
+                tileData.y.toString(),
+                realmId.toString(),
+            ]);
+
             // Add to parcel's equipped list
             parcel = createParcelTile(parcel, tileData.tileType);
 
@@ -666,6 +686,21 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
             tile.owner = parcelData.owner;
             tile.save();
         }
+
+        // Log final state before saving
+        log.info(
+            "Final state - Parcel {} will have {} installations and {} tiles",
+            [
+                realmId.toString(),
+                parcel.equippedInstallations.length.toString(),
+                parcel.equippedTiles.length.toString(),
+            ]
+        );
+
+        log.info("Installation IDs: [{}]", [
+            parcel.equippedInstallations.join(", "),
+        ]);
+        log.info("Tile IDs: [{}]", [parcel.equippedTiles.join(", ")]);
 
         // Save the updated parcel
         parcel.save();
