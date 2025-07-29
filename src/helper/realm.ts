@@ -109,15 +109,6 @@ export function updateParcelInfo(
                 let installationId = item.installationId.toString();
                 let balance = item.balance.toI32();
 
-                // These are needed to set migrated installations types and
-                // getOrCreateInstallation(
-                //     item.installationId,
-                //     parcelId,
-                //     item.coordinateX,
-                //     item.coordinateY,
-                //     parcelMetadata.owner
-                // );
-
                 // Add the same installationId multiple times if balance > 1
                 for (let j = 0; j < balance; j++) {
                     installationIds.push(installationId);
@@ -333,27 +324,10 @@ export const removeParcelInstallation = (
 };
 
 export const createParcelTile = (parcel: Parcel, tileId: BigInt): Parcel => {
-    log.info("createParcelTile: START - parcel {} has tiles: [{}]", [
-        parcel.id,
-        parcel.equippedTiles.join(", "),
-    ]);
-
     let tiles = parcel.equippedTiles;
     let id = tileId.toString();
-
-    log.info("createParcelTile: Adding tile {} to array of length {}", [
-        id,
-        tiles.length.toString(),
-    ]);
-
     tiles.push(id);
     parcel.equippedTiles = tiles;
-
-    log.info("createParcelTile: END - parcel {} now has tiles: [{}]", [
-        parcel.id,
-        parcel.equippedTiles.join(", "),
-    ]);
-
     return parcel;
 };
 

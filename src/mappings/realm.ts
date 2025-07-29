@@ -589,12 +589,6 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
         const parcelData = parcels[i];
         const realmId = parcelData.realmId;
 
-        log.info("Processing parcel {} with {} installations and {} tiles", [
-            realmId.toString(),
-            parcelData.installations.length.toString(),
-            parcelData.tiles.length.toString(),
-        ]);
-
         // Get or create the parcel
         let parcel = getOrCreateParcel(realmId);
 
@@ -604,10 +598,6 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
             let installationTypeId = BigInt.fromString(
                 previousInstallations[p]
             );
-
-            // We need to find and unequip installations of this type on this parcel
-            // Since we don't have coordinates, we'll search by parcel and type
-            // This is a limitation - we'd need to track installation IDs differently for perfect cleanup
             parcel = removeParcelInstallation(parcel, installationTypeId);
         }
 
@@ -625,13 +615,6 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
         // STEP 3: Equip installations from the new event
         for (let j = 0; j < parcelData.installations.length; j++) {
             const installationData = parcelData.installations[j];
-
-            log.info("Adding installation type {} at ({}, {}) to parcel {}", [
-                installationData.installationType.toString(),
-                installationData.x.toString(),
-                installationData.y.toString(),
-                realmId.toString(),
-            ]);
 
             // Add to parcel's equipped list
             parcel = createParcelInstallation(
@@ -661,25 +644,8 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
         for (let k = 0; k < parcelData.tiles.length; k++) {
             const tileData = parcelData.tiles[k];
 
-            log.info("Adding tile type {} at ({}, {}) to parcel {}", [
-                tileData.tileType.toString(),
-                tileData.x.toString(),
-                tileData.y.toString(),
-                realmId.toString(),
-            ]);
-
             // Add to parcel's equipped list
-            log.info("Before createParcelTile - parcel has {} tiles: [{}]", [
-                parcel.equippedTiles.length.toString(),
-                parcel.equippedTiles.join(", "),
-            ]);
-
             parcel = createParcelTile(parcel, tileData.tileType);
-
-            log.info("After createParcelTile - parcel has {} tiles: [{}]", [
-                parcel.equippedTiles.length.toString(),
-                parcel.equippedTiles.join(", "),
-            ]);
 
             // Create/update tile type
             let tileType = getOrCreateTileType(tileData.tileType);
@@ -694,56 +660,10 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
             );
             tile.equipped = true;
             tile.owner = parcelData.owner;
-
-            log.info(
-                "About to save tile entity {} with equipped={}, owner={}",
-                [
-                    tile.id,
-                    tile.equipped.toString(),
-                    tile.owner ? tile.owner!.toHexString() : "null",
-                ]
-            );
-
             tile.save();
-            log.info("Tile entity {} saved successfully", [tile.id]);
         }
-
-        // Log final state before saving
-        log.info(
-            "Final state - Parcel {} will have {} installations and {} tiles",
-            [
-                realmId.toString(),
-                parcel.equippedInstallations.length.toString(),
-                parcel.equippedTiles.length.toString(),
-            ]
-        );
-
-        log.info("Installation IDs: [{}]", [
-            parcel.equippedInstallations.join(", "),
-        ]);
-        log.info("Tile IDs: [{}]", [parcel.equippedTiles.join(", ")]);
 
         // Save the updated parcel
         parcel.save();
-
-        // Add verification logging after save
-        log.info("Parcel {} saved. Verifying data...", [realmId.toString()]);
-
-        // Re-load the parcel to verify it was saved correctly
-        let verifyParcel = getOrCreateParcel(realmId);
-        log.info(
-            "After save verification - Parcel {} has {} installations and {} tiles",
-            [
-                realmId.toString(),
-                verifyParcel.equippedInstallations.length.toString(),
-                verifyParcel.equippedTiles.length.toString(),
-            ]
-        );
-        log.info("Verified Installation IDs: [{}]", [
-            verifyParcel.equippedInstallations.join(", "),
-        ]);
-        log.info("Verified Tile IDs: [{}]", [
-            verifyParcel.equippedTiles.join(", "),
-        ]);
     }
 }
