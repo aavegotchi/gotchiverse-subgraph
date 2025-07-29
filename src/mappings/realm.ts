@@ -704,15 +704,8 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
                 ]
             );
 
-            try {
-                tile.save();
-                log.info("Tile entity {} saved successfully", [tile.id]);
-            } catch (error) {
-                log.error("Failed to save tile entity {}: {}", [
-                    tile.id,
-                    error.toString(),
-                ]);
-            }
+            tile.save();
+            log.info("Tile entity {} saved successfully", [tile.id]);
         }
 
         // Log final state before saving
