@@ -333,10 +333,27 @@ export const removeParcelInstallation = (
 };
 
 export const createParcelTile = (parcel: Parcel, tileId: BigInt): Parcel => {
+    log.info("createParcelTile: START - parcel {} has tiles: [{}]", [
+        parcel.id,
+        parcel.equippedTiles.join(", "),
+    ]);
+
     let tiles = parcel.equippedTiles;
     let id = tileId.toString();
+
+    log.info("createParcelTile: Adding tile {} to array of length {}", [
+        id,
+        tiles.length.toString(),
+    ]);
+
     tiles.push(id);
     parcel.equippedTiles = tiles;
+
+    log.info("createParcelTile: END - parcel {} now has tiles: [{}]", [
+        parcel.id,
+        parcel.equippedTiles.join(", "),
+    ]);
+
     return parcel;
 };
 
