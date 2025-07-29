@@ -669,7 +669,17 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
             ]);
 
             // Add to parcel's equipped list
+            log.info("Before createParcelTile - parcel has {} tiles: [{}]", [
+                parcel.equippedTiles.length.toString(),
+                parcel.equippedTiles.join(", "),
+            ]);
+
             parcel = createParcelTile(parcel, tileData.tileType);
+
+            log.info("After createParcelTile - parcel has {} tiles: [{}]", [
+                parcel.equippedTiles.length.toString(),
+                parcel.equippedTiles.join(", "),
+            ]);
 
             // Create/update tile type
             let tileType = getOrCreateTileType(tileData.tileType);
@@ -684,7 +694,25 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
             );
             tile.equipped = true;
             tile.owner = parcelData.owner;
-            tile.save();
+
+            log.info(
+                "About to save tile entity {} with equipped={}, owner={}",
+                [
+                    tile.id,
+                    tile.equipped.toString(),
+                    tile.owner ? tile.owner!.toHexString() : "null",
+                ]
+            );
+
+            try {
+                tile.save();
+                log.info("Tile entity {} saved successfully", [tile.id]);
+            } catch (error) {
+                log.error("Failed to save tile entity {}: {}", [
+                    tile.id,
+                    error.toString(),
+                ]);
+            }
         }
 
         // Log final state before saving
@@ -704,5 +732,25 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
 
         // Save the updated parcel
         parcel.save();
+
+        // Add verification logging after save
+        log.info("Parcel {} saved. Verifying data...", [realmId.toString()]);
+
+        // Re-load the parcel to verify it was saved correctly
+        let verifyParcel = getOrCreateParcel(realmId);
+        log.info(
+            "After save verification - Parcel {} has {} installations and {} tiles",
+            [
+                realmId.toString(),
+                verifyParcel.equippedInstallations.length.toString(),
+                verifyParcel.equippedTiles.length.toString(),
+            ]
+        );
+        log.info("Verified Installation IDs: [{}]", [
+            verifyParcel.equippedInstallations.join(", "),
+        ]);
+        log.info("Verified Tile IDs: [{}]", [
+            verifyParcel.equippedTiles.join(", "),
+        ]);
     }
 }
