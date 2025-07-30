@@ -623,6 +623,25 @@
         "inputs": [
             {
                 "indexed": false,
+                "internalType": "uint256",
+                "name": "_parcelId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "_totalAlchemicaClaimed",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "SyncTotalAlchemicaClaimed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
                 "internalType": "struct ParcelEquippedData[]",
                 "name": "_parcelEquippedData",
                 "type": "tuple[]",

@@ -20,6 +20,7 @@ import {
     ParcelWhitelistSet,
     SurveyParcel,
     MigrateResyncParcel,
+    SyncTotalAlchemicaClaimed,
 } from "../../generated/RealmDiamond/RealmDiamond";
 import { ParcelWhitelistSetEvent } from "../../generated/schema";
 import {
@@ -666,4 +667,32 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
         // Save the updated parcel
         parcel.save();
     }
+}
+
+export function handleSyncTotalAlchemicaClaimed(
+    event: SyncTotalAlchemicaClaimed
+): void {
+    // Get or create the parcel
+    let parcel = getOrCreateParcel(event.params._parcelId);
+
+    // Convert the BigInt array to array of BigInt for totalAlchemicaClaimed
+    let totalClaimed = new Array<BigInt>(4);
+    for (
+        let i = 0;
+        i < event.params._totalAlchemicaClaimed.length && i < 4;
+        i++
+    ) {
+        totalClaimed[i] = event.params._totalAlchemicaClaimed[i];
+    }
+
+    // Fill remaining positions with zero if the array is shorter than 4
+    for (let i = event.params._totalAlchemicaClaimed.length; i < 4; i++) {
+        totalClaimed[i] = BigInt.fromI32(0);
+    }
+
+    // Set the total alchemica claimed directly from the event
+    parcel.totalAlchemicaClaimed = totalClaimed;
+
+    // Save the parcel
+    parcel.save();
 }
