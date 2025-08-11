@@ -462,9 +462,9 @@ export function handleResyncParcel(event: ResyncParcel): void {
     let parcel = getOrCreateParcel(event.params._tokenId);
 
     const currentNetwork = dataSource.network();
-    const isBaseSepolia = currentNetwork == "base-sepolia";
+    const isBase = currentNetwork == "base-sepolia" || currentNetwork == "base";
 
-    parcel = updateParcelInfo(parcel, isBaseSepolia);
+    parcel = updateParcelInfo(parcel, isBase);
 
     parcel.save();
 }
