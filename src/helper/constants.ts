@@ -60,6 +60,17 @@ NETWORK_CONSTANTS.set(
         )
 );
 
+// Base Mainnet
+NETWORK_CONSTANTS.set(
+    "base",
+    new Map<string, string>()
+        .set("REALM_DIAMOND", "0x4B0040c3646D3c44B8a28Ad7055cfCF536c05372")
+        .set("TILE_DIAMOND", "0x617fdB8093b309e4699107F48812b407A7c37938")
+        .set(
+            "INSTALLATION_DIAMOND",
+            "0xebba5b725A2889f7f089a6cAE0246A32cad4E26b"
+        )
+);
 // Get current network from dataSource.network()
 const network = dataSource.network();
 
