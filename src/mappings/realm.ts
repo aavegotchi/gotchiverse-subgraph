@@ -23,12 +23,7 @@ import {
     SyncTotalAlchemicaClaimed,
 } from "../../generated/RealmDiamond/RealmDiamond";
 import { ParcelWhitelistSetEvent } from "../../generated/schema";
-import {
-    BIGINT_ONE,
-    NETWORK_CONSTANTS,
-    REALM_DIAMOND,
-    StatCategory,
-} from "../helper/constants";
+import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import {
     getOrCreateInstallation,
     getOrCreateInstallationType,
@@ -584,6 +579,8 @@ export function handleSurveyParcel(event: SurveyParcel): void {
 
 // This is used for migration data to set installations and tiles entities
 export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
+    if (event.block.number.lt(BigInt.fromI32(34526424))) return;
+
     const parcels = event.params._parcelEquippedData;
 
     for (let i = 0; i < parcels.length; i++) {
