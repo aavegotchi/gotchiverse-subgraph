@@ -238,6 +238,42 @@ export function handleEquipInstallation(event: EquipInstallation): void {
         params._y,
         event.transaction.from
     );
+
+    // Create installation ID for debugging
+    let installationId =
+        params._installationId.toString() +
+        "-" +
+        params._realmId.toString() +
+        "-" +
+        params._x.toString() +
+        "-" +
+        params._y.toString();
+
+    // Debug log for specific installations
+    let targetIds = [
+        "138-6588-0-12",
+        "138-6588-0-8",
+        "138-6588-24-12",
+        "138-6588-24-8",
+        "138-6836-0-12",
+        "138-6836-0-8",
+        "138-6836-24-12",
+        "138-6836-24-8",
+    ];
+    for (let i = 0; i < targetIds.length; i++) {
+        if (installationId == targetIds[i]) {
+            log.info(
+                "🔍 FOUND TARGET INSTALLATION: {} equipped via EquipInstallation event. TX: {}, Block: {}, Timestamp: {}",
+                [
+                    installationId,
+                    event.transaction.hash.toHexString(),
+                    event.block.number.toString(),
+                    event.block.timestamp.toString(),
+                ]
+            );
+        }
+    }
+
     installation.equipped = true;
     installation.save();
 
@@ -628,6 +664,42 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
                 installationData.y,
                 parcelData.owner
             );
+
+            // Create installation ID for debugging
+            let installationId =
+                installationData.installationType.toString() +
+                "-" +
+                realmId.toString() +
+                "-" +
+                installationData.x.toString() +
+                "-" +
+                installationData.y.toString();
+
+            // Debug log for specific installations
+            let targetIds = [
+                "138-6588-0-12",
+                "138-6588-0-8",
+                "138-6588-24-12",
+                "138-6588-24-8",
+                "138-6836-0-12",
+                "138-6836-0-8",
+                "138-6836-24-12",
+                "138-6836-24-8",
+            ];
+            for (let k = 0; k < targetIds.length; k++) {
+                if (installationId == targetIds[k]) {
+                    log.info(
+                        "🔍 FOUND TARGET INSTALLATION: {} equipped via MigrateResyncParcel event. TX: {}, Block: {}, Timestamp: {}",
+                        [
+                            installationId,
+                            event.transaction.hash.toHexString(),
+                            event.block.number.toString(),
+                            event.block.timestamp.toString(),
+                        ]
+                    );
+                }
+            }
+
             installation.equipped = true;
             installation.save();
 
