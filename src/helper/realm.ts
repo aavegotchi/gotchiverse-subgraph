@@ -1,44 +1,13 @@
 import { BigInt, log } from "@graphprotocol/graph-ts";
 import {
-    AlchemicaClaimed,
-    ChannelAlchemica,
-    EquipInstallation,
-    EquipTile,
-    EventCancelled,
-    EventPriorityAndDurationUpdated,
-    EventStarted,
-    ExitAlchemica,
-    InstallationUpgraded,
-    MintParcel,
     NFTDisplayStatusUpdated,
-    ParcelAccessRightSet,
     RealmDiamond,
-    SurveyParcel,
-    Transfer,
-    UnequipInstallation,
-    UnequipTile,
 } from "../../generated/RealmDiamond/RealmDiamond";
 import {
-    AlchemicaClaimedEvent,
-    BounceGateEvent,
-    BounceGateEventCancelled,
-    BounceGateEventPriorityAndDurationUpdated,
-    BounceGateEventStarted,
-    ChannelAlchemicaEvent,
-    EquipInstallationEvent,
-    EquipTileEvent,
-    ExitAlchemicaEvent,
     Gotchi,
-    InstallationUpgradedEvent,
-    MintParcelEvent,
     NFTDisplayStatus,
-    NFTDisplayStatusUpdatedEvent,
     Parcel,
     ParcelAccessRight,
-    ParcelAccessRightSetEvent,
-    TransferEvent,
-    UnequipInstallationEvent,
-    UnequipTileEvent,
 } from "../../generated/schema";
 import { BIGINT_ZERO, REALM_DIAMOND, StatCategory } from "./constants";
 import { getStat } from "./stats";
@@ -151,149 +120,21 @@ export const getOrCreateGotchi = (gotchiId: BigInt): Gotchi => {
     return gotchi;
 };
 
-export const createChannelAlchemicaEvent = (
-    event: ChannelAlchemica
-): ChannelAlchemicaEvent => {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = new ChannelAlchemicaEvent(id);
-    eventEntity.gotchi = event.params._gotchiId.toString();
-    eventEntity.parcel = event.params._realmId.toString();
+// createChannelAlchemicaEvent removed - no longer storing event entities
 
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
+// createAlchemicaClaimedEvent removed - no longer storing event entities
 
-    eventEntity.spilloverRadius = event.params._spilloverRadius;
-    eventEntity.spilloverRate = event.params._spilloverRate;
-    eventEntity.alchemica = event.params._alchemica;
-    eventEntity.realmId = event.params._realmId;
-    eventEntity.gotchiId = event.params._gotchiId;
+// createExitAlchemicaEvent removed - no longer storing event entities
 
-    return eventEntity;
-};
+// createEquipInstallationEvent removed - no longer storing event entities
 
-export const createAlchemicaClaimedEvent = (
-    event: AlchemicaClaimed
-): AlchemicaClaimedEvent => {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = new AlchemicaClaimedEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.gotchi = event.params._gotchiId.toString();
-    eventEntity.parcel = event.params._realmId.toString();
-    eventEntity.alchemicaType = event.params._alchemicaType;
-    eventEntity.amount = event.params._amount;
-    eventEntity.spilloverRadius = event.params._spilloverRadius;
-    eventEntity.spilloverRate = event.params._spilloverRate;
-    eventEntity.realmId = event.params._realmId;
-    eventEntity.gotchiId = event.params._gotchiId;
-    return eventEntity;
-};
+// createUnequipInstallationEvent removed - no longer storing event entities
 
-export const createExitAlchemicaEvent = (
-    event: ExitAlchemica
-): ExitAlchemicaEvent => {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = new ExitAlchemicaEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.gotchi = event.params._gotchiId.toString();
-    eventEntity.alchemica = event.params._alchemica;
-    eventEntity.gotchiId = event.params._gotchiId;
-    return eventEntity;
-};
+// createEquipTileEvent removed - no longer storing event entities
 
-export const createEquipInstallationEvent = (
-    event: EquipInstallation
-): EquipInstallationEvent => {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = new EquipInstallationEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.installation = event.params._installationId.toString();
-    eventEntity.parcel = event.params._realmId.toString();
-    eventEntity.x = event.params._x;
-    eventEntity.y = event.params._y;
-    eventEntity.realmId = event.params._realmId;
-    eventEntity.installationId = event.params._installationId;
-    return eventEntity;
-};
+// createUnequipTileEvent removed - no longer storing event entities
 
-export const createUnequipInstallationEvent = (
-    event: UnequipInstallation
-): UnequipInstallationEvent => {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = new UnequipInstallationEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.installation = event.params._installationId.toString();
-    eventEntity.parcel = event.params._realmId.toString();
-    eventEntity.x = event.params._x;
-    eventEntity.y = event.params._y;
-    eventEntity.realmId = event.params._realmId;
-    eventEntity.installationId = event.params._installationId;
-    return eventEntity;
-};
-
-export const createEquipTileEvent = (event: EquipTile): EquipTileEvent => {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = new EquipTileEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.tile = event.params._tileId.toString();
-    eventEntity.parcel = event.params._realmId.toString();
-    eventEntity.x = event.params._x;
-    eventEntity.y = event.params._y;
-    eventEntity.realmId = event.params._realmId;
-    eventEntity.tileId = event.params._tileId;
-    return eventEntity;
-};
-
-export const createUnequipTileEvent = (
-    event: UnequipTile
-): UnequipTileEvent => {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = new UnequipTileEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.tile = event.params._tileId.toString();
-    eventEntity.parcel = event.params._realmId.toString();
-    eventEntity.x = event.params._x;
-    eventEntity.y = event.params._y;
-    eventEntity.realmId = event.params._realmId;
-    eventEntity.tileId = event.params._tileId;
-    return eventEntity;
-};
-
-export const createInstallationUpgradedEvent = (
-    event: InstallationUpgraded
-): InstallationUpgradedEvent => {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = new InstallationUpgradedEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.prevInstallation = event.params._prevInstallationId.toString();
-    eventEntity.nextInstallation = event.params._nextInstallationId.toString();
-    eventEntity.parcel = event.params._realmId.toString();
-    eventEntity.x = event.params._coordinateX;
-    eventEntity.y = event.params._coordinateY;
-    return eventEntity;
-};
+// createInstallationUpgradedEvent removed - no longer storing event entities
 
 export const createParcelInstallation = (
     parcel: Parcel,
@@ -345,33 +186,9 @@ export const removeParcelTile = (parcel: Parcel, tileId: BigInt): Parcel => {
     return parcel;
 };
 
-export const createMintParcelEvent = (event: MintParcel): MintParcelEvent => {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let entity = new MintParcelEvent(id);
-    entity.owner = event.params._owner;
-    entity.tokenId = event.params._tokenId;
-    entity.transaction = event.transaction.hash;
-    entity.block = event.block.number;
-    entity.timestamp = event.block.timestamp;
-    entity.from = event.transaction.from;
-    entity.to = event.transaction.to;
-    return entity;
-};
+// createMintParcelEvent removed - no longer storing event entities
 
-export const createParcelTransferEvent = (event: Transfer): TransferEvent => {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let entity = new TransferEvent(id);
-    entity.block = event.block.number;
-    entity.timestamp = event.block.timestamp;
-    entity.contract = event.address;
-    entity.from = event.params._from;
-    entity.to = event.params._to;
-    entity.tokenId = event.params._tokenId;
-    entity.transaction = event.transaction.hash;
-    return entity;
-};
+// createParcelTransferEvent removed - no longer storing event entities
 
 export const getOrCreatetypeNFTDisplayStatus = (
     event: NFTDisplayStatusUpdated
@@ -399,37 +216,9 @@ export const getOrCreatetypeNFTDisplayStatus = (
     return entity;
 };
 
-export const createNFTDisplayStatusUpdatedEvent = (
-    event: NFTDisplayStatusUpdated
-): NFTDisplayStatusUpdatedEvent => {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let entity = new NFTDisplayStatusUpdatedEvent(id);
-    entity.block = event.block.number;
-    entity.timestamp = event.block.timestamp;
-    entity.contract = event.address;
-    entity.token = event.params._token;
-    entity.chainId = event.params._chainId.toI32();
-    entity.allowed = event.params._allowed;
-    entity.transaction = event.transaction.hash;
-    return entity;
-};
+// createNFTDisplayStatusUpdatedEvent removed - no longer storing event entities
 
-export const createParcelAccessRightSetEvent = (
-    event: ParcelAccessRightSet
-): ParcelAccessRightSetEvent => {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let entity = new ParcelAccessRightSetEvent(id);
-    entity.block = event.block.number;
-    entity.timestamp = event.block.timestamp;
-    entity.contract = event.address;
-    entity.realmId = event.params._realmId.toI32();
-    entity.accessRight = event.params._accessRight.toI32();
-    entity.actionRight = event.params._actionRight.toI32();
-    entity.transaction = event.transaction.hash;
-    return entity;
-};
+// createParcelAccessRightSetEvent removed - no longer storing event entities
 
 export const getOrCreateParcelAccessRight = (
     realmId: BigInt,
@@ -446,70 +235,10 @@ export const getOrCreateParcelAccessRight = (
     return entity;
 };
 
-export const createBounceGateEventStartedEvent = (
-    event: EventStarted
-): BounceGateEventStarted => {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let entity = new BounceGateEventStarted(id);
-    entity.block = event.block.number;
-    entity.timestamp = event.block.timestamp;
-    entity.contract = event.address;
-    entity.transaction = event.transaction.hash;
+// createBounceGateEventStartedEvent removed - no longer storing event entities
 
-    entity._eventId = event.params._eventId;
-    entity._endTime = event.params.eventDetails.endTime;
-    entity._equipped = event.params.eventDetails.equipped;
-    entity._lastTimeUpdated = event.params.eventDetails.lastTimeUpdated;
-    entity._priority = event.params.eventDetails.priority;
-    entity._startTime = event.params.eventDetails.startTime;
-    entity._title = event.params.eventDetails.title;
+// createBounceGateEventCancelledEvent removed - no longer storing event entities
 
-    return entity;
-};
+// createBounceGateEventPriorityAndDurationUpdatedEvent removed - no longer storing event entities
 
-export const createBounceGateEventCancelledEvent = (
-    event: EventCancelled
-): BounceGateEventCancelled => {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let entity = new BounceGateEventCancelled(id);
-    entity.block = event.block.number;
-    entity.timestamp = event.block.timestamp;
-    entity.contract = event.address;
-    entity.transaction = event.transaction.hash;
-
-    entity._eventId = event.params._eventId;
-    return entity;
-};
-
-export const createBounceGateEventPriorityAndDurationUpdatedEvent = (
-    event: EventPriorityAndDurationUpdated
-): BounceGateEventPriorityAndDurationUpdated => {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let entity = new BounceGateEventPriorityAndDurationUpdated(id);
-    entity.block = event.block.number;
-    entity.timestamp = event.block.timestamp;
-    entity.contract = event.address;
-    entity.transaction = event.transaction.hash;
-
-    entity._eventId = event.params._eventId;
-    entity._newEndTime = event.params._newEndTime;
-    entity._newPriority = event.params._newPriority;
-
-    return entity;
-};
-
-export const getOrCreateBounceGateEvent = (
-    eventId: BigInt
-): BounceGateEvent => {
-    let id = eventId.toString();
-    let entity = BounceGateEvent.load(id);
-    if (!entity) {
-        entity = new BounceGateEvent(id);
-        entity.cancelled = false;
-    }
-
-    return entity;
-};
+// getOrCreateBounceGateEvent removed - no longer storing event entities

@@ -1,11 +1,5 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import {
-    MintTileEvent,
-    MintTilesEvent,
-    Parcel,
-    Tile,
-    TileType,
-} from "../../generated/schema";
+import { Parcel, Tile, TileType } from "../../generated/schema";
 import {
     MintTile,
     MintTiles,
@@ -58,43 +52,6 @@ export function getOrCreateTile(
     return tile;
 }
 
-export function createMintTileEvent(event: MintTile): MintTileEvent {
-    let id =
-        event.params._tileId.toString() +
-        "-" +
-        event.params._owner.toHexString() +
-        "-" +
-        event.transaction.hash.toHexString();
-    let eventEntity = MintTileEvent.load(id);
-    if (!eventEntity) {
-        eventEntity = new MintTileEvent(id);
-        eventEntity.transaction = event.transaction.hash;
-        eventEntity.block = event.block.number;
-        eventEntity.timestamp = event.block.timestamp;
-        eventEntity.owner = event.params._owner;
-        eventEntity.tile = event.params._tileType.toString();
-        eventEntity.quantity = 1;
-    } else {
-        eventEntity.quantity = eventEntity.quantity + 1;
-    }
-    return eventEntity;
-}
+// createMintTileEvent removed - no longer storing event entities
 
-export function createMintTilesEvent(event: MintTiles): MintTilesEvent {
-    let id =
-        event.params._tileId.toString() +
-        "-" +
-        event.params._amount.toString() +
-        "-" +
-        event.params._owner.toHexString() +
-        "-" +
-        event.transaction.hash.toHexString();
-    let eventEntity = new MintTilesEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.owner = event.params._owner;
-    eventEntity.tile = event.params._tileId.toString();
-    eventEntity.amount = event.params._amount;
-    return eventEntity;
-}
+// createMintTilesEvent removed - no longer storing event entities
