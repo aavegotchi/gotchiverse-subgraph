@@ -593,10 +593,18 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
         const realmId = parcelData.realmId;
 
         // Skip discrepant parcels if block number is less than 34674630
-        if (
-            event.block.number.lt(BigInt.fromI32(34674630)) &&
-            DISCREPANT_PARCELS.includes(realmId.toString())
-        ) {
+        const realmIdString = realmId.toString();
+        const isDiscrepant = DISCREPANT_PARCELS.includes(realmIdString);
+        const isBeforeBlock = event.block.number.lt(BigInt.fromI32(34674630));
+
+        log.info("Processing parcel {}, isDiscrepant: {}, isBeforeBlock: {}", [
+            realmIdString,
+            isDiscrepant.toString(),
+            isBeforeBlock.toString(),
+        ]);
+
+        if (isBeforeBlock && isDiscrepant) {
+            log.info("Skipping discrepant parcel {}", [realmIdString]);
             continue;
         }
 
