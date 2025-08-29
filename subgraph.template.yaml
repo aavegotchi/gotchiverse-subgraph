@@ -135,10 +135,8 @@ dataSources:
           handler: handleCraftTimeReduced
         - event: UpgradeTimeReduced(indexed uint256,indexed uint256,uint256,uint256,uint40)
           handler: handleUpgradeTimeReduced
-        - event: UpgradeFinalized(indexed uint256,uint256,uint256,uint256)
-          handler: handleUpgradeFinalized
-        - event: UpgradeQueued(indexed address,indexed uint256,indexed uint256)
-          handler: handleUpgradeQueued
+      
+      
         - event: URI(string,indexed uint256)
           handler: handleURI
         - event: EditDeprecateTime(uint256,uint256)
