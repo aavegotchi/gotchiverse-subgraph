@@ -19,7 +19,7 @@ dataSources:
         - UnequipTileEvent
       abis:
         - name: RealmDiamond
-          file: ./abis/RealmDiamond.json
+          file: ./abis/BaseRealmDiamond.json
         - name: InstallationDiamond
           file: ./abis/InstallationDiamond.json
         - name: TileDiamond
@@ -55,6 +55,11 @@ dataSources:
           handler: handleParcelWhitelistSet
         - event: SurveyParcel(uint256,uint256,uint256[])
           handler: handleSurveyParcel
+        - event: MigrateResyncParcel((uint256,address,(uint256,uint256,uint256)[],(uint256,uint256,uint256)[])[])
+          handler: handleMigrateResyncParcel
+        - event: SyncTotalAlchemicaClaimed(uint256,uint256[])
+          handler: handleSyncTotalAlchemicaClaimed
+  
       file: ./src/mappings/realm.ts
 
   - kind: ethereum/contract
@@ -73,7 +78,7 @@ dataSources:
         - TileType
       abis:
         - name: RealmDiamond
-          file: ./abis/RealmDiamond.json
+          file: ./abis/BaseRealmDiamond.json
         - name: InstallationDiamond
           file: ./abis/InstallationDiamond.json
         - name: TileDiamond
@@ -112,7 +117,7 @@ dataSources:
         - DeprecateInstallationEvent
       abis:
         - name: RealmDiamond
-          file: ./abis/RealmDiamond.json
+          file: ./abis/BaseRealmDiamond.json
         - name: InstallationDiamond
           file: ./abis/InstallationDiamond.json
         - name: TileDiamond

@@ -1,0 +1,9 @@
+{
+    "network": "base",
+    "realmDiamondAddress": "0x4B0040c3646D3c44B8a28Ad7055cfCF536c05372",
+    "realmStartBlock": 33969747,
+    "tileDiamondAddress": "0x617fdB8093b309e4699107F48812b407A7c37938",
+    "tileStartBlock": 33970119,
+    "installationDiamondAddress": "0xebba5b725A2889f7f089a6cAE0246A32cad4E26b",
+    "installationStartBlock": 33969976
+}

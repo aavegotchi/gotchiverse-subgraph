@@ -1,31 +1,6 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts";
-import {
-    AddInstallationType,
-    CraftTimeReduced,
-    DeprecateInstallation,
-    EditInstallationType,
-    InstallationDiamond,
-    MintInstallation,
-    MintInstallations,
-    UpgradeFinalized,
-    UpgradeInitiated,
-    UpgradeQueued,
-    UpgradeTimeReduced,
-} from "../../generated/InstallationDiamond/InstallationDiamond";
-import {
-    AddInstallationTypeEvent,
-    CraftTimeReducedEvent,
-    DeprecateInstallationEvent,
-    EditInstallationTypeEvent,
-    Installation,
-    InstallationType,
-    MintInstallationEvent,
-    MintInstallationsEvent,
-    UpgradeFinalizedEvent,
-    UpgradeInitiatedEvent,
-    UpgradeQueuedEvent,
-    UpgradeTimeReducedEvent,
-} from "../../generated/schema";
+import { InstallationDiamond } from "../../generated/InstallationDiamond/InstallationDiamond";
+import { Installation, InstallationType } from "../../generated/schema";
 import { BIGINT_ZERO, INSTALLATION_DIAMOND } from "./constants";
 
 export function getOrCreateInstallationType(typeId: BigInt): InstallationType {
@@ -68,114 +43,15 @@ export function getOrCreateInstallation(
     return installation;
 }
 
-export function createMintInstallationEvent(
-    event: MintInstallation
-): MintInstallationEvent {
-    let id =
-        event.params._installationId.toString() +
-        "-" +
-        event.transaction.hash.toHexString();
+// createMintInstallationEvent removed - no longer storing event entities
 
-    let eventEntity = MintInstallationEvent.load(id);
-    if (!eventEntity) {
-        eventEntity = new MintInstallationEvent(id);
-        eventEntity.transaction = event.transaction.hash;
-        eventEntity.block = event.block.number;
-        eventEntity.timestamp = event.block.timestamp;
-        eventEntity.installationType = event.params._installationType.toString();
-        eventEntity.owner = event.params._owner;
-        eventEntity.quantity = 1;
-    } else {
-        eventEntity.quantity = eventEntity.quantity + 1;
-    }
-    return eventEntity;
-}
+// createMintInstallationsEvent removed - no longer storing event entities
 
-export function createMintInstallationsEvent(
-    event: MintInstallations
-): MintInstallationsEvent {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = new MintInstallationsEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.installationType = event.params._installationId.toString();
-    eventEntity.owner = event.params._owner;
-    eventEntity.amount = event.params._amount;
-    return eventEntity;
-}
-
-export function createUpgradeInitiatedEvent(
-    event: UpgradeInitiated
-): UpgradeInitiatedEvent {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = UpgradeInitiatedEvent.load(id);
-    if (!eventEntity) {
-        eventEntity = new UpgradeInitiatedEvent(id);
-        eventEntity.transaction = event.transaction.hash;
-        eventEntity.block = event.block.number;
-        eventEntity.timestamp = event.block.timestamp;
-        eventEntity.installation = event.params.installationId.toString();
-        eventEntity.parcel = event.params._realmId.toString();
-        eventEntity.x = event.params._coordinateX;
-        eventEntity.y = event.params._coordinateY;
-        eventEntity.blockInitiated = event.params.blockInitiated;
-        eventEntity.readyBlock = event.params.readyBlock;
-        eventEntity.realmId = event.params._realmId;
-        eventEntity.installationId = event.params.installationId;
-    }
-    return eventEntity;
-}
-
-export function createAddInstallationType(
-    event: AddInstallationType
-): AddInstallationTypeEvent {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = AddInstallationTypeEvent.load(id);
-    if (!eventEntity) {
-        eventEntity = new AddInstallationTypeEvent(id);
-        eventEntity.transaction = event.transaction.hash;
-        eventEntity.block = event.block.number;
-        eventEntity.timestamp = event.block.timestamp;
-        eventEntity.installationType = event.params._installationId.toString();
-    }
-    return eventEntity;
-}
-
-export function createEditInstallationType(
-    event: EditInstallationType
-): EditInstallationTypeEvent {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = EditInstallationTypeEvent.load(id);
-    if (!eventEntity) {
-        eventEntity = new EditInstallationTypeEvent(id);
-        eventEntity.transaction = event.transaction.hash;
-        eventEntity.block = event.block.number;
-        eventEntity.timestamp = event.block.timestamp;
-        eventEntity.installationType = event.params._installationId.toString();
-    }
-    return eventEntity;
-}
-
-export function createDeprecateInstallationEvent(
-    event: DeprecateInstallation
-): DeprecateInstallationEvent {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = DeprecateInstallationEvent.load(id);
-    if (!eventEntity) {
-        eventEntity = new DeprecateInstallationEvent(id);
-        eventEntity.transaction = event.transaction.hash;
-        eventEntity.block = event.block.number;
-        eventEntity.timestamp = event.block.timestamp;
-        eventEntity.installationType = event.params._installationId.toString();
-    }
-    return eventEntity;
-}
+// Event creation functions removed - no longer storing event entities
+// createUpgradeInitiatedEvent removed
+// createAddInstallationType removed
+// createEditInstallationType removed
+// createDeprecateInstallationEvent removed
 
 export function updateInstallationType(
     installationType: InstallationType
@@ -208,72 +84,8 @@ export function updateInstallationType(
     return installationType;
 }
 
-export function createUpgradeTimeReducedEvent(
-    event: UpgradeTimeReduced
-): UpgradeTimeReducedEvent {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = UpgradeTimeReducedEvent.load(id);
-    if (!eventEntity) {
-        eventEntity = new UpgradeTimeReducedEvent(id);
-        eventEntity.transaction = event.transaction.hash;
-        eventEntity.block = event.block.number;
-        eventEntity.timestamp = event.block.timestamp;
-        eventEntity.parcel = event.params._realmId.toString();
-        eventEntity.x = event.params._coordinateX;
-        eventEntity.y = event.params._coordinateY;
-        eventEntity.blocksReduced = event.params._blocksReduced;
-        eventEntity.realmId = event.params._realmId;
-    }
-    return eventEntity;
-}
-
-export function createCraftTimeReducedEvent(
-    event: CraftTimeReduced
-): CraftTimeReducedEvent {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = CraftTimeReducedEvent.load(id);
-    if (!eventEntity) {
-        eventEntity = new CraftTimeReducedEvent(id);
-        eventEntity.transaction = event.transaction.hash;
-        eventEntity.block = event.block.number;
-        eventEntity.timestamp = event.block.timestamp;
-        eventEntity.blocksReduced = event.params._blocksReduced;
-    }
-    return eventEntity;
-}
-
-export function createUpgradeFinalizedEvent(
-    event: UpgradeFinalized
-): UpgradeFinalizedEvent {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = new UpgradeFinalizedEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.x = event.params._coordinateX;
-    eventEntity.y = event.params._coordinateY;
-    eventEntity.installation = event.params._newInstallationId.toString();
-    eventEntity.parcel = event.params._realmId.toString();
-    return eventEntity;
-}
-
-export function createUpgradeQueuedEvent(
-    event: UpgradeQueued
-): UpgradeQueuedEvent {
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = new UpgradeQueuedEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-
-    eventEntity.realmId = event.params._realmId;
-    eventEntity.owner = event.params._owner;
-    eventEntity.queueIndex = event.params._queueIndex;
-    eventEntity.parcel = event.params._realmId.toString();
-
-    return eventEntity;
-}
+// More event creation functions removed - no longer storing event entities
+// createUpgradeTimeReducedEvent removed
+// createCraftTimeReducedEvent removed
+// createUpgradeFinalizedEvent removed
+// createUpgradeQueuedEvent removed

@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: RealmDiamond
-    network: "{{network}}"
+    network: "base"
     source:
-      address: "{{realmDiamondAddress}}"
+      address: "0x4B0040c3646D3c44B8a28Ad7055cfCF536c05372"
       abi: RealmDiamond
-      startBlock: {{realmStartBlock}}
+      startBlock: 33969747
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -19,7 +19,7 @@ dataSources:
         - UnequipTileEvent
       abis:
         - name: RealmDiamond
-          file: ./abis/RealmDiamond.json
+          file: ./abis/BaseRealmDiamond.json
         - name: InstallationDiamond
           file: ./abis/InstallationDiamond.json
         - name: TileDiamond
@@ -55,15 +55,20 @@ dataSources:
           handler: handleParcelWhitelistSet
         - event: SurveyParcel(uint256,uint256,uint256[])
           handler: handleSurveyParcel
+        - event: MigrateResyncParcel((uint256,address,(uint256,uint256,uint256)[],(uint256,uint256,uint256)[])[])
+          handler: handleMigrateResyncParcel
+        - event: SyncTotalAlchemicaClaimed(uint256,uint256[])
+          handler: handleSyncTotalAlchemicaClaimed
+  
       file: ./src/mappings/realm.ts
 
   - kind: ethereum/contract
     name: TileDiamond
-    network: "{{network}}"
+    network: "base"
     source:
-      address: "{{tileDiamondAddress}}"
+      address: "0x617fdB8093b309e4699107F48812b407A7c37938"
       abi: TileDiamond
-      startBlock: {{tileStartBlock}}
+      startBlock: 33970119
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -73,7 +78,7 @@ dataSources:
         - TileType
       abis:
         - name: RealmDiamond
-          file: ./abis/RealmDiamond.json
+          file: ./abis/BaseRealmDiamond.json
         - name: InstallationDiamond
           file: ./abis/InstallationDiamond.json
         - name: TileDiamond
@@ -95,11 +100,11 @@ dataSources:
 
   - kind: ethereum/contract
     name: InstallationDiamond
-    network: "{{network}}"
+    network: "base"
     source:
-      address: "{{installationDiamondAddress}}"
+      address: "0xebba5b725A2889f7f089a6cAE0246A32cad4E26b"
       abi: InstallationDiamond
-      startBlock: {{installationStartBlock}}
+      startBlock: 33969976
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -112,7 +117,7 @@ dataSources:
         - DeprecateInstallationEvent
       abis:
         - name: RealmDiamond
-          file: ./abis/RealmDiamond.json
+          file: ./abis/BaseRealmDiamond.json
         - name: InstallationDiamond
           file: ./abis/InstallationDiamond.json
         - name: TileDiamond

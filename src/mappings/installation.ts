@@ -7,25 +7,13 @@ import {
     EditInstallationType,
     MintInstallation,
     MintInstallations,
-    UpgradeFinalized,
     UpgradeInitiated,
-    UpgradeQueued,
     UpgradeTimeReduced,
     URI,
 } from "../../generated/InstallationDiamond/InstallationDiamond";
-import { EditDeprecateTimeEvent, URIEvent } from "../../generated/schema";
+// Removed EditDeprecateTimeEvent and URIEvent imports - no longer storing event entities
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import {
-    createAddInstallationType,
-    createCraftTimeReducedEvent,
-    createDeprecateInstallationEvent,
-    createEditInstallationType,
-    createMintInstallationEvent,
-    createMintInstallationsEvent,
-    createUpgradeFinalizedEvent,
-    createUpgradeInitiatedEvent,
-    createUpgradeQueuedEvent,
-    createUpgradeTimeReducedEvent,
     getOrCreateInstallationType,
     updateInstallationType,
 } from "../helper/installation";
@@ -36,9 +24,7 @@ import {
 } from "../helper/stats";
 
 export function handleMintInstallation(event: MintInstallation): void {
-    // Event entity
-    let eventEntity = createMintInstallationEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     let installationType = getOrCreateInstallationType(
         event.params._installationType
@@ -75,8 +61,7 @@ export function handleMintInstallation(event: MintInstallation): void {
 
 export function handleMintInstallations(event: MintInstallations): void {
     // Event entity
-    let eventEntity = createMintInstallationsEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     let installationType = getOrCreateInstallationType(
         event.params._installationId
@@ -118,8 +103,7 @@ export function handleMintInstallations(event: MintInstallations): void {
 }
 
 export function handleUpgradeInitiated(event: UpgradeInitiated): void {
-    let eventEntity = createUpgradeInitiatedEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     let type = getOrCreateInstallationType(event.params.installationId);
     type.save();
@@ -154,8 +138,7 @@ export function handleUpgradeInitiated(event: UpgradeInitiated): void {
 }
 
 export function handleAddInstallationType(event: AddInstallationType): void {
-    let eventEntity = createAddInstallationType(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     let installationTypeId = event.params._installationId;
     let installationType = getOrCreateInstallationType(installationTypeId);
@@ -163,8 +146,7 @@ export function handleAddInstallationType(event: AddInstallationType): void {
 }
 
 export function handleEditInstallationType(event: EditInstallationType): void {
-    let eventEntity = createEditInstallationType(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     let installationTypeId = event.params._installationId;
     let installationType = getOrCreateInstallationType(installationTypeId);
@@ -175,8 +157,7 @@ export function handleEditInstallationType(event: EditInstallationType): void {
 export function handleDeprecateInstallation(
     event: DeprecateInstallation
 ): void {
-    let eventEntity = createDeprecateInstallationEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     let installationTypeId = event.params._installationId;
     let installationType = getOrCreateInstallationType(installationTypeId);
@@ -186,8 +167,7 @@ export function handleDeprecateInstallation(
 }
 
 export function handleCraftTimeReduced(event: CraftTimeReduced): void {
-    let eventEntity = createCraftTimeReducedEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     // stats
     let gltrSpend = event.params._blocksReduced.times(
@@ -216,8 +196,7 @@ export function handleCraftTimeReduced(event: CraftTimeReduced): void {
 }
 
 export function handleUpgradeTimeReduced(event: UpgradeTimeReduced): void {
-    let eventEntity = createUpgradeTimeReducedEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     // stats
     let gltrSpend = event.params._blocksReduced.times(
@@ -233,7 +212,10 @@ export function handleUpgradeTimeReduced(event: UpgradeTimeReduced): void {
     overallStats.gltrSpendTotal = overallStats.gltrSpendTotal!.plus(gltrSpend);
     overallStats.save();
 
-    let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel);
+    let parcelStats = getStat(
+        StatCategory.PARCEL,
+        event.params._realmId.toString()
+    );
     parcelStats.upgradeTimeReduced = parcelStats.upgradeTimeReduced.plus(
         event.params._blocksReduced
     );
@@ -257,28 +239,11 @@ export function handleUpgradeTimeReduced(event: UpgradeTimeReduced): void {
     userStats.save();
 }
 
-export function handleUpgradeFinalized(event: UpgradeFinalized): void {
-    let eventEntity = createUpgradeFinalizedEvent(event);
-    eventEntity.save();
-}
-
-export function handleUpgradeQueued(event: UpgradeQueued): void {
-    let eventEntity = createUpgradeQueuedEvent(event);
-    eventEntity.save();
-}
+// Removed empty handlers - they only created event entities with no other business logic
+// handleUpgradeFinalized and handleUpgradeQueued removed
 
 export function handleURI(event: URI): void {
-    // create event
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = new URIEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.contract = event.address;
-    eventEntity.value = event.params._value;
-    eventEntity.tokenId = event.params._tokenId;
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     // update installationtype
     let installation = getOrCreateInstallationType(event.params._tokenId);
@@ -287,18 +252,7 @@ export function handleURI(event: URI): void {
 }
 
 export function handleEditDeprecateTime(event: EditDeprecateTime): void {
-    // create Event entity
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = new EditDeprecateTimeEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.contract = event.address;
-    eventEntity.installationId = event.params._installationId.toI32();
-    eventEntity.newDeprecatetime = event.params._newDeprecatetime;
-    eventEntity.installationType = event.params._installationId.toString();
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     // update installationType
     let installationType = getOrCreateInstallationType(
