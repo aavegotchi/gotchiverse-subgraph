@@ -1,10 +1,6 @@
 import { BigInt } from "@graphprotocol/graph-ts";
 import { CraftTimeReduced } from "../../generated/InstallationDiamond/InstallationDiamond";
-import {
-    EditDeprecateTimeEvent,
-    EditTileTypeEvent,
-    URIEvent,
-} from "../../generated/schema";
+// Removed event entity imports - no longer storing event entities
 import {
     EditDeprecateTime,
     EditTileType,
@@ -13,17 +9,12 @@ import {
     URI,
 } from "../../generated/TileDiamond/TileDiamond";
 import { BIGINT_ONE, StatCategory } from "../helper/constants";
-import { createCraftTimeReducedEvent } from "../helper/installation";
+// Removed createCraftTimeReducedEvent import - no longer storing event entities
 import { getStat, updateAlchemicaSpendOnTiles } from "../helper/stats";
-import {
-    createMintTileEvent,
-    createMintTilesEvent,
-    getOrCreateTileType,
-} from "../helper/tiles";
+import { getOrCreateTileType } from "../helper/tiles";
 
 export function handleMintTile(event: MintTile): void {
-    let eventEntity = createMintTileEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     let type = getOrCreateTileType(event.params._tileType);
     type.amount = type.amount.plus(BIGINT_ONE);
@@ -45,8 +36,7 @@ export function handleMintTile(event: MintTile): void {
 }
 
 export function handleMintTiles(event: MintTiles): void {
-    let eventEntity = createMintTilesEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
     let bigIntAmount = BigInt.fromI32(event.params._amount);
     let type = getOrCreateTileType(event.params._tileId);
     type.amount = type.amount.plus(bigIntAmount);
@@ -73,8 +63,7 @@ export function handleMintTiles(event: MintTiles): void {
 }
 
 export function handleCraftTimeReduced(event: CraftTimeReduced): void {
-    let eventEntity = createCraftTimeReducedEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     // stats
     let gltrSpend = event.params._blocksReduced.times(
@@ -103,17 +92,7 @@ export function handleCraftTimeReduced(event: CraftTimeReduced): void {
 }
 
 export function handleURI(event: URI): void {
-    // create event
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = new URIEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.contract = event.address;
-    eventEntity.value = event.params._value;
-    eventEntity.tokenId = event.params._tokenId;
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     // update tile
     let tile = getOrCreateTileType(event.params._tokenId);
@@ -122,25 +101,7 @@ export function handleURI(event: URI): void {
 }
 
 export function handleEditTileType(event: EditTileType): void {
-    // create Event entity
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = new EditTileTypeEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.contract = event.address;
-    eventEntity.tileId = event.params._tileId.toI32();
-    eventEntity.tileType = event.params._tileId.toString();
-
-    eventEntity._alchemicaCost = event.params.param1.alchemicaCost;
-    eventEntity._craftTime = event.params.param1.craftTime.toI32();
-    eventEntity._deprecated = event.params.param1.deprecated;
-    eventEntity._height = event.params.param1.height;
-    eventEntity._width = event.params.param1.width;
-    eventEntity._name = event.params.param1.name;
-
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     // update tileType
     let tileType = getOrCreateTileType(event.params._tileId);
@@ -155,18 +116,7 @@ export function handleEditTileType(event: EditTileType): void {
 }
 
 export function handleEditDeprecateTime(event: EditDeprecateTime): void {
-    // create Event entity
-    let id =
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString();
-    let eventEntity = new EditDeprecateTimeEvent(id);
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.contract = event.address;
-    eventEntity.tileId = event.params._tileId.toI32();
-    eventEntity.newDeprecatetime = event.params._newDeprecatetime;
-    eventEntity.tileType = event.params._tileId.toString();
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     // update tileType
     let tileType = getOrCreateTileType(event.params._tileId);

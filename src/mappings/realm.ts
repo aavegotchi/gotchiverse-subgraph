@@ -14,37 +14,18 @@ import {
     RealmDiamond,
     NFTDisplayStatusUpdated,
     ParcelAccessRightSet,
-    EventStarted,
-    EventCancelled,
-    EventPriorityAndDurationUpdated,
     ParcelWhitelistSet,
     SurveyParcel,
 } from "../../generated/RealmDiamond/RealmDiamond";
-import { ParcelWhitelistSetEvent } from "../../generated/schema";
-import { BIGINT_ONE, REALM_DIAMOND, StatCategory } from "../helper/constants";
+// Removed ParcelWhitelistSetEvent import - no longer storing event entities
+import { BIGINT_ONE, StatCategory } from "../helper/constants";
 import {
     getOrCreateInstallation,
     getOrCreateInstallationType,
 } from "../helper/installation";
 import {
-    createAlchemicaClaimedEvent,
-    createBounceGateEventCancelledEvent,
-    createBounceGateEventPriorityAndDurationUpdatedEvent,
-    createBounceGateEventStartedEvent,
-    createChannelAlchemicaEvent,
-    createEquipInstallationEvent,
-    createEquipTileEvent,
-    createExitAlchemicaEvent,
-    createInstallationUpgradedEvent,
-    createMintParcelEvent,
-    createNFTDisplayStatusUpdatedEvent,
-    createParcelAccessRightSetEvent,
     createParcelInstallation,
     createParcelTile,
-    createParcelTransferEvent,
-    createUnequipInstallationEvent,
-    createUnequipTileEvent,
-    getOrCreateBounceGateEvent,
     getOrCreateGotchi,
     getOrCreateParcel,
     getOrCreateParcelAccessRight,
@@ -67,10 +48,6 @@ import {
 import { getOrCreateTile, getOrCreateTileType } from "../helper/tiles";
 
 export function handleChannelAlchemica(event: ChannelAlchemica): void {
-    // create and persist event
-    let eventEntity = createChannelAlchemicaEvent(event);
-    eventEntity.save();
-
     // update gotchi and parcel entities
     let gotchi = getOrCreateGotchi(event.params._gotchiId);
     gotchi.lastChanneledAlchemica = event.block.timestamp;
@@ -81,7 +58,10 @@ export function handleChannelAlchemica(event: ChannelAlchemica): void {
     parcel.save();
 
     // update stats
-    let gotchiStats = getStat(StatCategory.GOTCHI, eventEntity.gotchi);
+    let gotchiStats = getStat(
+        StatCategory.GOTCHI,
+        event.params._gotchiId.toString()
+    );
     gotchiStats.countChannelAlchemicaEvents = gotchiStats.countChannelAlchemicaEvents.plus(
         BIGINT_ONE
     );
@@ -91,7 +71,10 @@ export function handleChannelAlchemica(event: ChannelAlchemica): void {
     );
     gotchiStats.save();
 
-    let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel);
+    let parcelStats = getStat(
+        StatCategory.PARCEL,
+        event.params._realmId.toString()
+    );
     parcelStats.countChannelAlchemicaEvents = parcelStats.countChannelAlchemicaEvents.plus(
         BIGINT_ONE
     );
@@ -123,9 +106,6 @@ export function handleChannelAlchemica(event: ChannelAlchemica): void {
 }
 
 export function handleExitAlchemica(event: ExitAlchemica): void {
-    let eventEntity = createExitAlchemicaEvent(event);
-    eventEntity.save();
-
     // stats
     let overallStats = getStat(StatCategory.OVERALL);
     overallStats = updateExitedAlchemicaStats(
@@ -153,8 +133,7 @@ export function handleExitAlchemica(event: ExitAlchemica): void {
 }
 
 export function handleAlchemicaClaimed(event: AlchemicaClaimed): void {
-    let eventEntity = createAlchemicaClaimedEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     // set last claim alchemica
     let parcel = getOrCreateParcel(event.params._realmId);
@@ -213,8 +192,7 @@ export function handleAlchemicaClaimed(event: AlchemicaClaimed): void {
 }
 
 export function handleEquipInstallation(event: EquipInstallation): void {
-    let eventEntity = createEquipInstallationEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     // create if not exist
     let parcel = getOrCreateParcel(event.params._realmId);
@@ -233,7 +211,10 @@ export function handleEquipInstallation(event: EquipInstallation): void {
     installation.save();
 
     // update stats
-    let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel);
+    let parcelStats = getStat(
+        StatCategory.PARCEL,
+        event.params._realmId.toString()
+    );
     parcelStats.countParcelInstallations = parcelStats.countParcelInstallations.plus(
         BIGINT_ONE
     );
@@ -259,8 +240,7 @@ export function handleEquipInstallation(event: EquipInstallation): void {
 }
 
 export function handleUnequipInstallation(event: UnequipInstallation): void {
-    let eventEntity = createUnequipInstallationEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     let parcel = getOrCreateParcel(event.params._realmId);
     parcel = removeParcelInstallation(parcel, event.params._installationId);
@@ -274,7 +254,10 @@ export function handleUnequipInstallation(event: UnequipInstallation): void {
     userStats = updateInstallationUnequippedStats(userStats);
     userStats.save();
 
-    let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel);
+    let parcelStats = getStat(
+        StatCategory.PARCEL,
+        event.params._realmId.toString()
+    );
     parcelStats = updateInstallationUnequippedStats(parcelStats);
     parcelStats.save();
 
@@ -296,8 +279,7 @@ export function handleUnequipInstallation(event: UnequipInstallation): void {
 }
 
 export function handleInstallationUpgraded(event: InstallationUpgraded): void {
-    let eventEntity = createInstallationUpgradedEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     let type = getOrCreateInstallationType(event.params._nextInstallationId);
     type.save();
@@ -350,8 +332,7 @@ export function handleInstallationUpgraded(event: InstallationUpgraded): void {
 }
 
 export function handleEquipTile(event: EquipTile): void {
-    let eventEntity = createEquipTileEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     let tileType = getOrCreateTileType(event.params._tileId);
     tileType.save();
@@ -378,15 +359,17 @@ export function handleEquipTile(event: EquipTile): void {
     overallStats = updateTileEquippedStats(overallStats);
     overallStats.save();
 
-    let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel!);
+    let parcelStats = getStat(
+        StatCategory.PARCEL,
+        event.params._realmId.toString()
+    );
     parcelStats = updateTileEquippedStats(parcelStats);
     parcelStats.save();
 }
 
 export function handleUnequipTile(event: UnequipTile): void {
     // event
-    let eventEntity = createUnequipTileEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     let tileType = getOrCreateTileType(event.params._tileId);
     tileType.save();
@@ -417,15 +400,17 @@ export function handleUnequipTile(event: UnequipTile): void {
     overallStats = updateTileUnequippedStats(overallStats);
     overallStats.save();
 
-    let parcelStats = getStat(StatCategory.PARCEL, eventEntity.parcel!);
+    let parcelStats = getStat(
+        StatCategory.PARCEL,
+        event.params._realmId.toString()
+    );
     parcelStats = updateTileUnequippedStats(parcelStats);
     parcelStats.save();
 }
 
 export function handleMintParcel(event: MintParcel): void {
     // event
-    let eventEntity = createMintParcelEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     // maintain owner in parcel entity
     let parcel = getOrCreateParcel(event.params._tokenId);
@@ -435,8 +420,7 @@ export function handleMintParcel(event: MintParcel): void {
 
 export function handleTransfer(event: Transfer): void {
     // event
-    let eventEntity = createParcelTransferEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     // maintain parcel owner field
     let parcel = getOrCreateParcel(event.params._tokenId);
@@ -453,8 +437,7 @@ export function handleResyncParcel(event: ResyncParcel): void {
 export function handleNFTDisplayStatusUpdated(
     event: NFTDisplayStatusUpdated
 ): void {
-    let eventEntity = createNFTDisplayStatusUpdatedEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     let entity = getOrCreatetypeNFTDisplayStatus(event);
     entity.chainId = event.params._chainId.toI32();
@@ -465,8 +448,7 @@ export function handleNFTDisplayStatusUpdated(
 
 export function handleParcelAccessRightSet(event: ParcelAccessRightSet): void {
     // event
-    let eventEntity = createParcelAccessRightSetEvent(event);
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     // parcel
     let parcel = getOrCreateParcel(event.params._realmId);
@@ -481,64 +463,10 @@ export function handleParcelAccessRightSet(event: ParcelAccessRightSet): void {
     entity.save();
 }
 
-export function handleBounceGateEventStarted(event: EventStarted): void {
-    let eventEntity = createBounceGateEventStartedEvent(event);
-    eventEntity.save();
-
-    let entity = getOrCreateBounceGateEvent(event.params._eventId);
-    entity.startTime = event.params.eventDetails.startTime;
-    entity.endTime = event.params.eventDetails.endTime;
-    entity.cancelled = false;
-    entity.title = event.params.eventDetails.title;
-
-    entity.priority = event.params.eventDetails.priority;
-
-    entity.equipped = event.params.eventDetails.equipped;
-    entity.lastTimeUpdated = event.block.timestamp;
-
-    entity.creator = event.transaction.from;
-    entity.save();
-}
-
-export function handleBounceGateEventCancelled(event: EventCancelled): void {
-    let eventEntity = createBounceGateEventCancelledEvent(event);
-    eventEntity.save();
-
-    let entity = getOrCreateBounceGateEvent(event.params._eventId);
-    entity.endTime = event.block.timestamp;
-    entity.cancelled = true;
-    entity.lastTimeUpdated = event.block.timestamp;
-    entity.save();
-}
-
-export function handleBounceGateEventPriorityAndDurationUpdated(
-    event: EventPriorityAndDurationUpdated
-): void {
-    let eventEntity = createBounceGateEventPriorityAndDurationUpdatedEvent(
-        event
-    );
-    eventEntity.save();
-
-    let entity = getOrCreateBounceGateEvent(event.params._eventId);
-    entity.priority = event.params._newPriority;
-    entity.endTime = event.params._newEndTime;
-    entity.lastTimeUpdated = event.block.timestamp;
-    entity.save();
-}
+// Removed empty BounceGateEvent handlers - they only created event entities with no other business logic
 
 export function handleParcelWhitelistSet(event: ParcelWhitelistSet): void {
-    // add event entity
-    let eventEntity = new ParcelWhitelistSetEvent(
-        event.transaction.hash.toHexString() + "/" + event.logIndex.toString()
-    );
-    eventEntity.block = event.block.number;
-    eventEntity.timestamp = event.block.timestamp;
-    eventEntity.contract = event.address;
-    eventEntity.transaction = event.transaction.hash;
-    eventEntity.actionRight = event.params._actionRight.toI32();
-    eventEntity.whitelistId = event.params._whitelistId.toI32();
-    eventEntity.realmId = event.params._realmId.toI32();
-    eventEntity.save();
+    // Event entity creation removed - no longer storing event entities
 
     // update ParcelAccessRight for Whitelist
     let parEntity = getOrCreateParcelAccessRight(
