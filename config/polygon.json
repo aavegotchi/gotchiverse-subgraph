@@ -1,9 +1,0 @@
-{
-    "network": "polygon",
-    "realmDiamondAddress": "0x1d0360bac7299c86ec8e99d0c1c9a95fefaf2a11",
-    "realmStartBlock": 20667840,
-    "tileDiamondAddress": "0x9216c31d8146bCB3eA5a9162Dc1702e8AEDCa355",
-    "tileStartBlock": 27231106,
-    "installationDiamondAddress": "0x19f870bD94A34b3adAa9CaA439d333DA18d6812A",
-    "installationStartBlock": 26540482
-}
