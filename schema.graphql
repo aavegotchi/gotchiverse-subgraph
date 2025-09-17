@@ -4,8 +4,8 @@ type Parcel @entity {
     id: ID!
     equippedInstallations: [InstallationType!]!
     equippedTiles: [TileType!]!
-    equippedInstallationsBalance: [BigInt!]!
-    equippedTilesBalance: [BigInt!]!
+    equippedInstallationsBalance: BigInt!
+    equippedTilesBalance: BigInt!
     lastChanneledAlchemica: BigInt
     lastClaimedAlchemica: BigInt
     owner: Bytes

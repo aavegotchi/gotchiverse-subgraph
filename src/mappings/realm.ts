@@ -22,6 +22,7 @@ import {
 // Removed ParcelWhitelistSetEvent import - no longer storing event entities
 import {
     BIGINT_ONE,
+    BIGINT_ZERO,
     DISCREPANT_PARCELS,
     StatCategory,
 } from "../helper/constants";
@@ -535,8 +536,8 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
         //  STEP 1: Clear the equipped arrays to start fresh (skip removal since we're rebuilding from scratch)
         parcel.equippedInstallations = new Array<string>();
         parcel.equippedTiles = new Array<string>();
-        parcel.equippedInstallationsBalance = new Array<BigInt>();
-        parcel.equippedTilesBalance = new Array<BigInt>();
+        parcel.equippedInstallationsBalance = BIGINT_ZERO;
+        parcel.equippedTilesBalance = BIGINT_ZERO;
 
         // STEP 2: Equip installations from the new event
         for (let j = 0; j < parcelData.installations.length; j++) {
