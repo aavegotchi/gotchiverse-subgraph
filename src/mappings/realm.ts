@@ -551,6 +551,8 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
         // Clear the equipped arrays to start fresh
         parcel.equippedInstallations = new Array<string>();
         parcel.equippedTiles = new Array<string>();
+        parcel.equippedInstallationsBalance = new Array<BigInt>();
+        parcel.equippedTilesBalance = new Array<BigInt>();
 
         // STEP 3: Equip installations from the new event
         for (let j = 0; j < parcelData.installations.length; j++) {
