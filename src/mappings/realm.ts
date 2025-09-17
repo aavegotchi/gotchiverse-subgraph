@@ -532,29 +532,13 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
         // Get or create the parcel
         let parcel = getOrCreateParcel(realmId);
 
-        // STEP 1: Unequip all previously equipped installations
-        let previousInstallations = parcel.equippedInstallations;
-        for (let p = 0; p < previousInstallations.length; p++) {
-            let installationTypeId = BigInt.fromString(
-                previousInstallations[p]
-            );
-            parcel = removeParcelInstallation(parcel, installationTypeId);
-        }
-
-        // STEP 2: Unequip all previously equipped tiles
-        let previousTiles = parcel.equippedTiles;
-        for (let q = 0; q < previousTiles.length; q++) {
-            let tileTypeId = BigInt.fromString(previousTiles[q]);
-            parcel = removeParcelTile(parcel, tileTypeId);
-        }
-
-        // Clear the equipped arrays to start fresh
+        //  STEP 1: Clear the equipped arrays to start fresh (skip removal since we're rebuilding from scratch)
         parcel.equippedInstallations = new Array<string>();
         parcel.equippedTiles = new Array<string>();
         parcel.equippedInstallationsBalance = new Array<BigInt>();
         parcel.equippedTilesBalance = new Array<BigInt>();
 
-        // STEP 3: Equip installations from the new event
+        // STEP 2: Equip installations from the new event
         for (let j = 0; j < parcelData.installations.length; j++) {
             const installationData = parcelData.installations[j];
 
@@ -582,7 +566,7 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
             installationType.save();
         }
 
-        // STEP 4: Equip tiles from the new event
+        // STEP 3: Equip tiles from the new event
         for (let k = 0; k < parcelData.tiles.length; k++) {
             const tileData = parcelData.tiles[k];
 
