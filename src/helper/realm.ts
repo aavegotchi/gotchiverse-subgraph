@@ -74,8 +74,9 @@ export function updateParcelInfo(
 
             parcel.remainingAlchemica = parcelMetadata.alchemicaRemaining;
 
-            // Extract installation IDs from the structured array, handling balance
+            // Extract installation IDs and balances from the structured array
             let installationIds = new Array<string>();
+            let installationBalances = new Array<BigInt>();
             for (
                 let i = 0;
                 i < parcelMetadata.equippedInstallations.length;
@@ -83,28 +84,27 @@ export function updateParcelInfo(
             ) {
                 let item = parcelMetadata.equippedInstallations[i];
                 let installationId = item.installationId.toString();
-                let balance = item.balance.toI32();
+                let balance = item.balance;
 
-                // Add the same installationId multiple times if balance > 1
-                for (let j = 0; j < balance; j++) {
-                    installationIds.push(installationId);
-                }
+                installationIds.push(installationId);
+                installationBalances.push(balance);
             }
             parcel.equippedInstallations = installationIds;
+            parcel.equippedInstallationsBalance = installationBalances;
 
-            // Extract tile IDs from the structured array, handling balance
+            // Extract tile IDs and balances from the structured array
             let tileIds = new Array<string>();
+            let tileBalances = new Array<BigInt>();
             for (let i = 0; i < parcelMetadata.equippedTiles.length; i++) {
                 let item = parcelMetadata.equippedTiles[i];
                 let tileId = item.tileId.toString();
-                let balance = item.balance.toI32();
+                let balance = item.balance;
 
-                // Add the same tileId multiple times if balance > 1
-                for (let j = 0; j < balance; j++) {
-                    tileIds.push(tileId);
-                }
+                tileIds.push(tileId);
+                tileBalances.push(balance);
             }
             parcel.equippedTiles = tileIds;
+            parcel.equippedTilesBalance = tileBalances;
 
             parcel.lastChanneledAlchemica =
                 parcelMetadata.lastChanneledAlchemica;
