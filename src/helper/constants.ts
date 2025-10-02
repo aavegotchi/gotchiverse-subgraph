@@ -163,3 +163,6 @@ export const DISCREPANT_PARCELS = [
     "9930",
     "9946",
 ];
+
+// Debugging: set the parcel hash to enable scoped logs for a single parcel
+export const DEBUG_PARCEL_HASH = "passively-smol-text";
