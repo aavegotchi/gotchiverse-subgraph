@@ -219,7 +219,7 @@ export function handleEquipInstallation(event: EquipInstallation): void {
             "[handleEquipInstallation] realmId={}, hash={}, installId={}, typeName={}, x={}, y={}, tx={}",
             [
                 event.params._realmId.toString(),
-                parcel.parcelHash || "",
+                parcel.parcelHash ? (parcel.parcelHash as string) : "",
                 event.params._installationId.toString(),
                 typeInfo.name ? typeInfo.name! : "",
                 event.params._x.toString(),
@@ -305,7 +305,7 @@ export function handleUnequipInstallation(event: UnequipInstallation): void {
             "[handleUnequipInstallation] realmId={}, hash={}, installId={}, x={}, y={}, tx={}",
             [
                 event.params._realmId.toString(),
-                parcel.parcelHash || "",
+                parcel.parcelHash ? (parcel.parcelHash as string) : "",
                 event.params._installationId.toString(),
                 event.params._x.toString(),
                 event.params._y.toString(),
@@ -367,7 +367,9 @@ export function handleInstallationUpgraded(event: InstallationUpgraded): void {
             "[handleInstallationUpgraded] realmId={}, hash={}, prevId={}, nextId={}, x={}, y={}, tx={}",
             [
                 event.params._realmId.toString(),
-                debugParcel.parcelHash || "",
+                debugParcel.parcelHash
+                    ? (debugParcel.parcelHash as string)
+                    : "",
                 event.params._prevInstallationId.toString(),
                 event.params._nextInstallationId.toString(),
                 event.params._coordinateX.toString(),
@@ -549,7 +551,7 @@ export function handleResyncParcel(event: ResyncParcel): void {
             "[handleResyncParcel] realmId={}, hash={}, before update -> instIds={}, instBal={}, tiles={}, tileBal={}, block={}",
             [
                 parcel.id,
-                parcel.parcelHash || "",
+                parcel.parcelHash ? (parcel.parcelHash as string) : "",
                 parcel.equippedInstallations.join(","),
                 parcel.equippedInstallationsBalance.toString(),
                 parcel.equippedTiles.join(","),
@@ -566,7 +568,7 @@ export function handleResyncParcel(event: ResyncParcel): void {
             "[handleResyncParcel] realmId={}, hash={}, after update -> instIds={}, instBal={}, tiles={}, tileBal={}, block={}",
             [
                 parcel.id,
-                parcel.parcelHash || "",
+                parcel.parcelHash ? (parcel.parcelHash as string) : "",
                 parcel.equippedInstallations.join(","),
                 parcel.equippedInstallationsBalance.toString(),
                 parcel.equippedTiles.join(","),
@@ -663,7 +665,7 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
                 "[handleMigrateResyncParcel] realmId={}, hash={}, start rebuild (block={})",
                 [
                     parcel.id,
-                    parcel.parcelHash || "",
+                    parcel.parcelHash ? (parcel.parcelHash as string) : "",
                     event.block.number.toString(),
                 ]
             );
@@ -734,7 +736,7 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
                 "[handleMigrateResyncParcel] realmId={}, hash={}, after rebuild -> instIds={}, instBal={}, tiles={}, tileBal={}",
                 [
                     parcel.id,
-                    parcel.parcelHash || "",
+                    parcel.parcelHash ? (parcel.parcelHash as string) : "",
                     parcel.equippedInstallations.join(","),
                     parcel.equippedInstallationsBalance.toString(),
                     parcel.equippedTiles.join(","),

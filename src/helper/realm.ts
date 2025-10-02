@@ -77,7 +77,7 @@ export function updateParcelInfo(
                     "[updateParcelInfo] realmId={}, hash={}, before equip snapshot -> instIds={}, instBal={}, tileIds={}, tileBal={}",
                     [
                         parcelId.toString(),
-                        parcel.parcelHash || "",
+                        parcel.parcelHash ? (parcel.parcelHash as string) : "",
                         parcel.equippedInstallations.join(","),
                         parcel.equippedInstallationsBalance.toString(),
                         parcel.equippedTiles.join(","),
@@ -134,7 +134,7 @@ export function updateParcelInfo(
                     "[updateParcelInfo] realmId={}, hash={}, after equip snapshot -> instIds={}, instBal={}, tileIds={}, tileBal={}",
                     [
                         parcelId.toString(),
-                        parcel.parcelHash || "",
+                        parcel.parcelHash ? (parcel.parcelHash as string) : "",
                         parcel.equippedInstallations.join(","),
                         parcel.equippedInstallationsBalance.toString(),
                         parcel.equippedTiles.join(","),
@@ -199,7 +199,7 @@ export const createParcelInstallation = (
             "[createParcelInstallation] realmId={}, hash={}, add type={}, now instIds={}, instBal={}",
             [
                 parcel.id,
-                parcel.parcelHash || "",
+                parcel.parcelHash ? (parcel.parcelHash as string) : "",
                 id,
                 installations.join(","),
                 parcel.equippedInstallationsBalance.toString(),
@@ -251,7 +251,7 @@ export const removeParcelInstallation = (
             "[removeParcelInstallation] realmId={}, hash={}, remove type={}, now instIds={}, instBal={}",
             [
                 parcel.id,
-                parcel.parcelHash || "",
+                parcel.parcelHash ? (parcel.parcelHash as string) : "",
                 id,
                 parcel.equippedInstallations.join(","),
                 parcel.equippedInstallationsBalance.toString(),
