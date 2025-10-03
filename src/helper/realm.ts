@@ -1,4 +1,4 @@
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
     NFTDisplayStatusUpdated,
     RealmDiamond,
@@ -165,6 +165,7 @@ export const createParcelInstallation = (
     parcel.equippedInstallationsBalance = parcel.equippedInstallationsBalance.plus(
         BIGINT_ONE
     );
+
     return parcel;
 };
 
@@ -188,7 +189,7 @@ export const removeParcelInstallation = (
         // We need to count how many installations of this type remain
         let count = 0;
         for (let i = 0; i < installations.length; i++) {
-            if (installations[i] === id) {
+            if (installations[i] == id) {
                 count++;
             }
         }
@@ -243,7 +244,7 @@ export const removeParcelTile = (parcel: Parcel, tileId: BigInt): Parcel => {
         // We need to count how many tiles of this type remain
         let count = 0;
         for (let i = 0; i < tiles.length; i++) {
-            if (tiles[i] === id) {
+            if (tiles[i] == id) {
                 count++;
             }
         }

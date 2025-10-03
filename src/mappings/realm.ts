@@ -1,4 +1,4 @@
-import { BigInt, dataSource, log } from "@graphprotocol/graph-ts";
+import { BigInt, dataSource } from "@graphprotocol/graph-ts";
 import {
     AlchemicaClaimed,
     ChannelAlchemica,
