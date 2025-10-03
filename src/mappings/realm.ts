@@ -1,4 +1,4 @@
-import { BigInt, dataSource, log } from "@graphprotocol/graph-ts";
+import { BigInt, dataSource } from "@graphprotocol/graph-ts";
 import {
     AlchemicaClaimed,
     ChannelAlchemica,
@@ -25,7 +25,6 @@ import {
     BIGINT_ZERO,
     DISCREPANT_PARCELS,
     StatCategory,
-    DEBUG_PARCEL_HASH,
 } from "../helper/constants";
 import {
     getOrCreateInstallation,
@@ -211,23 +210,6 @@ export function handleEquipInstallation(event: EquipInstallation): void {
 
     // create if not exist
     let parcel = getOrCreateParcel(event.params._realmId);
-    if (parcel.parcelHash == DEBUG_PARCEL_HASH) {
-        let typeInfo = getOrCreateInstallationType(
-            event.params._installationId
-        );
-        log.warning(
-            "[handleEquipInstallation] realmId={}, hash={}, installId={}, typeName={}, x={}, y={}, tx={}",
-            [
-                event.params._realmId.toString(),
-                parcel.parcelHash ? (parcel.parcelHash as string) : "",
-                event.params._installationId.toString(),
-                typeInfo.name ? typeInfo.name! : "",
-                event.params._x.toString(),
-                event.params._y.toString(),
-                event.transaction.hash.toHexString(),
-            ]
-        );
-    }
     parcel = createParcelInstallation(parcel, event.params._installationId);
     parcel.save();
 
@@ -241,31 +223,6 @@ export function handleEquipInstallation(event: EquipInstallation): void {
     );
     installation.equipped = true;
     installation.save();
-
-    if (parcel.parcelHash == DEBUG_PARCEL_HASH) {
-        // Count number of installed Altars on this parcel (by type name)
-        let altarIds = new Array<string>();
-        for (let i = 0; i < parcel.equippedInstallations.length; i++) {
-            let typ = getOrCreateInstallationType(
-                BigInt.fromString(parcel.equippedInstallations[i])
-            );
-            if (typ.name && typ.name!.indexOf("Altar") != -1) {
-                altarIds.push(typ.id);
-            }
-        }
-        log.warning(
-            "[handleEquipInstallation] after-save realmId={}, instIds={}, instBal={}, totalTiles={}, altarCount={}, altarTypeIds={}, block={}",
-            [
-                parcel.id,
-                parcel.equippedInstallations.join(","),
-                parcel.equippedInstallationsBalance.toString(),
-                parcel.equippedTilesBalance.toString(),
-                altarIds.length.toString(),
-                altarIds.join(","),
-                event.block.number.toString(),
-            ]
-        );
-    }
 
     // update stats
     let parcelStats = getStat(
@@ -300,19 +257,6 @@ export function handleUnequipInstallation(event: UnequipInstallation): void {
     // Event entity creation removed - no longer storing event entities
 
     let parcel = getOrCreateParcel(event.params._realmId);
-    if (parcel.parcelHash == DEBUG_PARCEL_HASH) {
-        log.warning(
-            "[handleUnequipInstallation] realmId={}, hash={}, installId={}, x={}, y={}, tx={}",
-            [
-                event.params._realmId.toString(),
-                parcel.parcelHash ? (parcel.parcelHash as string) : "",
-                event.params._installationId.toString(),
-                event.params._x.toString(),
-                event.params._y.toString(),
-                event.transaction.hash.toHexString(),
-            ]
-        );
-    }
     parcel = removeParcelInstallation(parcel, event.params._installationId);
     parcel.save();
 
@@ -346,38 +290,9 @@ export function handleUnequipInstallation(event: UnequipInstallation): void {
     );
     installation.equipped = false;
     installation.save();
-
-    if (parcel.parcelHash == DEBUG_PARCEL_HASH) {
-        log.warning(
-            "[handleUnequipInstallation] after-save realmId={}, instIds={}, instBal={}, block={}",
-            [
-                parcel.id,
-                parcel.equippedInstallations.join(","),
-                parcel.equippedInstallationsBalance.toString(),
-                event.block.number.toString(),
-            ]
-        );
-    }
 }
 
 export function handleInstallationUpgraded(event: InstallationUpgraded): void {
-    let debugParcel = getOrCreateParcel(event.params._realmId);
-    if (debugParcel.parcelHash == DEBUG_PARCEL_HASH) {
-        log.warning(
-            "[handleInstallationUpgraded] realmId={}, hash={}, prevId={}, nextId={}, x={}, y={}, tx={}",
-            [
-                event.params._realmId.toString(),
-                debugParcel.parcelHash
-                    ? (debugParcel.parcelHash as string)
-                    : "",
-                event.params._prevInstallationId.toString(),
-                event.params._nextInstallationId.toString(),
-                event.params._coordinateX.toString(),
-                event.params._coordinateY.toString(),
-                event.transaction.hash.toHexString(),
-            ]
-        );
-    }
     // Event entity creation removed - no longer storing event entities
 
     let type = getOrCreateInstallationType(event.params._nextInstallationId);
@@ -428,19 +343,6 @@ export function handleInstallationUpgraded(event: InstallationUpgraded): void {
     );
     installation.equipped = true;
     installation.save();
-
-    if (debugParcel.parcelHash == DEBUG_PARCEL_HASH) {
-        let p = getOrCreateParcel(event.params._realmId);
-        log.warning(
-            "[handleInstallationUpgraded] after-save realmId={}, instIds={}, instBal={}, block={}",
-            [
-                p.id,
-                p.equippedInstallations.join(","),
-                p.equippedInstallationsBalance.toString(),
-                event.block.number.toString(),
-            ]
-        );
-    }
 }
 
 export function handleEquipTile(event: EquipTile): void {
@@ -546,37 +448,7 @@ export function handleResyncParcel(event: ResyncParcel): void {
     const currentNetwork = dataSource.network();
     const isBase = currentNetwork == "base-sepolia" || currentNetwork == "base";
 
-    if (parcel.parcelHash == DEBUG_PARCEL_HASH) {
-        log.warning(
-            "[handleResyncParcel] realmId={}, hash={}, before update -> instIds={}, instBal={}, tiles={}, tileBal={}, block={}",
-            [
-                parcel.id,
-                parcel.parcelHash ? (parcel.parcelHash as string) : "",
-                parcel.equippedInstallations.join(","),
-                parcel.equippedInstallationsBalance.toString(),
-                parcel.equippedTiles.join(","),
-                parcel.equippedTilesBalance.toString(),
-                event.block.number.toString(),
-            ]
-        );
-    }
-
     parcel = updateParcelInfo(parcel, isBase);
-
-    if (parcel.parcelHash == DEBUG_PARCEL_HASH) {
-        log.warning(
-            "[handleResyncParcel] realmId={}, hash={}, after update -> instIds={}, instBal={}, tiles={}, tileBal={}, block={}",
-            [
-                parcel.id,
-                parcel.parcelHash ? (parcel.parcelHash as string) : "",
-                parcel.equippedInstallations.join(","),
-                parcel.equippedInstallationsBalance.toString(),
-                parcel.equippedTiles.join(","),
-                parcel.equippedTilesBalance.toString(),
-                event.block.number.toString(),
-            ]
-        );
-    }
 
     parcel.save();
 }
@@ -660,16 +532,6 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
 
         // Get or create the parcel
         let parcel = getOrCreateParcel(realmId);
-        if (parcel.parcelHash == DEBUG_PARCEL_HASH) {
-            log.warning(
-                "[handleMigrateResyncParcel] realmId={}, hash={}, start rebuild (block={})",
-                [
-                    parcel.id,
-                    parcel.parcelHash ? (parcel.parcelHash as string) : "",
-                    event.block.number.toString(),
-                ]
-            );
-        }
 
         //  STEP 1: Clear the equipped arrays to start fresh (skip removal since we're rebuilding from scratch)
         parcel.equippedInstallations = new Array<string>();
@@ -730,20 +592,6 @@ export function handleMigrateResyncParcel(event: MigrateResyncParcel): void {
 
         // Save the updated parcel
         parcel.save();
-
-        if (parcel.parcelHash == DEBUG_PARCEL_HASH) {
-            log.warning(
-                "[handleMigrateResyncParcel] realmId={}, hash={}, after rebuild -> instIds={}, instBal={}, tiles={}, tileBal={}",
-                [
-                    parcel.id,
-                    parcel.parcelHash ? (parcel.parcelHash as string) : "",
-                    parcel.equippedInstallations.join(","),
-                    parcel.equippedInstallationsBalance.toString(),
-                    parcel.equippedTiles.join(","),
-                    parcel.equippedTilesBalance.toString(),
-                ]
-            );
-        }
     }
 }
 

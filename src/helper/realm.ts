@@ -1,4 +1,4 @@
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
     NFTDisplayStatusUpdated,
     RealmDiamond,
@@ -14,7 +14,6 @@ import {
     BIGINT_ZERO,
     REALM_DIAMOND,
     StatCategory,
-    DEBUG_PARCEL_HASH,
 } from "./constants";
 import { getStat } from "./stats";
 
@@ -71,20 +70,6 @@ export function updateParcelInfo(
         parcel.kekBoost = boostArray[3];
 
         if (isBase) {
-            // Scoped log: when updating parcel info, show current equipped arrays for the debug parcel
-            if (parcel.parcelHash == DEBUG_PARCEL_HASH) {
-                log.warning(
-                    "[updateParcelInfo] realmId={}, hash={}, before equip snapshot -> instIds={}, instBal={}, tileIds={}, tileBal={}",
-                    [
-                        parcelId.toString(),
-                        parcel.parcelHash ? (parcel.parcelHash as string) : "",
-                        parcel.equippedInstallations.join(","),
-                        parcel.equippedInstallationsBalance.toString(),
-                        parcel.equippedTiles.join(","),
-                        parcel.equippedTilesBalance.toString(),
-                    ]
-                );
-            }
             parcel.surveyRound = parcelMetadata.surveyRound.toI32();
 
             parcel.remainingAlchemica = parcelMetadata.alchemicaRemaining;
@@ -129,19 +114,6 @@ export function updateParcelInfo(
             parcel.lastClaimedAlchemica = parcelMetadata.lastClaimedAlchemica;
 
             parcel.owner = parcelMetadata.owner;
-            if (parcel.parcelHash == DEBUG_PARCEL_HASH) {
-                log.warning(
-                    "[updateParcelInfo] realmId={}, hash={}, after equip snapshot -> instIds={}, instBal={}, tileIds={}, tileBal={}",
-                    [
-                        parcelId.toString(),
-                        parcel.parcelHash ? (parcel.parcelHash as string) : "",
-                        parcel.equippedInstallations.join(","),
-                        parcel.equippedInstallationsBalance.toString(),
-                        parcel.equippedTiles.join(","),
-                        parcel.equippedTilesBalance.toString(),
-                    ]
-                );
-            }
         }
     }
 
@@ -194,18 +166,6 @@ export const createParcelInstallation = (
         BIGINT_ONE
     );
 
-    if (parcel.parcelHash == DEBUG_PARCEL_HASH) {
-        log.warning(
-            "[createParcelInstallation] realmId={}, hash={}, add type={}, now instIds={}, instBal={}",
-            [
-                parcel.id,
-                parcel.parcelHash ? (parcel.parcelHash as string) : "",
-                id,
-                installations.join(","),
-                parcel.equippedInstallationsBalance.toString(),
-            ]
-        );
-    }
     return parcel;
 };
 
@@ -244,19 +204,6 @@ export const removeParcelInstallation = (
             }
             parcel.equippedInstallations = newInstallations;
         }
-    }
-
-    if (parcel.parcelHash == DEBUG_PARCEL_HASH) {
-        log.warning(
-            "[removeParcelInstallation] realmId={}, hash={}, remove type={}, now instIds={}, instBal={}",
-            [
-                parcel.id,
-                parcel.parcelHash ? (parcel.parcelHash as string) : "",
-                id,
-                parcel.equippedInstallations.join(","),
-                parcel.equippedInstallationsBalance.toString(),
-            ]
-        );
     }
 
     return parcel;
