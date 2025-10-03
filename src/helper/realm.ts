@@ -1,4 +1,4 @@
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
     NFTDisplayStatusUpdated,
     RealmDiamond,
@@ -9,7 +9,12 @@ import {
     Parcel,
     ParcelAccessRight,
 } from "../../generated/schema";
-import { BIGINT_ZERO, REALM_DIAMOND, StatCategory } from "./constants";
+import {
+    BIGINT_ONE,
+    BIGINT_ZERO,
+    REALM_DIAMOND,
+    StatCategory,
+} from "./constants";
 import { getStat } from "./stats";
 
 export const getOrCreateParcel = (realmId: BigInt): Parcel => {
@@ -19,6 +24,8 @@ export const getOrCreateParcel = (realmId: BigInt): Parcel => {
         parcel = new Parcel(id);
         parcel.equippedInstallations = new Array<string>();
         parcel.equippedTiles = new Array<string>();
+        parcel.equippedInstallationsBalance = BIGINT_ZERO;
+        parcel.equippedTilesBalance = BIGINT_ZERO;
         parcel.remainingAlchemica = [
             BIGINT_ZERO,
             BIGINT_ZERO,
@@ -67,8 +74,9 @@ export function updateParcelInfo(
 
             parcel.remainingAlchemica = parcelMetadata.alchemicaRemaining;
 
-            // Extract installation IDs from the structured array, handling balance
+            // Extract installation IDs and calculate total balance
             let installationIds = new Array<string>();
+            let totalInstallationsBalance = BIGINT_ZERO;
             for (
                 let i = 0;
                 i < parcelMetadata.equippedInstallations.length;
@@ -76,28 +84,29 @@ export function updateParcelInfo(
             ) {
                 let item = parcelMetadata.equippedInstallations[i];
                 let installationId = item.installationId.toString();
-                let balance = item.balance.toI32();
+                let balance = item.balance;
 
-                // Add the same installationId multiple times if balance > 1
-                for (let j = 0; j < balance; j++) {
-                    installationIds.push(installationId);
-                }
+                installationIds.push(installationId);
+                totalInstallationsBalance = totalInstallationsBalance.plus(
+                    balance
+                );
             }
             parcel.equippedInstallations = installationIds;
+            parcel.equippedInstallationsBalance = totalInstallationsBalance;
 
-            // Extract tile IDs from the structured array, handling balance
+            // Extract tile IDs and calculate total balance
             let tileIds = new Array<string>();
+            let totalTilesBalance = BIGINT_ZERO;
             for (let i = 0; i < parcelMetadata.equippedTiles.length; i++) {
                 let item = parcelMetadata.equippedTiles[i];
                 let tileId = item.tileId.toString();
-                let balance = item.balance.toI32();
+                let balance = item.balance;
 
-                // Add the same tileId multiple times if balance > 1
-                for (let j = 0; j < balance; j++) {
-                    tileIds.push(tileId);
-                }
+                tileIds.push(tileId);
+                totalTilesBalance = totalTilesBalance.plus(balance);
             }
             parcel.equippedTiles = tileIds;
+            parcel.equippedTilesBalance = totalTilesBalance;
 
             parcel.lastChanneledAlchemica =
                 parcelMetadata.lastChanneledAlchemica;
@@ -142,8 +151,21 @@ export const createParcelInstallation = (
 ): Parcel => {
     let installations = parcel.equippedInstallations;
     let id = installationId.toString();
-    installations.push(id);
+
+    // Find if this installation type already exists
+    let existingIndex = installations.indexOf(id);
+
+    if (existingIndex === -1) {
+        // First installation of this type - add to array
+        installations.push(id);
+    }
+
+    // Always increment total balance
     parcel.equippedInstallations = installations;
+    parcel.equippedInstallationsBalance = parcel.equippedInstallationsBalance.plus(
+        BIGINT_ONE
+    );
+
     return parcel;
 };
 
@@ -152,37 +174,93 @@ export const removeParcelInstallation = (
     installationId: BigInt
 ): Parcel => {
     let installations = parcel.equippedInstallations;
-    let newInstallations = new Array<string>();
     let id = installationId.toString();
-    for (let i = 0; i < installations.length; i++) {
-        let item = installations[i];
-        if (item != id) {
-            newInstallations.push(item);
+
+    // Find the installation type
+    let existingIndex = installations.indexOf(id);
+
+    if (existingIndex !== -1) {
+        // Always decrement total balance
+        parcel.equippedInstallationsBalance = parcel.equippedInstallationsBalance.minus(
+            BIGINT_ONE
+        );
+
+        // Check if we need to remove this installation type from array
+        // We need to count how many installations of this type remain
+        let count = 0;
+        for (let i = 0; i < installations.length; i++) {
+            if (installations[i] == id) {
+                count++;
+            }
+        }
+
+        // If this was the only installation of this type, remove from array
+        if (count === 1) {
+            let newInstallations = new Array<string>();
+            for (let i = 0; i < installations.length; i++) {
+                if (i !== existingIndex) {
+                    newInstallations.push(installations[i]);
+                }
+            }
+            parcel.equippedInstallations = newInstallations;
         }
     }
-    parcel.equippedInstallations = newInstallations;
+
     return parcel;
 };
 
 export const createParcelTile = (parcel: Parcel, tileId: BigInt): Parcel => {
     let tiles = parcel.equippedTiles;
     let id = tileId.toString();
-    tiles.push(id);
+
+    // Find if this tile type already exists
+    let existingIndex = tiles.indexOf(id);
+
+    if (existingIndex === -1) {
+        // First tile of this type - add to array
+        tiles.push(id);
+    }
+
+    // Always increment total balance
     parcel.equippedTiles = tiles;
+    parcel.equippedTilesBalance = parcel.equippedTilesBalance.plus(BIGINT_ONE);
     return parcel;
 };
 
 export const removeParcelTile = (parcel: Parcel, tileId: BigInt): Parcel => {
     let tiles = parcel.equippedTiles;
-    let newTiles = new Array<string>();
     let id = tileId.toString();
-    for (let i = 0; i < tiles.length; i++) {
-        let item = tiles[i];
-        if (item != id) {
-            newTiles.push(item);
+
+    // Find the tile type
+    let existingIndex = tiles.indexOf(id);
+
+    if (existingIndex !== -1) {
+        // Always decrement total balance
+        parcel.equippedTilesBalance = parcel.equippedTilesBalance.minus(
+            BIGINT_ONE
+        );
+
+        // Check if we need to remove this tile type from array
+        // We need to count how many tiles of this type remain
+        let count = 0;
+        for (let i = 0; i < tiles.length; i++) {
+            if (tiles[i] == id) {
+                count++;
+            }
+        }
+
+        // If this was the only tile of this type, remove from array
+        if (count === 1) {
+            let newTiles = new Array<string>();
+            for (let i = 0; i < tiles.length; i++) {
+                if (i !== existingIndex) {
+                    newTiles.push(tiles[i]);
+                }
+            }
+            parcel.equippedTiles = newTiles;
         }
     }
-    parcel.equippedTiles = newTiles;
+
     return parcel;
 };
 
